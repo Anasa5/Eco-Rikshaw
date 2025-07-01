@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Missions | Rikshaw</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #60ad5e;
+      --primary-dark: #005005;
+      --secondary: #ff9800;
+      --background: #f8fff8;
+      --card-bg: #ffffff;
+      --text: #333333;
+      --text-light: #666666;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 70px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 18px 0;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .header-icons {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 15px;
+    }
+
+    .header-icons i {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .container {
+      padding: 20px 15px;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-item {
+      text-align: center;
+      flex: 1;
+    }
+
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 20px 0 10px;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 8px;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .task {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .task:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .task.completed {
+      border-left: 5px solid var(--primary);
+    }
+
+    .task.incomplete {
+      border-left: 5px solid var(--secondary);
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .task-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .task-reward {
+      background: linear-gradient(135deg, #ffecb3, #ffc107);
+      color: #5d4037;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .task-progress {
+      margin-top: 10px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--primary));
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    .progress-text {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      text-align: right;
+    }
+
+    .task-status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .status-completed {
+      background: #e8f5e9;
+      color: var(--primary-dark);
+    }
+
+    .status-incomplete {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #e0e0e0;
+      padding: 12px 0;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-light);
+      font-size: 0.7rem;
+      transition: color 0.2s;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-item i {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state i {
+      font-size: 2.5rem;
+      color: #e0e0e0;
+      margin-bottom: 15px;
+    }
+
+    .empty-state p {
+      margin: 0;
+    }
+
+    .refresh-btn {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .stats-bar {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .task-title {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Daily Missions</h1>
+    <button class="refresh-btn" id="refreshBtn">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </header>
+
+  <div class="container">
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-value" id="completedCount">0</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="totalRewards">₹0</div>
+        <div class="stat-label">Total Rewards</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="availableRewards">₹0</div>
+        <div class="stat-label">Available</div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <i class="fas fa-calendar-day"></i> Daily Tasks
+    </div>
+    <div class="task-list" id="dailyMissions"></div>
+
+    <div class="section-title">
+      <i class="fas fa-bullseye"></i> Achievement Tasks
+    </div>
+    <div class="task-list" id="achievementMissions"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="rikshawhome.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="plans.html" class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>Plans</span>
+    </a>
+    <a href="missions.html" class="nav-item active">
+      <i class="fas fa-tasks"></i>
+      <span>Missions</span>
+    </a>
+    <a href="team.html" class="nav-item">
+      <i class="fas fa-users"></i>
+      <span>Team</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const uid = localStorage.getItem("uid");
+    if (!uid) {
+  document.body.innerHTML = `
+    <div style="text-align:center;padding:40px;">
+      <h2>Please login to access your missions</h2>
+      <a href="login.html" style="color:#2e7d32;text-decoration:underline;">Go to Login</a>
+    </div>
+  `;
+} else {
+  loadMissions();
+
+  // Set up real-time updates for user data
+  const userRef = ref(db, "users/" + uid);
+  onValue(userRef, () => {
+    loadMissions();
+  });
+
+  // Refresh button
+  refreshBtn.addEventListener('click', () => {
+    refreshBtn.classList.add('fa-spin');
+    loadMissions().finally(() => {
+      setTimeout(() => {
+        refreshBtn.classList.remove('fa-spin');
+      }, 500);
+    });
+  });
+}
+
+    const dailyMissionsDiv = document.getElementById("dailyMissions");
+    const achievementMissionsDiv = document.getElementById("achievementMissions");
+    const completedCountEl = document.getElementById("completedCount");
+    const totalRewardsEl = document.getElementById("totalRewards");
+    const availableRewardsEl = document.getElementById("availableRewards");
+    const refreshBtn = document.getElementById("refreshBtn");
+
+    async function loadMissions() {
+      const userRef = ref(db, "users/" + uid);
+      const purchaseRef = ref(db, "purchases/" + uid);
+      const withdrawRef = ref(db, "withdrawals/" + uid);
+      const teamRef = ref(db, "team/" + uid);
+
+      try {
+        const [userSnap, purchaseSnap, withdrawSnap, teamSnap] = await Promise.all([
+          get(userRef), get(purchaseRef), get(withdrawRef), get(teamRef)
+        ]);
+
+        const user = userSnap.exists() ? userSnap.val() : {};
+        const purchases = purchaseSnap.exists() ? purchaseSnap.val() : {};
+        const withdrawals = withdrawSnap.exists() ? withdrawSnap.val() : {};
+        const team = teamSnap.exists() ? teamSnap.val() : {};
+
+        const investedFriends = Object.values(team).filter(u => u.invested).length;
+
+        const dailyTasks = [
+          { 
+            title: "Daily Check-in", 
+            reward: "₹5", 
+            done: !!user.checkinToday,
+            progress: user.checkinToday ? 1 : 0,
+            target: 1,
+            icon: "fa-calendar-check"
+          },
+          { 
+            title: "Complete Profile", 
+            reward: "₹10", 
+            done: user.profileComplete,
+            progress: user.profileComplete ? 1 : 0,
+            target: 1,
+            icon: "fa-user-edit"
+          }
+        ];
+
+        const achievementTasks = [
+          { 
+            title: "First Investment", 
+            reward: "₹15", 
+            done: Object.keys(purchases).length > 0,
+            progress: Object.keys(purchases).length > 0 ? 1 : 0,
+            target: 1,
+            icon: "fa-coins"
+          },
+          { 
+            title: "First Withdrawal", 
+            reward: "₹30", 
+            done: Object.keys(withdrawals).length > 0,
+            progress: Object.keys(withdrawals).length > 0 ? 1 : 0,
+            target: 1,
+            icon: "fa-rupee-sign"
+          },
+          { 
+            title: "Invite Friends", 
+            reward: "₹40-500", 
+            done: investedFriends >= 10,
+            progress: investedFriends,
+            target: 10,
+            icon: "fa-user-plus"
+          }
+        ];
+
+        // Calculate stats
+        const allTasks = [...dailyTasks, ...achievementTasks];
+        const completedTasks = allTasks.filter(task => task.done).length;
+        const totalRewards = allTasks.reduce((sum, task) => sum + (task.done ? parseInt(task.reward.slice(1)) : 0), 0);
+        const availableRewards = allTasks.reduce((sum, task) => sum + (!task.done ? parseInt(task.reward.slice(1)) : 0), 0);
+
+        // Update stats
+        completedCountEl.textContent = completedTasks;
+        totalRewardsEl.textContent = `₹${totalRewards}`;
+        availableRewardsEl.textContent = `₹${availableRewards}`;
+
+        // Render tasks
+        renderTasks(dailyTasks, dailyMissionsDiv);
+        renderTasks(achievementTasks, achievementMissionsDiv);
+
+      } catch (error) {
+        console.error("Error loading missions:", error);
+        dailyMissionsDiv.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Failed to load missions. Please try again.</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderTasks(tasks, container) {
+      if (tasks.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-tasks"></i>
+            <p>No missions available</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = tasks.map(task => `
+        <div class="task ${task.done ? 'completed' : 'incomplete'}">
+          <div class="task-header">
+            <div class="task-title">
+              <i class="fas ${task.icon}"></i> ${task.title}
+            </div>
+            <div class="task-reward">${task.reward}</div>
+          </div>
+          ${task.target > 1 ? `
+            <div class="task-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: ${Math.min(100, (task.progress / task.target) * 100)}%"></div>
+              </div>
+              <div class="progress-text">${task.progress}/${task.target} completed</div>
+            </div>
+          ` : ''}
+          <div class="task-status ${task.done ? 'status-completed' : 'status-incomplete'}">
+            ${task.done ? '✅ Completed' : '🔄 Incomplete'}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Initial load
+    loadMissions();
+
+    // Set up real-time updates for user data
+    const userRef = ref(db, "users/" + uid);
+    onValue(userRef, () => {
+      loadMissions();
+    });
+
+    // Refresh button
+    refreshBtn.addEventListener('click', () => {
+      refreshBtn.classList.add('fa-spin');
+      loadMissions().finally(() => {
+        setTimeout(() => {
+          refreshBtn.classList.remove('fa-spin');
+        }, 500);
+      });
+    });
+  </script>
+</body>
+</html>

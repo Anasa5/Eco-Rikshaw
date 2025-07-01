@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Withdraw Record</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2e7d32;
+      --primary-light: #60ad5e;
+      --primary-dark: #005005;
+      --error-color: #d32f2f;
+      --warning-color: #ffa000;
+      --success-color: #388e3c;
+      --text-light: #f5f5f5;
+      --text-dark: #212121;
+      --bg-light: #f5fff5;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+      color: var(--text-light);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    
+    .filter-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      background: var(--card-bg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn.active {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+    
+    .filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    
+    .records-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .record-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .record-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .record-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+    }
+    
+    .record-card.success::before {
+      background: var(--success-color);
+    }
+    
+    .record-card.pending::before {
+      background: var(--warning-color);
+    }
+    
+    .record-card.failed::before {
+      background: var(--error-color);
+    }
+    
+    .record-amount {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+    }
+    
+    .record-detail {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .record-label {
+      font-weight: 600;
+      color: #666;
+    }
+    
+    .record-value {
+      text-align: right;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    
+    .status-success {
+      background-color: rgba(56, 142, 60, 0.1);
+      color: var(--success-color);
+    }
+    
+    .status-pending {
+      background-color: rgba(255, 160, 0, 0.1);
+      color: var(--warning-color);
+    }
+    
+    .status-failed {
+      background-color: rgba(211, 47, 47, 0.1);
+      color: var(--error-color);
+    }
+    
+    .loading-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary-color);
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      grid-column: 1 / -1;
+    }
+    
+    .empty-icon {
+      font-size: 3rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+    
+    .empty-text {
+      color: #777;
+      font-size: 1.1rem;
+    }
+    
+    .error-state {
+      text-align: center;
+      padding: 40px 20px;
+      grid-column: 1 / -1;
+      color: var(--error-color);
+    }
+    
+    .retry-btn {
+      margin-top: 20px;
+      padding: 8px 20px;
+      background: var(--error-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    @media (max-width: 768px) {
+      .records-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-content {
+        padding: 0 15px;
+      }
+      
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <button class="back-btn" id="backBtn">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <h1>Withdrawal History</h1>
+      <div></div> <!-- Spacer for flex alignment -->
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="filter-controls">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="success">Successful</button>
+      <button class="filter-btn" data-filter="pending">Pending</button>
+      <button class="filter-btn" data-filter="failed">Failed</button>
+    </div>
+
+    <div class="records-grid" id="records">
+      <div class="loading-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    
+    // Check authentication
+    
+
+
+    // DOM elements
+    const recordsBox = document.getElementById("records");
+    const backBtn = document.getElementById("backBtn");
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    let allRecords = [];
+    
+    // Back button functionality
+    backBtn.addEventListener("click", () => {
+      window.history.back();
+    });
+
+    // Filter functionality
+    filterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        filterRecords(btn.dataset.filter);
+      });
+    });
+
+    // Filter records by status
+    function filterRecords(status) {
+      if (status === "all") {
+        renderRecords(allRecords);
+        return;
+      }
+      
+      const filtered = allRecords.filter(record => record.status === status);
+      renderRecords(filtered);
+    }
+
+    // Format date
+    function formatDate(dateString) {
+      if (!dateString) return "Unknown date";
+      
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch (e) {
+        return dateString;
+      }
+    }
+
+    // Render records to the DOM
+    function renderRecords(records) {
+      if (records.length === 0) {
+        recordsBox.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <p class="empty-text">No withdrawal records found</p>
+          </div>
+        `;
+        return;
+      }
+      
+      recordsBox.innerHTML = '';
+      
+      records.forEach(record => {
+        const statusClass = `status-${record.status}`;
+        
+        recordsBox.innerHTML += `
+          <div class="record-card ${record.status}">
+            <h3 class="record-amount">₹${record.amount}</h3>
+            <div class="record-detail">
+              <span class="record-label">Date:</span>
+              <span class="record-value">${formatDate(record.date)}</span>
+            </div>
+            <div class="record-detail">
+              <span class="record-label">Method:</span>
+              <span class="record-value">${record.method || 'Bank Transfer'}</span>
+            </div>
+            <div class="record-detail">
+              <span class="record-label">Transaction ID:</span>
+              <span class="record-value">${record.transactionId || 'N/A'}</span>
+            </div>
+            <div class="record-detail" style="margin-top: 15px;">
+              <span class="record-label">Status:</span>
+              <span class="record-value">
+                <span class="status-badge ${statusClass}">
+                  <i class="fas ${
+                    record.status === 'success' ? 'fa-check-circle' : 
+                    record.status === 'pending' ? 'fa-clock' : 'fa-times-circle'
+                  }"></i> ${record.status}
+                </span>
+              </span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Handle errors
+    function showError(message) {
+      recordsBox.innerHTML = `
+        <div class="error-state">
+          <i class="fas fa-exclamation-triangle" style="font-size: 3rem;"></i>
+          <p>${message}</p>
+          <button class="retry-btn" id="retryBtn">Retry</button>
+        </div>
+      `;
+      
+      document.getElementById("retryBtn").addEventListener("click", fetchRecords);
+    }
+
+    // Fetch records from Firebase
+    async function fetchRecords() {
+      recordsBox.innerHTML = `
+        <div class="loading-container">
+          <div class="spinner"></div>
+        </div>
+      `;
+      
+      try {
+        const withdrawRef = ref(db, "withdrawals/" + uid);
+        
+        // Use onValue for real-time updates (optional)
+        onValue(withdrawRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            allRecords = Object.keys(data).map(id => ({
+              id,
+              ...data[id]
+            })).reverse();
+            
+            renderRecords(allRecords);
+          } else {
+            renderRecords([]);
+          }
+        }, (error) => {
+          throw error;
+        });
+        
+      } catch (error) {
+        console.error("Error fetching records:", error);
+        showError("Failed to load withdrawal records. Please check your connection.");
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+  fetchRecords();
+});
+  </script>
+</body>
+</html>

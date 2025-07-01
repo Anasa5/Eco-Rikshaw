@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Investment Plans</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2e7d32;
+      --primary-light: #60ad5e;
+      --primary-dark: #005005;
+      --secondary-color: #f5f5f5;
+      --text-dark: #333;
+      --text-light: #666;
+      --white: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      color: var(--text-dark);
+      padding-bottom: 70px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+      padding: 16px 20px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header h3 {
+      margin: 0;
+      color: var(--primary-color);
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .header-btn {
+      background: var(--secondary-color);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      transition: var(--transition);
+    }
+
+    .header-btn:hover {
+      background: var(--primary-light);
+      color: var(--white);
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      color: var(--white);
+      padding: 16px;
+      margin: 16px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .balance-info h4 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      opacity: 0.9;
+    }
+
+    .balance-amount {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .recharge-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      color: var(--white);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .recharge-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .tabs {
+      display: flex;
+      margin: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--secondary-color);
+      box-shadow: var(--shadow);
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-light);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .tabs button.active {
+      color: var(--primary-color);
+      background: var(--white);
+    }
+
+    .tabs button.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: var(--primary-color);
+      border-radius: 3px;
+    }
+
+    .plan-list {
+      padding: 0 16px 16px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .plan-box {
+      background: var(--white);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      animation: slideUp 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .plan-box.featured::before {
+      content: 'Popular';
+      position: absolute;
+      top: 10px;
+      right: -30px;
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 4px 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transform: rotate(45deg);
+    }
+
+    .plan-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .plan-box h4 {
+      margin: 0;
+      color: var(--primary-color);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .plan-badge {
+      background: var(--secondary-color);
+      color: var(--primary-color);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .plan-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-label {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+
+    .detail-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .detail-value.highlight {
+      color: var(--primary-color);
+      font-size: 1.1rem;
+    }
+
+    .plan-box button {
+      margin-top: 8px;
+      padding: 12px;
+      background: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .plan-box button:hover {
+      background: var(--primary-dark);
+    }
+
+    .plan-box button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      padding: 12px 0;
+      z-index: 10;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: var(--text-light);
+      font-weight: 500;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      flex: 1;
+    }
+
+    .nav-item.active {
+      color: var(--primary-color);
+    }
+
+    .nav-item i {
+      display: block;
+      margin: 0 auto 4px;
+      font-size: 1.2rem;
+    }
+
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .plan-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .plan-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h3>Investment Plans</h3>
+    <div class="header-actions">
+      <button class="header-btn" onclick="window.location.href='notifications.html'">
+        <i class="fas fa-bell"></i>
+      </button>
+      <button class="header-btn" onclick="window.location.href='history.html'">
+        <i class="fas fa-history"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="balance-card" id="balanceCard">
+    <div class="balance-info">
+      <h4>Available Balance</h4>
+      <div class="balance-amount">₹0</div>
+    </div>
+    <button class="recharge-btn" onclick="window.location.href='recharge.html'">
+      <i class="fas fa-plus"></i> Recharge
+    </button>
+  </div>
+
+  <div class="tabs">
+    <button id="dailyBtn" class="active" onclick="showPlans('daily')">Daily Plans</button>
+    <button id="weeklyBtn" onclick="showPlans('weekly')">Weekly Plans</button>
+  </div>
+
+  <div class="plan-list" id="plansContainer">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='rikshawhome.html'">
+      <i class="fas fa-home"></i><span>Home</span>
+    </div>
+    <div class="nav-item active" onclick="window.location.href='plans.html'">
+      <i class="fas fa-wallet"></i><span>Invest</span>
+    </div>
+    <div class="nav-item" onclick="window.location.href='team.html'">
+      <i class="fas fa-users"></i><span>Team</span>
+    </div>
+    <div class="nav-item" onclick="window.location.href='profile.html'">
+      <i class="fas fa-user"></i><span>Profile</span>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase();
+    const auth = getAuth();
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        init(user.uid);
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function init(uid) {
+      const userRef = ref(db, "users/" + uid);
+      const plansContainer = document.getElementById("plansContainer");
+      const balanceAmount = document.querySelector(".balance-amount");
+
+      const dailyPlans = [
+        { name: "Basic Plan", price: 499, daily: 109.8, total: 1098, days: 10, badge: "Starter", featured: false },
+        { name: "Standard Plan", price: 110, daily: 22, total: 220, days: 10, badge: "Popular", featured: true },
+        { name: "Premium Plan", price: 2100, daily: 450, total: 4500, days: 10, badge: "Best Value", featured: false },
+        { name: "Short-Term Plan", price: 2500, daily: 900, total: 4500, days: 5, badge: "Quick Return", featured: false },
+        { name: "Weekly Plus", price: 4990, daily: 6000, total: 12000, days: 2, badge: "Featured", featured: true },
+        { name: "Turbo Plan", price: 9990, daily: 3500, total: 24500, days: 7, badge: "High Yield", featured: false },
+        { name: "Elite Plan", price: 20000, daily: 10000, total: 60000, days: 6, badge: "VIP", featured: true }
+      ];
+
+      const weeklyPlans = [
+        { name: "Weekly Basic", price: 3990, daily: 900, total: 6300, days: 7, badge: "Starter", featured: false },
+        { name: "Weekly Pro", price: 5990, daily: 2300, total: 16100, days: 7, badge: "Popular", featured: true },
+        { name: "Weekly Premium", price: 8990, daily: 4000, total: 28000, days: 7, badge: "Best Value", featured: false },
+        { name: "Weekly Max", price: 14990, daily: 12000, total: 84000, days: 7, badge: "VIP", featured: true }
+      ];
+
+      function showPlans(type) {
+        document.getElementById("dailyBtn").classList.toggle("active", type === "daily");
+        document.getElementById("weeklyBtn").classList.toggle("active", type === "weekly");
+
+        const plans = type === "daily" ? dailyPlans : weeklyPlans;
+        plansContainer.innerHTML = "";
+
+        get(userRef).then(snap => {
+          const userBalance = snap.exists() ? (snap.val().balance || 0) : 0;
+
+          plans.forEach((plan, index) => {
+            const canAfford = userBalance >= plan.price;
+            const delay = index * 0.1;
+
+            plansContainer.innerHTML += `
+              <div class="plan-box ${plan.featured ? 'featured' : ''}" style="animation-delay: ${delay}s">
+                <div class="plan-header">
+                  <h4>${plan.name}</h4>
+                  <span class="plan-badge">${plan.badge}</span>
+                </div>
+                <div class="plan-details">
+                  <div class="detail-item">
+                    <span class="detail-label">Investment</span>
+                    <span class="detail-value">₹${plan.price.toLocaleString()}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Daily Return</span>
+                    <span class="detail-value highlight">₹${plan.daily.toLocaleString()}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Total Return</span>
+                    <span class="detail-value">₹${plan.total.toLocaleString()}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Duration</span>
+                    <span class="detail-value">${plan.days} days</span>
+                  </div>
+                </div>
+                <button onclick="buy(${plan.price}, '${plan.name}', ${plan.daily}, ${plan.total}, ${plan.days})" ${canAfford ? '' : 'disabled'}>
+                  <i class="fas fa-shopping-cart"></i>
+                  ${canAfford ? 'Invest Now' : 'Insufficient Balance'}
+                </button>
+              </div>
+            `;
+          });
+        });
+      }
+
+      window.buy = (price, planName, dailyIncome, totalIncome, days) => {
+        if (!confirm(`Are you sure you want to invest ₹${price.toLocaleString()} in ${planName}?`)) return;
+
+        get(userRef).then(snap => {
+          if (!snap.exists()) return alert("User not found");
+
+          const user = snap.val();
+          if ((user.balance || 0) >= price) {
+            const newBal = user.balance - price;
+
+            const investment = {
+              planName, amount: price, dailyIncome, totalIncome, days,
+              date: new Date().toISOString(), status: "active"
+            };
+
+            const collectionData = {
+              planName, amount: price, dailyIncome, totalIncome, days,
+              date: new Date().toISOString(), userId: uid
+            };
+
+            const updates = {
+              balance: newBal,
+              [`investments/${Date.now()}`]: investment,
+              [`collectionQueue/${Date.now()}`]: collectionData
+            };
+
+            update(userRef, updates).then(() => {
+              balanceAmount.textContent = `₹${newBal}`;
+              alert(`Success! You've invested ₹${price.toLocaleString()} in ${planName}.`);
+              showPlans(document.querySelector(".tabs button.active").id === "dailyBtn" ? "daily" : "weekly");
+              setTimeout(() => {
+                window.location.href = `collect.html?plan=${encodeURIComponent(planName)}&amount=${price}&daily=${dailyIncome}&total=${totalIncome}&days=${days}`;
+              }, 1000);
+            }).catch(error => {
+              alert("Error processing investment: " + error.message);
+            });
+          } else {
+            alert("Not enough balance. Redirecting to recharge page...");
+            setTimeout(() => window.location.href = "recharge.html", 1500);
+          }
+        });
+      };
+
+      // Load default plans
+      showPlans("daily");
+
+      // Show balance
+      get(userRef).then(snap => {
+        if (snap.exists()) {
+          balanceAmount.textContent = `₹${snap.val().balance || 0}`;
+        }
+      });
+    }
+  </script>
+</body>
+</html>

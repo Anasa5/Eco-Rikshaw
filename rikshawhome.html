@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rikshaw Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #00aa00;
+      --primary-dark: #008800;
+      --primary-light: #ccffcc;
+      --background: #f5fff5;
+      --card-bg: #ffffff;
+      --text-dark: #333333;
+      --text-light: #666666;
+      --shadow: 0 4px 12px rgba(0, 100, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      padding-bottom: 80px;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 18px;
+      font-size: 22px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .balance-display {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    .balance-display i {
+      margin-right: 5px;
+    }
+
+    .top-banner img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-bottom: 3px solid var(--primary-dark);
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      padding: 15px;
+      margin-top: 10px;
+    }
+
+    .action-card {
+      background: var(--card-bg);
+      text-align: center;
+      padding: 20px 10px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .action-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 128, 0, 0.15);
+    }
+
+    .action-card i {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+
+    .featured-plan {
+      background: var(--card-bg);
+      margin: 20px 15px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-plan:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 128, 0, 0.2);
+    }
+
+    .featured-plan::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--primary-color);
+    }
+
+    .featured-plan h3 {
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+
+    .plan-details {
+      display: flex;
+      justify-content: space-between;
+      margin: 12px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #e0e0e0;
+    }
+
+    .plan-details:last-child {
+      border-bottom: none;
+    }
+
+    .plan-label {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .plan-value {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .highlight-value {
+      color: var(--primary-dark);
+      font-weight: bold;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: var(--primary-dark);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-item {
+      color: white;
+      text-align: center;
+      flex: 1;
+      cursor: pointer;
+      transition: var(--transition);
+      padding: 5px;
+    }
+
+    .nav-item:hover {
+      transform: translateY(-3px);
+    }
+
+    .nav-icon {
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .nav-label {
+      font-size: 12px;
+    }
+
+    .active-nav {
+      color: #aaffaa;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .modal-body {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .modal-body img {
+      width: 100px;
+      margin: 10px auto;
+      border-radius: 10px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: center;
+      padding: 0 20px 20px;
+      gap: 10px;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      flex: 1;
+      max-width: 150px;
+    }
+
+    .modal-btn.secondary {
+      background: #f0f0f0;
+      color: var(--text-dark);
+    }
+
+    .modal-btn.primary {
+      background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2);
+    }
+
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .header {
+        font-size: 20px;
+        padding: 15px;
+      }
+      
+      .balance-display {
+        font-size: 12px;
+        padding: 3px 8px;
+      }
+      
+      .action-card {
+        padding: 15px 8px;
+        font-size: 14px;
+      }
+      
+      .action-card i {
+        font-size: 24px;
+      }
+      
+      .featured-plan {
+        padding: 15px;
+      }
+      
+      .featured-plan h3 {
+        font-size: 16px;
+      }
+    }
+
+    /* Alert notification */
+    .alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 25px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1002;
+      display: flex;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+      max-width: 90%;
+    }
+    
+    .alert.success {
+      background: linear-gradient(to right, #00aa00, #008800);
+    }
+    
+    .alert.error {
+      background: linear-gradient(to right, #ff3333, #cc0000);
+    }
+    
+    .alert i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateX(-50%) translateY(0); }
+      to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="balance-display">
+      <i class="fas fa-wallet"></i>
+      <span id="user-balance">₹0.00</span>
+    </div>
+    Eco Rikshaw
+  </div>
+
+  <div class="top-banner">
+    <img src="Rikshaw.png" alt="Eco Rikshaw" />
+  </div>
+
+  <div class="quick-actions">
+    <div class="action-card" onclick="checkIn()">
+      <i class="fas fa-calendar-check"></i>
+      Daily Check-In
+    </div>
+    <div class="action-card" onclick="window.location.href='invite.html'">
+      <i class="fas fa-user-plus"></i>
+      Invite Friends
+    </div>
+    <div class="action-card" onclick="window.location.href='recharge.html'">
+      <i class="fas fa-rupee-sign"></i>
+      Recharge
+    </div>
+    <div class="action-card" onclick="window.location.href='withdraw.html'">
+      <i class="fas fa-money-bill-wave"></i>
+      Withdraw
+    </div>
+  </div>
+
+  <div class="featured-plan" onclick="showPlanPopup()">
+    <h3>Featured Plan</h3>
+    <div class="plan-details">
+      <span class="plan-label">Plan Name:</span>
+      <span class="plan-value">Eco Rikshaw (A)</span>
+    </div>
+    <div class="plan-details">
+      <span class="plan-label">Price:</span>
+      <span class="plan-value">₹449</span>
+    </div>
+    <div class="plan-details">
+      <span class="plan-label">Daily Income:</span>
+      <span class="plan-value highlight-value">₹109.8</span>
+    </div>
+    <div class="plan-details">
+      <span class="plan-label">Total Income:</span>
+      <span class="plan-value highlight-value">₹1098</span>
+    </div>
+    <div class="plan-details">
+      <span class="plan-label">Duration:</span>
+      <span class="plan-value">10 Days</span>
+    </div>
+  </div>
+
+  <!-- Plan Modal -->
+  <div class="modal-overlay" id="planModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        Eco Rikshaw Plan
+      </div>
+      <div class="modal-body">
+        <img src="Rikshaw.png" alt="Eco Rikshaw" />
+        <div class="plan-details">
+          <span class="plan-label">Plan Price:</span>
+          <span class="plan-value">₹449</span>
+        </div>
+        <div class="plan-details">
+          <span class="plan-label">Daily Income:</span>
+          <span class="plan-value highlight-value">₹109.8</span>
+        </div>
+        <div class="plan-details">
+          <span class="plan-label">Total Income:</span>
+          <span class="plan-value highlight-value">₹1098</span>
+        </div>
+        <div class="plan-details">
+          <span class="plan-label">Duration:</span>
+          <span class="plan-value">10 Days</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closePlan()">
+          Maybe Later
+        </button>
+        <button class="modal-btn primary" onclick="buyPlan()">
+          Buy Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Check-in Modal -->
+  <div class="modal-overlay" id="checkinModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        Daily Check-In
+      </div>
+      <div class="modal-body">
+        <i class="fas fa-calendar-check" style="font-size: 50px; color: var(--primary-color); margin: 15px 0;"></i>
+        <p id="checkinText">Checking time...</p>
+        <button id="claimBtn" class="modal-btn primary" style="display:none; margin-top: 15px;" onclick="claimBonus()">
+          Claim ₹5 Bonus
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeCheckinModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active-nav" onclick="window.location.href='rikshawhome.html'">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item" onclick="window.location.href='plans.html'">
+      <div class="nav-icon"><i class="fas fa-tractor"></i></div>
+      <div class="nav-label">Plans</div>
+    </div>
+    <div class="nav-item" onclick="window.location.href='team.html'">
+      <div class="nav-icon"><i class="fas fa-users"></i></div>
+      <div class="nav-label">Team</div>
+    </div>
+    <div class="nav-item" onclick="window.location.href='profile.html'">
+      <div class="nav-icon"><i class="fas fa-user"></i></div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
+    const uid = user.uid;
+
+    // Continue loading balance and user data here
+    updateBalance(uid); // Pass uid
+    setupCheckin(uid);  // Optional if you use it
+  }
+});
+
+
+    // Update balance display
+    function updateBalance(uid) {
+  const userRef = ref(db, "users/" + uid);
+  get(userRef).then((snap) => {
+    if (snap.exists()) {
+      const user = snap.val();
+      document.getElementById("user-balance").textContent = `₹${user.balance.toFixed(2)}`;
+    }
+  });
+}
+
+
+    // Initial balance load
+    updateBalance();
+
+    // Check-in function
+    window.checkIn = function() {
+      const now = new Date();
+      const hour = now.getHours();
+      const modal = document.getElementById("checkinModal");
+      
+      modal.classList.add("active");
+      document.getElementById("claimBtn").style.display = "none";
+
+      if (hour >= 6) {
+        document.getElementById("checkinText").textContent = "You can claim your ₹5 daily bonus now!";
+        document.getElementById("claimBtn").style.display = "block";
+      } else {
+        document.getElementById("checkinText").textContent = "Come back after 6 AM to claim your daily bonus.";
+      }
+    };
+
+    window.closeCheckinModal = function() {
+      document.getElementById("checkinModal").classList.remove("active");
+    };
+
+    window.claimBonus = function() {
+      const btn = document.getElementById("claimBtn");
+      btn.innerHTML = '<span class="loading"></span> Processing...';
+      btn.disabled = true;
+      
+      const userRef = ref(db, "users/" + uid);
+      get(userRef).then((snap) => {
+        const user = snap.val();
+        const newBal = (user.balance || 0) + 5;
+        
+        update(userRef, { 
+          balance: newBal,
+          lastCheckin: new Date().toISOString()
+        }).then(() => {
+          updateBalance();
+          showAlert('success', 'Bonus Claimed!', '₹5 has been added to your balance.');
+          closeCheckinModal();
+        }).catch(error => {
+          showAlert('error', 'Error', 'Failed to claim bonus. Please try again.');
+          console.error(error);
+        }).finally(() => {
+          btn.innerHTML = 'Claim ₹5 Bonus';
+          btn.disabled = false;
+        });
+      });
+    };
+
+    // Plan modal functions
+    window.showPlanPopup = function() {
+      document.getElementById("planModal").classList.add("active");
+    };
+
+    window.closePlan = function() {
+      document.getElementById("planModal").classList.remove("active");
+    };
+
+    window.buyPlan = function() {
+      const btn = document.querySelector('#planModal .modal-btn.primary');
+      btn.innerHTML = '<span class="loading"></span> Processing...';
+      btn.disabled = true;
+      
+      const userRef = ref(db, "users/" + uid);
+      get(userRef).then((snap) => {
+        const user = snap.val();
+        
+        if ((user.balance || 0) >= 449) {
+          const newBal = user.balance - 449;
+          
+          // Update balance and add to purchased plans
+          update(userRef, { 
+            balance: newBal,
+            plans: [...(user.plans || []), {
+              name: "Eco Rikshaw (A)",
+              price: 449,
+              purchased: new Date().toISOString(),
+              status: "active"
+            }]
+          }).then(() => {
+            updateBalance();
+            showAlert('success', 'Plan Purchased!', 'Eco Rikshaw (A) plan activated successfully.');
+            closePlan();
+          }).catch(error => {
+            showAlert('error', 'Error', 'Failed to purchase plan. Please try again.');
+            console.error(error);
+          });
+        } else {
+          showAlert('error', 'Insufficient Balance', 'You need more balance to purchase this plan.');
+          setTimeout(() => {
+            window.location.href = "recharge.html";
+          }, 2000);
+        }
+      }).finally(() => {
+        btn.innerHTML = 'Buy Now';
+        btn.disabled = false;
+      });
+    };
+
+    // Alert notification
+    function showAlert(type, title, message) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert ${type}`;
+      alertDiv.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <div>
+          <div>${title}</div>
+          <div style="font-weight: normal; font-size: 14px;">${message}</div>
+        </div>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      setTimeout(() => {
+        alertDiv.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+          document.body.removeChild(alertDiv);
+        }, 300);
+      }, 3000);
+    }
+
+    // Close modals when clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

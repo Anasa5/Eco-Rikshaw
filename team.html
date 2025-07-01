@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-dark: #1b5e20;
+      --primary-light: #e8f5e9;
+      --primary-lighter: #f0f9f4;
+      --text: #333;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--primary-lighter);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      color: var(--text);
+    }
+    
+    .container {
+      max-width: 540px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .container:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    }
+    
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 24px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    .referral-box {
+      background: var(--primary-light);
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 24px;
+      color: var(--primary-dark);
+      border: 1px solid rgba(46, 125, 50, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .referral-box::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    }
+    
+    .team-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding: 0 8px;
+    }
+    
+    .stat-box {
+      text-align: center;
+      padding: 12px;
+      background: #f8f8f8;
+      border-radius: 8px;
+      flex: 1;
+      margin: 0 6px;
+    }
+    
+    .stat-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+    
+    #teamList {
+      display: grid;
+      gap: 12px;
+    }
+    
+    .member {
+      padding: 16px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .member:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .member p {
+      margin: 6px 0;
+      font-size: 15px;
+    }
+    
+    .member strong {
+      color: var(--text);
+      font-weight: 500;
+      min-width: 80px;
+      display: inline-block;
+    }
+    
+    .empty {
+      text-align: center;
+      color: var(--text-light);
+      margin: 30px 0;
+      padding: 20px;
+      background: #fafafa;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    
+    .copy-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background 0.2s ease;
+    }
+    
+    .copy-btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      .team-stats {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .stat-box {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>My Team</h2>
+    <div class="referral-box" id="referralCode">Loading your referral code...</div>
+    
+    <div class="team-stats" id="teamStats" style="display: none;">
+      <div class="stat-box">
+        <div class="stat-value" id="totalMembers">0</div>
+        <div class="stat-label">Total Members</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="activeMembers">0</div>
+        <div class="stat-label">Active Members</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="investedMembers">0</div>
+        <div class="stat-label">Invested</div>
+      </div>
+    </div>
+    
+    <div id="teamList"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Get current user by phone from localStorage (optional, or use login system)
+    const phone = localStorage.getItem("userPhone");
+
+    if (!phone) {
+      document.getElementById("teamList").innerHTML = `
+        <div class="empty">
+          <p>You need to login to view your team.</p>
+        </div>
+      `;
+    } else {
+      const usersRef = db.ref("users");
+
+      usersRef.orderByChild("phone").equalTo(phone).once("value", snap => {
+        if (!snap.exists()) {
+          document.getElementById("teamList").innerHTML = `
+            <div class="empty">
+              <p>User account not found.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const userData = Object.values(snap.val())[0];
+        const userId = Object.keys(snap.val())[0];
+        const myCode = userData.referral;
+
+        const referralBox = document.getElementById("referralCode");
+        referralBox.innerHTML = `
+          Your Referral Code: <strong>${myCode}</strong>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('${myCode}').then(() => alert('Copied to clipboard!'))">
+            Copy
+          </button>
+        `;
+
+        const teamRef = db.ref("team/" + userId);
+        teamRef.once("value", teamSnap => {
+          const teamStats = document.getElementById("teamStats");
+          const totalMembersEl = document.getElementById("totalMembers");
+          const investedMembersEl = document.getElementById("investedMembers");
+          
+          if (!teamSnap.exists()) {
+            teamStats.style.display = "none";
+            document.getElementById("teamList").innerHTML = `
+              <div class="empty">
+                <p>You haven't referred anyone yet.</p>
+                <p>Share your referral code to grow your team!</p>
+              </div>
+            `;
+            return;
+          }
+
+          const team = teamSnap.val();
+          const container = document.getElementById("teamList");
+          container.innerHTML = "";
+          
+          // Show stats
+          teamStats.style.display = "flex";
+          const teamMembers = Object.values(team);
+          totalMembersEl.textContent = teamMembers.length;
+          
+          // Count invested members
+          const investedCount = teamMembers.filter(m => m.invested).length;
+          investedMembersEl.textContent = investedCount;
+          
+          // Display team members
+          teamMembers.forEach(member => {
+            const card = document.createElement("div");
+            card.className = "member";
+            card.innerHTML = `
+              <p><strong>Name:</strong> ${member.name}</p>
+              <p><strong>Phone:</strong> ${member.phone}</p>
+              <p><strong>Joined:</strong> ${new Date(member.joinedAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })}</p>
+              ${member.invested ? `<p style="color: var(--primary); margin-top: 8px;"><strong>Status:</strong> Invested</p>` : ''}
+            `;
+            container.appendChild(card);
+          });
+        });
+      }).catch(error => {
+        console.error("Error loading user data:", error);
+        document.getElementById("teamList").innerHTML = `
+          <div class="empty">
+            <p>Error loading team data. Please try again.</p>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invite - Eco Rikshaw</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      margin: 0;
+      background: #00e64d;
+      font-family: Arial, sans-serif;
+      color: #000;
+    }
+    .container {
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+    .input-group {
+      display: flex;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+    .input-group button {
+      background: #00cc44;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      cursor: pointer;
+    }
+    .btn-share {
+      background: #00cc44;
+      color: white;
+      width: 100%;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Invitation Center</h2>
+
+  <div class="box">
+    <h3>Invite Your Friends!</h3>
+    <p>Share your unique invite link and earn 10% rewards!</p>
+
+    <label><strong>Your Invite Link:</strong></label>
+    <div class="input-group">
+      <input type="text" id="inviteLink" readonly value="">
+      <button onclick="copyLink()">Copy</button>
+    </div>
+
+    <button class="btn-share" onclick="share()">📤 Share</button>
+  </div>
+</div>
+
+<script>
+  // generate unique invite link
+  let user = localStorage.getItem("username") || "guest";
+  let inviteLink = window.location.origin + "/signup.html?ref=" + encodeURIComponent(user);
+  document.getElementById("inviteLink").value = inviteLink;
+
+  function copyLink() {
+    const input = document.getElementById("inviteLink");
+    input.select();
+    input.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Invite link copied!");
+  }
+
+  function share() {
+    alert("Link copied! You can now share it with your friends.");
+  }
+</script>
+
+</body>
+</html>

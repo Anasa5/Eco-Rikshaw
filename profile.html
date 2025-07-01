@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3ddc3d;
+      --secondary-color: #007f00;
+      --light-green: #dfffdf;
+      --lighter-green: #f5fff5;
+      --dark-green: #004d00;
+      --highlight-color: #ffa500;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-green);
+      color: #333;
+      padding-bottom: 70px;
+    }
+
+    /* Top Banner Section */
+    .profile-banner {
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                  url('https://example.com/eco-rikshaw-banner.jpg') center/cover;
+      height: 180px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+      color: white;
+    }
+    
+    .profile-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid white;
+      position: absolute;
+      top: 140px;
+      left: 20px;
+      background-color: #ddd;
+      overflow: hidden;
+    }
+    
+    .profile-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .profile-info {
+      margin-top: 40px;
+    }
+    
+    .profile-name {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .profile-phone {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    /* Balance Section */
+    .balance-section {
+      background: white;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .balance-title {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .balance-amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+    }
+    
+    .balance-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .balance-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .recharge-btn {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .withdraw-btn {
+      background-color: #1e90ff;
+      color: white;
+    }
+    
+    .balance-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .balance-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px;
+      gap: 10px;
+    }
+    
+    .action-btn {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      padding: 15px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .action-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    
+    .action-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: var(--secondary-color);
+    }
+    
+    .action-label {
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* Options List */
+    .options-list {
+      margin: 20px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .option-item {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .option-item:last-child {
+      border-bottom: none;
+    }
+    
+    .option-item:hover {
+      background-color: #f9f9f9;
+    }
+    
+    .option-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .option-icon {
+      color: var(--secondary-color);
+    }
+    
+    .option-label {
+      font-weight: 500;
+    }
+    
+    .option-arrow {
+      color: #999;
+    }
+
+    /* Logout Button */
+    .logout-btn {
+      margin: 20px;
+      padding: 15px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .logout-btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .logout-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 5px 0;
+    }
+    
+    .nav-item.active {
+      color: var(--highlight-color);
+    }
+    
+    .nav-item:hover {
+      color: var(--secondary-color);
+    }
+    
+    .nav-icon {
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+    
+    .nav-label {
+      font-size: 12px;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      animation: modalOpen 0.3s ease;
+    }
+    
+    @keyframes modalOpen {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .modal-header h3 {
+      color: var(--secondary-color);
+      margin: 0;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      background-color: var(--secondary-color);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 480px) {
+      .profile-banner {
+        height: 160px;
+      }
+      
+      .profile-image {
+        width: 70px;
+        height: 70px;
+        top: 120px;
+      }
+      
+      .action-buttons {
+        flex-wrap: wrap;
+      }
+      
+      .action-btn {
+        min-width: calc(50% - 5px);
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Banner Section -->
+  <div class="profile-banner">
+    <div class="profile-image">
+      <img id="userProfileImage" src="https://via.placeholder.com/80" alt="Profile">
+    </div>
+    <div class="profile-info">
+      <div class="profile-name" id="userName">Mr. Anas</div>
+      <div class="profile-phone" id="userPhone">807*****736</div>
+    </div>
+  </div>
+
+  <!-- Balance Section -->
+  <div class="balance-section">
+    <div class="balance-title">Current Balance</div>
+    <div class="balance-amount" id="currentBalance">₹0.00</div>
+    <div class="balance-actions">
+      <button class="balance-btn recharge-btn" onclick="navigateTo('recharge.html')">
+        <i class="fas fa-rupee-sign"></i> Recharge
+      </button>
+      <button class="balance-btn withdraw-btn" onclick="navigateTo('withdraw.html')">
+        <i class="fas fa-wallet"></i> Withdraw
+      </button>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+     <div class="action-btn" onclick="navigateTo('collect.html')">
+      <div class="action-icon"><i class="fas fa-gift"></i></div>
+      <div class="action-label">Collect Income</div>
+    </div>
+    <div class="action-btn" onclick="navigateTo('mission.html')">
+      <div class="action-icon"><i class="fas fa-tasks"></i></div>
+      <div class="action-label">Mission</div>
+    </div>
+    <div class="action-btn" onclick="navigateTo('recharge.html')">
+      <div class="action-icon"><i class="fas fa-rupee-sign"></i></div>
+      <div class="action-label">Recharge</div>
+    </div>
+    <div class="action-btn" onclick="navigateTo('withdraw.html')">
+      <div class="action-icon"><i class="fas fa-wallet"></i></div>
+      <div class="action-label">Withdraw</div>
+    </div>
+  </div>
+
+  <!-- Options List -->
+  <!-- Options List -->
+<div class="options-list">
+  <div class="option-item" onclick="navigateTo('profit-income.html')">
+    <div class="option-left">
+      <div class="option-icon"><i class="fas fa-money-bill-wave"></i></div>
+      <div class="option-label">Profit Income</div>
+    </div>
+    <div class="option-arrow"><i class="fas fa-chevron-right"></i></div>
+  </div>
+  <div class="option-item" onclick="navigateTo('withdraw-record.html')">
+    <div class="option-left">
+      <div class="option-icon"><i class="fas fa-history"></i></div>
+      <div class="option-label">Withdraw Record</div>
+    </div>
+    <div class="option-arrow"><i class="fas fa-chevron-right"></i></div>
+  </div>
+  <div class="option-item" onclick="navigateTo('change-password.html')">
+    <div class="option-left">
+      <div class="option-icon"><i class="fas fa-lock"></i></div>
+      <div class="option-label">Change Password</div>
+    </div>
+    <div class="option-arrow"><i class="fas fa-chevron-right"></i></div>
+  </div>
+</div>
+
+  
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="navigateTo('rikshawhome.html')">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item" onclick="navigateTo('plans.html')">
+      <div class="nav-icon"><i class="fas fa-tractor"></i></div>
+      <div class="nav-label">Plans</div>
+    </div>
+    <div class="nav-item" onclick="navigateTo('team.html')">
+      <div class="nav-icon"><i class="fas fa-users"></i></div>
+      <div class="nav-label">Team</div>
+    </div>
+    <div class="nav-item active" onclick="navigateTo('profile.html')">
+      <div class="nav-icon"><i class="fas fa-user"></i></div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+
+  <!-- Add UPI Modal -->
+  <div id="upiModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add/Edit UPI ID</h3>
+        <button class="close-btn" onclick="closeModal('upiModal')">&times;</button>
+      </div>
+      <form id="upiForm">
+        <div class="form-group">
+          <label for="upiId">UPI ID</label>
+          <input type="text" id="upiId" class="form-control" placeholder="e.g. yourname@upi" required>
+        </div>
+        <button type="submit" class="submit-btn">Save UPI ID</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="passwordModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Change Password</h3>
+        <button class="close-btn" onclick="closeModal('passwordModal')">&times;</button>
+      </div>
+      <form id="passwordForm">
+        <div class="form-group">
+          <label for="currentPassword">Current Password</label>
+          <input type="password" id="currentPassword" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input type="password" id="newPassword" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm New Password</label>
+          <input type="password" id="confirmPassword" class="form-control" required>
+        </div>
+        <button type="submit" class="submit-btn">Change Password</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profit Income Modal -->
+  <div id="profitModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Profit Income</h3>
+        <button class="close-btn" onclick="closeModal('profitModal')">&times;</button>
+      </div>
+      <div style="margin-bottom: 20px;">
+        <h4 style="color: var(--secondary-color); margin-bottom: 10px;">Earnings Summary</h4>
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span>Total Earned:</span>
+            <span style="font-weight: bold;" id="totalEarned">₹0.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span>Available Balance:</span>
+            <span style="font-weight: bold;" id="availableBalance">₹0.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Pending Withdrawal:</span>
+            <span style="font-weight: bold;" id="pendingWithdrawal">₹0.00</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 style="color: var(--secondary-color); margin-bottom: 10px;">Income Sources</h4>
+        <div style="margin-bottom: 15px;">
+          <div style="font-weight: 500; margin-bottom: 5px;">Daily Check-ins</div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Earned:</span>
+            <span style="font-weight: bold;">₹50.00</span>
+          </div>
+        </div>
+        <div style="margin-bottom: 15px;">
+          <div style="font-weight: 500; margin-bottom: 5px;">Plan Investments</div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+            <span>Basic Plan:</span>
+            <span style="font-weight: bold;">₹120.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+            <span>Premium Plan:</span>
+            <span style="font-weight: bold;">₹300.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>VIP Plan:</span>
+            <span style="font-weight: bold;">₹0.00</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight: 500; margin-bottom: 5px;">Referral Earnings</div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+            <span>Level 1:</span>
+            <span style="font-weight: bold;">₹75.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+            <span>Level 2:</span>
+            <span style="font-weight: bold;">₹30.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Level 3:</span>
+            <span style="font-weight: bold;">₹12.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In profile.html, update the script section to properly load and display balance -->
+<script type="module">
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+    updatePassword,
+    EmailAuthProvider,
+    reauthenticateWithCredential
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+  import {
+    getDatabase,
+    ref,
+    onValue,
+    get,
+    update
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+    authDomain: "rikshaw-67877.firebaseapp.com",
+    databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+    projectId: "rikshaw-67877",
+    storageBucket: "rikshaw-67877.appspot.com",
+    messagingSenderId: "953540778276",
+    appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  let uid = null;
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      uid = user.uid;
+
+      const userRef = ref(db, "users/" + uid);
+      onValue(userRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+
+          document.getElementById("userName").textContent = userData.name || "User";
+          document.getElementById("userPhone").textContent =
+            userData.phone ? userData.phone.replace(/(\d{3})\d{4}(\d{3})/, "$1****$2") : "No phone";
+          const balance = parseFloat(userData.balance) || 0;
+          document.getElementById("currentBalance").textContent = "₹" + balance.toFixed(2);
+
+          if (userData.profileImage) {
+            document.getElementById("userProfileImage").src = userData.profileImage;
+          }
+          if (userData.upiId) {
+            document.getElementById("upiId").value = userData.upiId;
+          }
+        }
+      });
+    }
+  });
+
+  window.navigateTo = (page) => window.location.href = page;
+
+  window.showUPIModal = () => {
+    document.getElementById("upiModal").style.display = "block";
+  };
+
+  window.showChangePasswordModal = () => {
+    document.getElementById("passwordModal").style.display = "block";
+  };
+
+  window.showProfitIncome = () => {
+    if (!uid) return;
+    get(ref(db, `users/${uid}/earnings`)).then((snapshot) => {
+      const earnings = snapshot.val() || {};
+      document.getElementById("totalEarned").textContent = `₹${(earnings.total || 0).toFixed(2)}`;
+      document.getElementById("availableBalance").textContent = `₹${(earnings.available || 0).toFixed(2)}`;
+      document.getElementById("pendingWithdrawal").textContent = `₹${(earnings.pending || 0).toFixed(2)}`;
+    });
+    document.getElementById("profitModal").style.display = "block";
+  };
+
+  window.closeModal = (modalId) => {
+    document.getElementById(modalId).style.display = "none";
+  };
+
+  window.onclick = (event) => {
+    if (event.target.className === "modal") {
+      document.querySelectorAll(".modal").forEach(modal => {
+        modal.style.display = "none";
+      });
+    }
+  };
+
+  document.getElementById("upiForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const upiId = document.getElementById("upiId").value;
+    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+$/.test(upiId)) {
+      alert("Please enter a valid UPI ID (e.g., yourname@upi)");
+      return;
+    }
+    if (!uid) return;
+    update(ref(db, "users/" + uid), { upiId: upiId })
+      .then(() => {
+        alert("UPI ID saved successfully!");
+        closeModal("upiModal");
+      })
+      .catch((error) => {
+        alert("Error saving UPI ID: " + error.message);
+      });
+  });
+
+  document.getElementById("passwordForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById("currentPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (newPassword !== confirmPassword) {
+      alert("New passwords don't match!");
+      return;
+    }
+    if (newPassword.length < 6) {
+      alert("Password must be at least 6 characters long");
+      return;
+    }
+
+    const user = auth.currentUser;
+    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+
+    reauthenticateWithCredential(user, credential)
+      .then(() => {
+        updatePassword(user, newPassword)
+          .then(() => {
+            alert("Password changed successfully!");
+            closeModal("passwordModal");
+            document.getElementById("passwordForm").reset();
+          })
+          .catch((error) => {
+            alert("Error changing password: " + error.message);
+          });
+      })
+      .catch((error) => {
+        alert("Current password is incorrect: " + error.message);
+      });
+  });
+
+  window.logout = () => {
+    signOut(auth).then(() => {
+      window.location.href = "login.html";
+    }).catch((error) => {
+      alert("Logout failed: " + error.message);
+    });
+  };
+</script>
+</body>
+</html>
