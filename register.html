@@ -331,6 +331,18 @@
             alert("This phone number is already registered.");
             return;
           }
+          // Create Firebase Auth user using phone as email
+           const email = phone + "@rikshaw.com";
+           try {
+           await firebase.auth().createUserWithEmailAndPassword(email, password);
+          } catch (err) {
+           if (err.code === 'auth/email-already-in-use') {
+          alert("This phone number is already registered.");
+          } else {
+           alert("Error creating account: " + err.message);
+          }
+           return;
+}
 
           // Save user data
           await usersRef.child(uid).set(userData);
