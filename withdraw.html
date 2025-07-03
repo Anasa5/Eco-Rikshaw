@@ -5,8 +5,230 @@
   <title>Withdraw - Eco Rikshaw</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* same styling as before */
+    :root {
+      --primary: #4CAF50;
+      --primary-dark: #388E3C;
+      --secondary: #2196F3;
+      --text: #333;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --background: #f5f5f5;
+      --card-bg: #fff;
+      --error: #f44336;
+      --success: #4CAF50;
+      --warning: #FF9800;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+    
+    .balance-box {
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 30px 20px;
+      margin-bottom: 30px;
+    }
+    
+    .balance-box div:first-child {
+      font-size: 16px;
+      margin-bottom: 5px;
+      opacity: 0.9;
+    }
+    
+    .balance-amount {
+      font-size: 36px;
+      font-weight: 700;
+      margin: 15px 0;
+    }
+    
+    .balance-box div:last-child {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+    
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: #f9f9f9;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+      background-color: white;
+    }
+    
+    .error-message {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+    
+    .info-text {
+      font-size: 14px;
+      color: var(--text-light);
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+    }
+    
+    .info-text i {
+      margin-right: 8px;
+      color: var(--secondary);
+    }
+    
+    button {
+      width: 100%;
+      padding: 16px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button i {
+      margin-right: 8px;
+    }
+    
+    .success-message {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: var(--success);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      font-size: 14px;
+    }
+    
+    .success-message i {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+    
+    .loading {
+      text-align: center;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 15px;
+      border: 4px solid rgba(0,0,0,0.1);
+      border-left-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    .loading p {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+      
+      .balance-amount {
+        font-size: 32px;
+      }
+    }
   </style>
 </head>
 <body>
