@@ -1,399 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Collect Earnings</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --primary-color: #2e7d32;
-      --primary-light: #60ad5e;
-      --primary-dark: #005005;
-      --secondary-color: #f5f5f5;
-      --text-dark: #333;
-      --text-light: #666;
-      --white: #ffffff;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
+      --primary-dark: #1b5e20;
+      --secondary-color: #d32f2f;
+      --text-color: #333;
+      --text-light: #555;
+      --bg-color: #f4f4f9;
+      --card-bg: #fff;
+      --disabled-bg: #e0e0e0;
+      --success-color: #388e3c;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f5f5;
-      color: var(--text-dark);
-      padding-bottom: 70px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
     }
-
+    
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--white);
-      padding: 16px 20px;
-      box-shadow: var(--shadow);
+      background: var(--primary-color);
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
-
-    .header h3 {
-      margin: 0;
-      color: var(--primary-color);
-      font-size: 1.4rem;
-      font-weight: 600;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-    }
-
-    .header-btn {
-      background: var(--secondary-color);
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-color);
-      transition: var(--transition);
-    }
-
-    .header-btn:hover {
-      background: var(--primary-light);
-      color: var(--white);
-    }
-
-    .balance-card {
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-      color: var(--white);
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
       padding: 16px;
-      margin: 16px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      animation: fadeIn 0.5s ease;
     }
-
-    .balance-info h4 {
-      font-size: 0.9rem;
-      font-weight: 500;
-      margin-bottom: 4px;
-      opacity: 0.9;
+    
+    .plan-card {
+      background: var(--card-bg);
+      margin-bottom: 16px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
-    .balance-amount {
-      font-size: 1.5rem;
-      font-weight: 700;
+    
+    .plan-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     }
-
-    .collect-card {
-      background: var(--white);
-      padding: 16px;
-      margin: 16px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      animation: fadeIn 0.5s ease;
-    }
-
-    .collect-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .collect-header h4 {
-      margin: 0;
+    
+    .plan-card h3 {
+      margin: 0 0 10px;
       color: var(--primary-color);
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .collect-total {
       font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-
+    
+    .plan-card p {
+      margin: 6px 0;
+      color: var(--text-light);
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .plan-card p span {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
     .collect-btn {
-      background: var(--primary-color);
-      color: var(--white);
-      border: none;
-      border-radius: 8px;
-      padding: 12px;
-      font-weight: 600;
-      cursor: pointer;
+      display: block;
       width: 100%;
       margin-top: 16px;
-      transition: var(--transition);
+      padding: 12px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
     }
-
-    .collect-btn:hover {
+    
+    .collect-btn:hover:enabled {
       background: var(--primary-dark);
     }
-
+    
     .collect-btn:disabled {
-      background: #cccccc;
+      background: var(--disabled-bg);
+      color: var(--text-light);
       cursor: not-allowed;
     }
-
-    .plan-list {
-      padding: 0 16px 16px;
-      display: grid;
-      gap: 16px;
-    }
-
-    .plan-box {
-      background: var(--white);
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-      animation: slideUp 0.5s ease;
-    }
-
-    .plan-header {
+    
+    .cooldown {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: var(--secondary-color);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      gap: 6px;
     }
-
-    .plan-box h4 {
-      margin: 0;
-      color: var(--primary-color);
-      font-size: 1rem;
-      font-weight: 600;
+    
+    .progress-container {
+      margin-top: 12px;
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
     }
-
-    .plan-details {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin: 12px 0;
+    
+    .progress-bar {
+      height: 100%;
+      background: var(--primary-color);
+      width: 0%;
+      transition: width 0.5s ease;
     }
-
-    .detail-item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .detail-label {
-      font-size: 0.7rem;
-      color: var(--text-light);
-      margin-bottom: 2px;
-    }
-
-    .detail-value {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-
-    .detail-value.highlight {
-      color: var(--primary-color);
-    }
-
-    .status-badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      background: var(--secondary-color);
-      color: var(--primary-color);
-    }
-
-    .status-badge.collected {
-      background: #e8f5e9;
-      color: #2e7d32;
-    }
-
-    .status-badge.pending {
-      background: #fff8e1;
-      color: #ff8f00;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--white);
-      display: flex;
-      justify-content: space-around;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-      padding: 12px 0;
-      z-index: 10;
-    }
-
-    .nav-item {
-      text-align: center;
-      color: var(--text-light);
-      font-weight: 500;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: var(--transition);
-      flex: 1;
-    }
-
-    .nav-item.active {
-      color: var(--primary-color);
-    }
-
-    .nav-item i {
-      display: block;
-      margin: 0 auto 4px;
-      font-size: 1.2rem;
-    }
-
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 200px;
-    }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top-color: var(--primary-color);
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    
     .empty-state {
       text-align: center;
       padding: 40px 20px;
       color: var(--text-light);
     }
-
+    
     .empty-state i {
-      font-size: 3rem;
+      font-size: 2.5rem;
+      color: var(--disabled-bg);
       margin-bottom: 16px;
-      color: var(--primary-light);
     }
-
-    .empty-state h4 {
-      margin-bottom: 8px;
-      color: var(--text-dark);
-    }
-
+    
     .empty-state p {
-      margin-bottom: 16px;
+      margin: 8px 0;
     }
-
-    .invest-btn {
-      background: var(--primary-color);
-      color: var(--white);
-      border: none;
-      border-radius: 8px;
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--success-color);
+      color: white;
       padding: 12px 24px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-
-    .invest-btn:hover {
-      background: var(--primary-dark);
+    
+    .notification.show {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-
   <div class="header">
-    <h3>Collect Earnings</h3>
-    <div class="header-actions">
-      <button class="header-btn" onclick="window.location.href='notifications.html'">
-        <i class="fas fa-bell"></i>
-      </button>
-      <button class="header-btn" onclick="window.location.href='history.html'">
-        <i class="fas fa-history"></i>
-      </button>
+    <i class="fas fa-wallet"></i> Collect Earnings
+  </div>
+  
+  <div class="container">
+    <div id="plansContainer">
+      <div class="loading">
+        <div class="spinner"></div>
+      </div>
     </div>
   </div>
-
-  <div class="balance-card" id="balanceCard">
-    <div class="balance-info">
-      <h4>Available Balance</h4>
-      <div class="balance-amount" id="balanceAmount">₹0</div>
-    </div>
-    <button class="recharge-btn" onclick="window.location.href='recharge.html'">
-      <i class="fas fa-plus"></i> Recharge
-    </button>
-  </div>
-
-  <div class="collect-card" id="collectContainer">
-    <div class="collect-header">
-      <h4>Today's Earnings</h4>
-      <div class="collect-total" id="dailyTotal">₹0</div>
-    </div>
-    <button class="collect-btn" id="collectAllBtn" disabled>
-      <i class="fas fa-coins"></i> Collect All Earnings
-    </button>
-  </div>
-
-  <div class="plan-list" id="plansContainer">
-    <div class="loading">
-      <div class="spinner"></div>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="window.location.href='rikshawhome.html'">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
-    </div>
-    <div class="nav-item" onclick="window.location.href='plans.html'">
-      <i class="fas fa-wallet"></i>
-      <span>Invest</span>
-    </div>
-    <div class="nav-item active" onclick="window.location.href='collect.html'">
-      <i class="fas fa-coins"></i>
-      <span>Collect</span>
-    </div>
-    <div class="nav-item" onclick="window.location.href='profile.html'">
-      <i class="fas fa-user"></i>
-      <span>Profile</span>
-    </div>
-  </div>
+  
+  <div class="notification" id="notification"></div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getDatabase, ref, get, update, remove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
@@ -406,199 +219,141 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const uid = localStorage.getItem("uid");
-if (!uid) {
-  document.body.innerHTML = `
-    <div style="text-align:center;padding:40px;">
-      <h2>Please login to collect your earnings</h2>
-      <a href="login.html" style="color:#2e7d32;text-decoration:underline;">Go to Login</a>
-    </div>
-  `;
-} else {
-  fetchUserData();
-}
+    const db = getDatabase();
+    const auth = getAuth();
+    
+    const showNotification = (message) => {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.classList.add('show');
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    };
 
-
-    const userRef = ref(db, "users/" + uid);
-    const plansContainer = document.getElementById("plansContainer");
-    const balanceAmount = document.getElementById("balanceAmount");
-    const dailyTotal = document.getElementById("dailyTotal");
-    const collectAllBtn = document.getElementById("collectAllBtn");
-
-    // Track active investments
-    let activeInvestments = [];
-    let totalDailyEarnings = 0;
-    let userBalance = 0;
-
-    // Function to format date
-    function formatDate(dateString) {
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString('en-US', options);
-    }
-
-    // Function to check if collection is available for today
-    function canCollectToday(lastCollectionDate) {
-      if (!lastCollectionDate) return true;
-      
-      const lastCollected = new Date(lastCollectionDate);
-      const today = new Date();
-      
-      // Reset time components to compare only dates
-      lastCollected.setHours(0, 0, 0, 0);
-      today.setHours(0, 0, 0, 0);
-      
-      return lastCollected < today;
-    }
-
-    // Fetch user data and investments
-    function fetchUserData() {
-      get(userRef).then(snap => {
-        if (snap.exists()) {
-          const user = snap.val();
-          userBalance = user.balance || 0;
-          balanceAmount.textContent = `₹${userBalance.toLocaleString()}`;
-          
-          // Get active investments
-          activeInvestments = [];
-          totalDailyEarnings = 0;
-          
-          if (user.investments) {
-            Object.entries(user.investments).forEach(([key, investment]) => {
-              if (investment.status === "active") {
-                // Check if collection is available for today
-                const canCollect = canCollectToday(investment.lastCollectionDate);
-                
-                if (canCollect) {
-                  totalDailyEarnings += investment.dailyIncome || 0;
-                }
-                
-                activeInvestments.push({
-                  id: key,
-                  ...investment,
-                  canCollect
-                });
-              }
-            });
-          }
-          
-          // Update UI
-          updateEarningsDisplay();
-          renderInvestmentPlans();
-        }
-      }).catch(error => {
-        console.error("Error fetching user data:", error);
-      });
-    }
-
-    // Update earnings display
-    function updateEarningsDisplay() {
-      dailyTotal.textContent = `₹${totalDailyEarnings.toLocaleString()}`;
-      
-      if (totalDailyEarnings > 0) {
-        collectAllBtn.disabled = false;
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loadPlans(user.uid);
       } else {
-        collectAllBtn.disabled = true;
-      }
-    }
-
-    // Render investment plans
-    function renderInvestmentPlans() {
-  if (activeInvestments.length === 0) {
-    plansContainer.innerHTML = `
-      <div class="empty-state">
-        <i class="fas fa-wallet"></i>
-        <h4>No Active Investments</h4>
-        <p>You don't have any active investment plans yet.</p>
-        <button class="invest-btn" onclick="window.location.href='plans.html'">
-          Invest Now
-        </button>
-      </div>
-    `;
-    return;
-  }
-
-  plansContainer.innerHTML = '';
-
-  activeInvestments.forEach((investment, index) => {
-    const delay = index * 0.1;
-    const canCollect = investment.canCollect;
-    const investmentId = investment.id;
-
-    const planBox = document.createElement("div");
-    planBox.className = "plan-box";
-    planBox.style.animationDelay = `${delay}s`;
-
-    planBox.innerHTML = `
-      <div class="plan-header">
-        <h4>${investment.planName}</h4>
-        <span class="status-badge ${canCollect ? 'pending' : 'collected'}">
-          ${canCollect ? 'Pending' : 'Collected'}
-        </span>
-      </div>
-      <div class="plan-details">
-        <div class="detail-item">
-          <span class="detail-label">Invested</span>
-          <span class="detail-value">₹${investment.amount.toLocaleString()}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Daily Income</span>
-          <span class="detail-value highlight">₹${investment.dailyIncome.toLocaleString()}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Total Return</span>
-          <span class="detail-value">₹${investment.totalIncome.toLocaleString()}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Started</span>
-          <span class="detail-value">${formatDate(investment.date)}</span>
-        </div>
-      </div>
-      ${canCollect ? `<button class="collect-btn collect-single" data-id="${investmentId}" data-amount="${investment.dailyIncome}">
-        <i class="fas fa-coins"></i> Collect ₹${investment.dailyIncome}
-      </button>` : `<button class="collect-btn" disabled>Collected</button>`}
-    `;
-
-    plansContainer.appendChild(planBox);
-  });
-
-  // Add click event for each collect button
-  document.querySelectorAll(".collect-single").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      const amount = parseFloat(btn.getAttribute("data-amount"));
-
-      if (!confirm(`Collect ₹${amount} from this plan?`)) return;
-
-      const today = new Date().toISOString();
-      const newBal = userBalance + amount;
-
-      const updates = {
-        [`investments/${id}/lastCollectionDate`]: today,
-        [`balance`]: newBal,
-        [`earnings/${Date.now()}`]: {
-          amount,
-          date: today,
-          type: 'daily',
-          investments: [id]
-        }
-      };
-
-      btn.disabled = true;
-      btn.textContent = "Collecting...";
-
-      try {
-        await update(userRef, updates);
-        alert(`₹${amount} collected successfully!`);
-        fetchUserData(); // auto refresh
-      } catch (err) {
-        alert("Error collecting: " + err.message);
-        btn.disabled = false;
-        btn.textContent = `Collect ₹${amount}`;
+        window.location.href = "login.html";
       }
     });
-  });
-}
+
+    function loadPlans(uid) {
+      const userRef = ref(db, "users/" + uid);
+      const container = document.getElementById("plansContainer");
+
+      get(userRef).then(snapshot => {
+        if (!snapshot.exists()) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-box-open"></i>
+              <p>No investment plans found</p>
+              <p>Start investing to see earnings here</p>
+            </div>
+          `;
+          return;
+        }
+
+        const user = snapshot.val();
+        const investments = user.investments || {};
+
+        if (Object.keys(investments).length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-box-open"></i>
+              <p>No active investments</p>
+              <p>Start investing to earn daily income</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = "";
+
+        Object.keys(investments).forEach(id => {
+          const plan = investments[id];
+          const lastCollected = new Date(plan.lastCollectionDate || 0).getTime();
+          const now = Date.now();
+          const hoursPassed = (now - lastCollected) / (1000 * 60 * 60);
+          const canCollect = hoursPassed >= 24;
+          const progress = Math.min(100, (hoursPassed / 24) * 100);
+
+          const card = document.createElement("div");
+          card.className = "plan-card";
+          card.innerHTML = `
+            <h3><i class="fas fa-piggy-bank"></i>${plan.planName}</h3>
+            <p>Daily Income: <span>₹${plan.dailyIncome.toLocaleString()}</span></p>
+            <p>Total Return: <span>₹${plan.totalIncome.toLocaleString()}</span></p>
+            
+            ${!canCollect ? `
+              <div class="progress-container">
+                <div class="progress-bar" style="width: ${progress}%"></div>
+              </div>
+            ` : ''}
+            
+            <button class="collect-btn" ${canCollect ? "" : "disabled"}>
+              <i class="fas ${canCollect ? 'fa-coins' : 'fa-clock'}"></i>
+              ${canCollect ? `Collect ₹${plan.dailyIncome.toLocaleString()}` : 
+                `Available in ${Math.ceil(24 - hoursPassed)}h`}
+            </button>
+            
+            ${!canCollect ? `
+              <div class="cooldown">
+                <i class="fas fa-info-circle"></i>
+                Last collected: ${plan.lastCollectionDate ? 
+                  new Date(plan.lastCollectionDate).toLocaleString() : "Never"}
+              </div>
+            ` : ""}
+          `;
+
+          const btn = card.querySelector(".collect-btn");
+
+          btn.addEventListener("click", async () => {
+            if (!confirm(`Collect ₹${plan.dailyIncome.toLocaleString()} from ${plan.planName}?`)) return;
+
+            const newBal = (user.balance || 0) + plan.dailyIncome;
+            const updates = {
+              [`balance`]: newBal,
+              [`investments/${id}/lastCollectionDate`]: new Date().toISOString(),
+              [`earnings/${Date.now()}`]: {
+                amount: plan.dailyIncome,
+                date: new Date().toISOString(),
+                type: "daily",
+                investment: id,
+                planName: plan.planName
+              }
+            };
+
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+
+            try {
+              await update(userRef, updates);
+              showNotification(`₹${plan.dailyIncome.toLocaleString()} collected successfully!`);
+              loadPlans(uid); // reload to update UI
+            } catch (err) {
+              console.error("Collection error:", err);
+              btn.disabled = false;
+              btn.innerHTML = originalText;
+              showNotification("Failed to collect earnings. Please try again.");
+            }
+          });
+
+          container.appendChild(card);
+        });
+      }).catch(error => {
+        console.error("Error loading plans:", error);
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Error loading investments</p>
+            <p>Please try again later</p>
+          </div>
+        `;
+      });
+    }
   </script>
 </body>
 </html>
