@@ -274,7 +274,7 @@
       <p>Processing your request...</p>
     </div>
     
-    <button onclick="withdraw()">
+    <button id="withdrawBtn">
       <i class="fas fa-rupee-sign"></i> Request Withdraw
     </button>
   </div>
@@ -384,6 +384,7 @@
       alert("Error submitting withdrawal. Try again.");
     }
   }
+  document.getElementById("withdrawBtn").addEventListener("click", withdraw);
 </script>
 
 </body>
