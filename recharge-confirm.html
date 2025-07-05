@@ -226,7 +226,7 @@
 
     <div class="qr-section">
       <div class="qr-container">
-        <img src="paisa.png" alt="Payment QR Code">
+        <img src="110.png" alt="Payment QR Code" id="qrImage">
       </div>
       <div class="payment-details">
         <p><strong>UPI ID:</strong> your.upi@id</p>
@@ -278,6 +278,8 @@
         
         // Set selected amount
         selectedAmount = parseInt(this.getAttribute('data-amount'));
+        // Change QR image
+        document.getElementById('qrImage').src = selectedAmount + ".png";
         
         // Enable submit button if UTR is already entered
         const utr = document.getElementById('utr').value;
