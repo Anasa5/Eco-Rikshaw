@@ -3,25 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Team</title>
+  <title>Your Team</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #2e7d32;
       --primary-dark: #1b5e20;
       --primary-light: #e8f5e9;
-      --primary-lighter: #f5fbf6;
-      --text: #2d3748;
-      --text-light: #718096;
-      --text-lighter: #a0aec0;
-      --border: #e2e8f0;
-      --shadow: 0 4px 30px rgba(0,0,0,0.08);
-      --card-shadow: 0 2px 15px rgba(0,0,0,0.04);
-      --stat-bg: #ffffff;
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --error: #d32f2f;
+      --text: #333;
+      --border: #e0e0e0;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
     
     * {
@@ -32,428 +26,220 @@
     
     body {
       font-family: 'Poppins', sans-serif;
-      background: var(--primary-lighter);
-      margin: 0;
-      padding: 0;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e0f7e9 100%);
       min-height: 100vh;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: start;
       color: var(--text);
-      line-height: 1.5;
     }
     
-    .container {
-      max-width: 580px;
-      margin: 0 auto;
+    .team-container {
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    .card {
       background: #fff;
-      padding: 0;
-      border-radius: 20px;
+      padding: 30px;
+      border-radius: 16px;
       box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-      top: 20px;
-      margin-bottom: 40px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 20px;
     }
     
-    .header {
-      background: var(--primary);
-      color: white;
-      padding: 24px 30px;
-      text-align: center;
-      position: relative;
-    }
-    
-    .header::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      right: 0;
-      height: 20px;
-      background: var(--primary-lighter);
-      border-radius: 20px 20px 0 0;
-      z-index: 1;
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
     }
     
     h2 {
-      font-size: 22px;
+      text-align: center;
+      margin-bottom: 16px;
+      color: var(--primary);
       font-weight: 600;
-      margin-bottom: 4px;
-    }
-    
-    .header p {
-      font-size: 14px;
-      opacity: 0.9;
-      font-weight: 300;
-    }
-    
-    .content {
-      padding: 30px;
-      padding-top: 20px;
+      font-size: 24px;
     }
     
     .referral-box {
-      background: white;
-      padding: 18px;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: 500;
+      background: var(--primary-light);
+      border: 1px dashed var(--primary);
+      padding: 15px;
+      border-radius: 10px;
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
+    }
+    
+    .referral-box p {
+      font-size: 16px;
+      margin-bottom: 8px;
       color: var(--primary-dark);
-      border: 1px solid var(--border);
-      box-shadow: var(--card-shadow);
-      position: relative;
-      z-index: 2;
     }
     
     .referral-code {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
+      color: var(--primary);
       letter-spacing: 1px;
-      margin: 8px 0;
-      color: var(--primary);
     }
     
-    .team-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-    
-    .stat-box {
-      text-align: center;
-      padding: 18px 10px;
-      background: var(--stat-bg);
-      border-radius: 12px;
-      box-shadow: var(--card-shadow);
-      transition: var(--transition);
-    }
-    
-    .stat-box:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-    
-    .stat-value {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-    
-    .stat-label {
-      font-size: 13px;
-      color: var(--text-light);
-      font-weight: 500;
-    }
-    
-    #teamList {
-      display: grid;
-      gap: 16px;
-    }
-    
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .section-title i {
-      color: var(--primary);
+    .team-list {
+      margin-top: 10px;
     }
     
     .member {
-      padding: 20px;
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: var(--card-shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border: 1px solid var(--border);
-      transition: var(--transition);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      background: #fafafa;
+      transition: background 0.2s ease;
     }
     
     .member:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      border-color: rgba(46, 125, 50, 0.3);
+      background: #f1f8f4;
     }
     
-    .member p {
-      margin: 0;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .member strong {
-      color: var(--text-light);
-      font-weight: 500;
-      font-size: 13px;
-    }
-    
-    .member .invested {
-      grid-column: span 2;
-      background: var(--primary-light);
-      padding: 8px;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--primary-dark);
-      margin-top: 8px;
-    }
-    
-    .empty {
-      text-align: center;
-      color: var(--text-light);
-      margin: 40px 0;
-      padding: 30px 20px;
-      background: #fafafa;
-      border-radius: 14px;
-      font-size: 15px;
-    }
-    
-    .empty i {
-      font-size: 40px;
-      color: var(--border);
-      margin-bottom: 15px;
-    }
-    
-    .copy-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-size: 13px;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 500;
-    }
-    
-    .copy-btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-    
-    .loading {
+    .member-info {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      margin: 60px 0;
     }
     
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(46, 125, 50, 0.2);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    .member-name {
+      font-weight: 500;
+      font-size: 16px;
+      color: var(--text);
     }
     
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .member-phone {
+      font-size: 14px;
+      color: #777;
     }
     
-    @media (max-width: 640px) {
-      .container {
-        border-radius: 0;
-        top: 0;
-        margin-bottom: 0;
-        min-height: 100vh;
-      }
-      
-      .content {
-        padding: 20px;
-      }
-      
-      .member {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-      
-      .member .invested {
-        grid-column: span 1;
-      }
+    .member-recharge {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--primary-dark);
+    }
+    
+    .empty-state {
+      text-align: center;
+      color: #999;
+      font-size: 15px;
+      margin-top: 20px;
     }
     
     @media (max-width: 480px) {
-      .team-stats {
-        grid-template-columns: 1fr;
+      body {
+        padding: 16px;
       }
       
-      .header {
+      .card {
         padding: 20px;
-      }
-      
-      .referral-box {
-        padding: 15px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h2>My Team</h2>
-      <p>Manage your referral network</p>
+  <div class="team-container">
+    <div class="card">
+      <h2>Your Referral Code</h2>
+      <div class="referral-box">
+        <p>Share this code with your friends:</p>
+        <div class="referral-code" id="referralCode">LOADING...</div>
+      </div>
     </div>
     
-    <div class="content">
-      <div class="referral-box">
-        <div>Your Referral Code</div>
-        <div class="referral-code" id="referralCode">••••••••</div>
-        <button class="copy-btn" id="copyBtn">
-          <i class="fas fa-copy"></i> Copy Code
-        </button>
-      </div>
-      
-      <div class="team-stats" id="teamStats" style="display: none;">
-        <div class="stat-box">
-          <div class="stat-value" id="totalMembers">0</div>
-          <div class="stat-label">Total Members</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value" id="activeMembers">0</div>
-          <div class="stat-label">Active Members</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value" id="investedMembers">0</div>
-          <div class="stat-label">Invested</div>
-        </div>
-      </div>
-      
-      <div class="section-title">
-        <i class="fas fa-users"></i> Team Members
-      </div>
-      
-      <div id="teamList">
-        <div class="loading">
-          <div class="spinner"></div>
-          <p>Loading team data...</p>
-        </div>
+    <div class="card">
+      <h2>Your Team</h2>
+      <div class="team-list" id="teamList">
+        <p class="empty-state">Loading team members...</p>
       </div>
     </div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
-  <script>
-    // Initialize Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
-      authDomain: "rikshaw-67877.firebaseapp.com",
-      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
-      projectId: "rikshaw-67877",
-      storageBucket: "rikshaw-67877.appspot.com",
-      messagingSenderId: "953540778276",
-      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
-    };
-
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // DOM elements
-    const teamList = document.getElementById("teamList");
-    const copyBtn = document.getElementById("copyBtn");
+  <script type="module">
+    const firebaseScript = document.createElement('script');
+    firebaseScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
+    firebaseScript.async = true;
+    document.head.appendChild(firebaseScript);
     
-    // Check authentication
-    const uid = localStorage.getItem("uid");
-    if (!uid) {
-      showEmptyState("User not found. Please log in again.", "fa-exclamation-circle");
-      return;
-    }
+    const firebaseDBScript = document.createElement('script');
+    firebaseDBScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js';
+    firebaseDBScript.async = true;
+    document.head.appendChild(firebaseDBScript);
 
-    // Load user data
-    const userRef = db.ref(`users/${uid}`);
-    userRef.once("value").then(snap => {
-      if (!snap.exists()) {
-        showEmptyState("User data not found.", "fa-exclamation-triangle");
+    Promise.all([
+      new Promise(resolve => firebaseScript.onload = resolve),
+      new Promise(resolve => firebaseDBScript.onload = resolve)
+    ]).then(() => {
+      const firebaseConfig = {
+        apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+        authDomain: "rikshaw-67877.firebaseapp.com",
+        databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+        projectId: "rikshaw-67877",
+        storageBucket: "rikshaw-67877.appspot.com",
+        messagingSenderId: "953540778276",
+        appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+      };
+
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.database(app);
+
+      // For demo: Assume uid is stored in localStorage after login
+      const uid = localStorage.getItem("uid");
+      if (!uid) {
+        alert("You are not logged in!");
+        window.location.href = "login.html";
         return;
       }
 
-      const userData = snap.val();
-      const myCode = userData.referral || "N/A";
-      
-      // Display referral code
-      document.getElementById("referralCode").textContent = myCode;
-      
-      // Setup copy button
-      copyBtn.addEventListener("click", () => {
-        navigator.clipboard.writeText(myCode).then(() => {
-          copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-          setTimeout(() => {
-            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Code';
-          }, 2000);
-        });
-      });
-
-      // Load team data
-      loadTeamData(uid);
-    }).catch(error => {
-      console.error("Error loading user data:", error);
-      showEmptyState("Error loading data. Please try again.", "fa-exclamation-triangle");
-    });
-
-    function loadTeamData(uid) {
+      const userRef = db.ref(`users/${uid}`);
       const teamRef = db.ref(`team/${uid}`);
-      teamRef.once("value").then(teamSnap => {
-        if (!teamSnap.exists()) {
-          showEmptyState("No team members yet. Share your code to invite!", "fa-user-plus");
-          return;
+
+      // Load user referral code
+      userRef.once("value").then(snapshot => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          document.getElementById("referralCode").textContent = userData.referral || "N/A";
+        } else {
+          document.getElementById("referralCode").textContent = "N/A";
         }
-
-        const team = teamSnap.val();
-        const teamMembers = Object.values(team);
-        
-        // Update stats
-        document.getElementById("totalMembers").textContent = teamMembers.length;
-        document.getElementById("activeMembers").textContent = teamMembers.filter(m => m.active).length;
-        document.getElementById("investedMembers").textContent = teamMembers.filter(m => m.invested).length;
-        document.getElementById("teamStats").style.display = "grid";
-
-        // Display team members
-        teamList.innerHTML = "";
-        teamMembers.forEach(member => {
-          const memberCard = document.createElement("div");
-          memberCard.className = "member";
-          memberCard.innerHTML = `
-            <p><i class="fas fa-user"></i><strong>Name:</strong> ${member.name || "N/A"}</p>
-            <p><i class="fas fa-phone"></i><strong>Phone:</strong> ${member.phone || "N/A"}</p>
-            <p><i class="fas fa-calendar-day"></i><strong>Joined:</strong> ${member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : "N/A"}</p>
-            <p><i class="fas fa-circle" style="color: ${member.active ? '#38a169' : '#e53e3e'}; font-size: 8px;"></i><strong>Status:</strong> ${member.active ? 'Active' : 'Inactive'}</p>
-            ${member.invested ? `<div class="invested"><i class="fas fa-coins"></i> Has invested</div>` : ''}
-          `;
-          teamList.appendChild(memberCard);
-        });
-      }).catch(error => {
-        console.error("Error loading team data:", error);
-        showEmptyState("Error loading team data.", "fa-exclamation-triangle");
       });
-    }
 
-    function showEmptyState(message, icon) {
-      teamList.innerHTML = `
-        <div class="empty">
-          <i class="fas ${icon}"></i>
-          <p>${message}</p>
-        </div>
-      `;
-    }
+      // Load team members
+      teamRef.once("value").then(snapshot => {
+        const teamList = document.getElementById("teamList");
+        teamList.innerHTML = "";
+
+        if (snapshot.exists()) {
+          const members = snapshot.val();
+          Object.keys(members).forEach(uid => {
+            const member = members[uid];
+
+            const memberEl = document.createElement("div");
+            memberEl.className = "member";
+            memberEl.innerHTML = `
+              <div class="member-info">
+                <span class="member-name">${member.name}</span>
+                <span class="member-phone">+91 ${member.phone}</span>
+              </div>
+              <div class="member-recharge">₹${member.invested ? member.recharge || 0 : 0}</div>
+            `;
+            teamList.appendChild(memberEl);
+          });
+        } else {
+          teamList.innerHTML = `<p class="empty-state">You don’t have any team members yet 😅</p>`;
+        }
+      });
+    }).catch(error => {
+      console.error("Firebase load error:", error);
+      alert("Could not load team data. Try again later.");
+    });
   </script>
 </body>
 </html>

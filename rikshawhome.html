@@ -554,7 +554,8 @@
   get(userRef).then((snap) => {
     if (snap.exists()) {
       const user = snap.val();
-      document.getElementById("user-balance").textContent = `₹${user.balance.toFixed(2)}`;
+      const displayBalance = user.balance < 0 ? 0 : user.balance;
+      document.getElementById("user-balance").textContent = `₹${displayBalance.toFixed(2)}`;
     }
   });
 }

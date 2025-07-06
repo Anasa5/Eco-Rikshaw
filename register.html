@@ -234,12 +234,19 @@
     firebaseDBScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js';
     firebaseDBScript.async = true;
     document.head.appendChild(firebaseDBScript);
+
+    const firebaseAuthScript = document.createElement('script');
+    firebaseAuthScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js';
+    firebaseAuthScript.async = true;
+    document.head.appendChild(firebaseAuthScript);
     
     // Wait for Firebase to load
     Promise.all([
-      new Promise(resolve => firebaseScript.onload = resolve),
-      new Promise(resolve => firebaseDBScript.onload = resolve)
-    ]).then(() => {
+    new Promise(resolve => firebaseScript.onload = resolve),
+    new Promise(resolve => firebaseDBScript.onload = resolve),
+    new Promise(resolve => firebaseAuthScript.onload = resolve)
+])
+.then(() => {
       const firebaseConfig = {
         apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
         authDomain: "rikshaw-67877.firebaseapp.com",
@@ -252,6 +259,7 @@
 
       const app = firebase.initializeApp(firebaseConfig);
       const db = firebase.database(app);
+      const auth = firebase.auth();
 
       // Form validation
       const phoneInput = document.getElementById("phone");
@@ -308,8 +316,9 @@
           return;
         }
 
-        const uid = "uid_" + Date.now();
-        const myReferral = uid.substring(0, 6).toUpperCase();
+        const userCredential = await auth.createUserWithEmailAndPassword(phone + "@rikshaw.com", password);
+        const uid = userCredential.user.uid; // get the real UID from Firebase Auth
+        const myReferral = Math.random().toString(36).substring(2, 8).toUpperCase();
 
         const userData = {
           name,
