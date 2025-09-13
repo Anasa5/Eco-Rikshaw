@@ -3,517 +3,300 @@
 <head>
   <meta charset="UTF-8" />
   <title>Recharge - Eco Rikshaw</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --primary-color: #00e64d;
       --secondary-color: #009933;
-      --light-bg: #f0fff5;
-      --dark-text: #1a3b23;
-      --highlight-color: #ffcc00;
+      --dark-color: #006622;
+      --light-color: #e6ffe6;
+      --error-color: #ff4444;
+      --warning-color: #ffbb33;
     }
-    
-    * {
-      box-sizing: border-box;
+    body {
       margin: 0;
-      padding: 0;
+      background: #f5f5f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      min-height: 100vh;
     }
-    
-     body {
-     margin: 0;
-     background: var(--light-bg);
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     color: var(--dark-text);
-     min-height: 100vh;
-     overflow-y: auto; /* 👈 this line allows scrolling on small screens */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
     }
-
-    
-    .header {
+    header {
       background: var(--primary-color);
       color: white;
-      padding: 15px;
+      padding: 15px 0;
       text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
     }
-    
-    .container {
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--dark-color);
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
       padding: 20px;
-      max-width: 500px;
-      margin: 0 auto;
-      padding-bottom: 80px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    
-    .page-title {
+    .balance-box {
       text-align: center;
-      margin: 15px 0 25px;
-      color: var(--dark-text);
-      font-size: 24px;
+      font-size: 18px;
       position: relative;
     }
-    
-    .page-title:after {
-      content: "";
-      display: block;
-      width: 60px;
-      height: 3px;
-      background: var(--primary-color);
-      margin: 10px auto 0;
-      border-radius: 3px;
-    }
-    
-    .balance-card {
-      background: white;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .balance-label {
-      font-size: 14px;
-      color: #666;
-    }
-    
     .balance-amount {
-      font-size: 22px;
+      font-size: 28px;
       font-weight: bold;
       color: var(--secondary-color);
+      margin: 10px 0;
     }
-    
-    .section-title {
-      font-size: 16px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .amount-options {
+    .recharge-options {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
-    
-    .amount-btn {
-      background: white;
-      border: 2px solid #e0e0e0;
-      padding: 18px 10px;
+    .recharge-option {
+      border: 2px solid #ddd;
       border-radius: 12px;
-      font-size: 16px;
+      padding: 15px;
+      text-align: center;
       cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.3s;
     }
-    
-    .amount-btn:hover {
+    .recharge-option:hover {
+      border-color: var(--primary-color);
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    
-    .amount-btn.active {
+    .recharge-option.selected {
       border-color: var(--primary-color);
-      background-color: rgba(0, 230, 77, 0.1);
+      background-color: var(--light-color);
     }
-    
-    .amount-value {
-      font-size: 18px;
+    .recharge-amount {
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 3px;
-    }
-    
-    .amount-bonus {
-      font-size: 12px;
-      color: var(--secondary-color);
-      font-weight: 500;
-    }
-    
-    .custom-amount {
-      margin-bottom: 25px;
-    }
-    
-    .input-group {
-      position: relative;
-      margin-bottom: 5px;
-    }
-    
-    .input-group i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #999;
-    }
-    
-    input[type="number"] {
-      width: 100%;
-      padding: 15px 15px 15px 40px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: 2px solid #e0e0e0;
-      background: white;
-      transition: all 0.3s ease;
-    }
-    
-    input[type="number"]:focus {
-      border-color: var(--primary-color);
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 230, 77, 0.2);
-    }
-    
-    .min-amount {
-      font-size: 12px;
-      color: #666;
-      padding-left: 10px;
-    }
-    
-    .payment-methods {
-      margin-bottom: 25px;
-    }
-    
-    .method-option {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      background: white;
-      border-radius: 10px;
+      color: var(--dark-color);
       margin-bottom: 10px;
+    }
+    .recharge-image {
+      max-width: 100%;
+      height: 100px;
+      object-fit: contain;
+      margin: 10px 0;
+      display: none;
+    }
+    .selected-recharge {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .selected-amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--secondary-color);
+      margin: 10px 0;
+    }
+    #recharge-image-display {
+      max-width: 100%;
+      max-height: 300px;
+      margin: 0 auto;
+      display: block;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    button {
+      background: var(--secondary-color);
+      color: white;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      width: 100%;
       cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .method-option:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    
-    .method-option.active {
-      border: 2px solid var(--primary-color);
-      background-color: rgba(0, 230, 77, 0.05);
-    }
-    
-    .method-icon {
-      width: 40px;
-      height: 40px;
-      background: #f5f5f5;
-      border-radius: 50%;
+      transition: all 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 15px;
-      color: var(--secondary-color);
-      font-size: 18px;
+      gap: 10px;
+      margin-top: 20px;
     }
-    
-    .method-info {
-      flex: 1;
-    }
-    
-    .method-name {
-      font-weight: bold;
-      margin-bottom: 3px;
-    }
-    
-    .method-desc {
-      font-size: 12px;
-      color: #666;
-    }
-    
-    .recharge-btn {
-     background: var(--primary-color);
-     color: white;
-     width: 100%;
-     padding: 16px;
-     font-size: 16px;
-     border: none;
-     border-radius: 12px;
-     font-weight: bold;
-     cursor: pointer;
-     transition: all 0.3s ease;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     gap: 10px;
-     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-     margin-bottom: 90px; /* 👈 add this to push it above nav */
-    }
-
-    
-    .recharge-btn:hover {
-      background: var(--secondary-color);
+    button:hover {
+      background: var(--dark-color);
       transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    
-    .recharge-btn:active {
+    button:active {
       transform: translateY(0);
     }
-    
-    .recharge-btn:disabled {
-      background: #ccc;
+    button:disabled {
+      background: #cccccc;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
-    
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: white;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      z-index: 1000;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    .note-box {
+      background-color: var(--light-color);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 14px;
     }
-    
-    .nav-item {
-      flex: 1;
-      text-align: center;
-      color: #666;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      padding: 5px 0;
+    .note-box ul {
+      margin: 10px 0;
+      padding-left: 20px;
     }
-    
-    .nav-item.active {
-      color: var(--highlight-color);
+    .note-box li {
+      margin-bottom: 5px;
     }
-    
-    .nav-item:hover {
-      color: var(--secondary-color);
-    }
-    
-    .nav-icon {
-      font-size: 20px;
-      margin-bottom: 3px;
-    }
-    
-    .nav-label {
-      font-size: 12px;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
-      .container {
-        padding: 15px;
-      }
-      
-      .amount-options {
-        gap: 12px;
-      }
-      
-      .amount-btn {
-        padding: 15px 5px;
+    @media (max-width: 500px) {
+      .recharge-options {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">Eco Rikshaw Recharge</div>
-
+<header>
   <div class="container">
-    <h1 class="page-title">Recharge Wallet</h1>
+    <h1>Recharge Wallet</h1>
+  </div>
+</header>
+
+<div class="container">
+  <div class="card balance-box">
+    <div>Available Balance</div>
+    <div class="balance-amount">₹<span id="balance">0</span></div>
+    <div>Select a recharge amount below</div>
+  </div>
+
+  <div class="card">
+    <h2>Select Recharge Amount</h2>
     
-    <div class="balance-card">
-      <div>
-        <div class="balance-label">Current Balance</div>
-        <div class="balance-amount" id="currentBalance">₹0.00</div>
-      </div>
-      <i class="fas fa-wallet" style="font-size: 24px; color: var(--secondary-color);"></i>
-    </div>
-    
-    <div class="section-title">
-      <i class="fas fa-rupee-sign"></i> Select Amount
-    </div>
-    
-    <div class="amount-options">
-      <button class="amount-btn" onclick="selectAmount(110, this)">
-        <span class="amount-value">₹110</span>
-        <span class="amount-bonus">+ ₹10 bonus</span>
-      </button>
-      <button class="amount-btn" onclick="selectAmount(210, this)">
-        <span class="amount-value">₹210</span>
-        <span class="amount-bonus">+ ₹25 bonus</span>
-      </button>
-      <button class="amount-btn" onclick="selectAmount(500, this)">
-        <span class="amount-value">₹500</span>
-        <span class="amount-bonus">+ ₹75 bonus</span>
-      </button>
-      <button class="amount-btn" onclick="selectAmount(1000, this)">
-        <span class="amount-value">₹1000</span>
-        <span class="amount-bonus">+ ₹200 bonus</span>
-      </button>
-    </div>
-    
-    <div class="custom-amount">
-      <div class="section-title">
-        <i class="fas fa-edit"></i> Custom Amount
-      </div>
-      <div class="input-group">
-        <i class="fas fa-rupee-sign"></i>
-        <input type="number" id="amount" placeholder="Enter amount" min="110" oninput="clearActiveButtons()">
-      </div>
-      <div class="min-amount">Minimum recharge amount: ₹110</div>
-    </div>
-    
-    <div class="payment-methods">
-      <div class="section-title">
-        <i class="fas fa-credit-card"></i> Payment Method
+    <div class="recharge-options">
+      <div class="recharge-option" data-amount="110">
+        <div class="recharge-amount">₹110</div>
+        <img src="110.png" alt="₹110 Recharge" class="recharge-image" id="img-110">
       </div>
       
-      <div class="method-option active" onclick="selectPaymentMethod('upi', this)">
-        <div class="method-icon">
-          <i class="fas fa-mobile-alt"></i>
-        </div>
-        <div class="method-info">
-          <div class="method-name">UPI Payment</div>
-          <div class="method-desc">Google Pay, PhonePe, PayTM & more</div>
-        </div>
-        <i class="fas fa-check-circle" style="color: var(--primary-color);"></i>
+      <div class="recharge-option" data-amount="200">
+        <div class="recharge-amount">₹200</div>
+        <img src="200.png" alt="₹200 Recharge" class="recharge-image" id="img-200">
       </div>
       
-      <div class="method-option" onclick="selectPaymentMethod('card', this)">
-        <div class="method-icon">
-          <i class="far fa-credit-card"></i>
-        </div>
-        <div class="method-info">
-          <div class="method-name">Credit/Debit Card</div>
-          <div class="method-desc">Visa, Mastercard, Rupay</div>
-        </div>
+      <div class="recharge-option" data-amount="500">
+        <div class="recharge-amount">₹500</div>
+        <img src="500.png" alt="₹500 Recharge" class="recharge-image" id="img-500">
+      </div>
+      
+      <div class="recharge-option" data-amount="1100">
+        <div class="recharge-amount">₹1100</div>
+        <img src="1100.png" alt="₹1100 Recharge" class="recharge-image" id="img-1100">
+      </div>
+      
+      <div class="recharge-option" data-amount="2000">
+        <div class="recharge-amount">₹2000</div>
+        <img src="2000.png" alt="₹2000 Recharge" class="recharge-image" id="img-2000">
+      </div>
+      
+      <div class="recharge-option" data-amount="5000">
+        <div class="recharge-amount">₹5000</div>
+        <img src="5000.png" alt="₹5000 Recharge" class="recharge-image" id="img-5000">
       </div>
     </div>
     
-    <button class="recharge-btn" onclick="processRecharge()" id="rechargeButton" disabled>
-      <i class="fas fa-bolt"></i> Recharge Now
+    <div class="selected-recharge">
+      <div>Selected Amount:</div>
+      <div class="selected-amount" id="selected-amount">₹0</div>
+      <img id="recharge-image-display" style="display: none;" alt="Recharge Image">
+    </div>
+    
+    <button id="recharge-btn" onclick="processRecharge()">
+      <i class="fas fa-credit-card"></i> Proceed to Recharge
     </button>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="navigateTo('rikshawhome.html')">
-      <div class="nav-icon"><i class="fas fa-home"></i></div>
-      <div class="nav-label">Home</div>
-    </div>
-    <div class="nav-item" onclick="navigateTo('plans.html')">
-      <div class="nav-icon"><i class="fas fa-tractor"></i></div>
-      <div class="nav-label">Plans</div>
-    </div>
-    <div class="nav-item" onclick="navigateTo('team.html')">
-      <div class="nav-icon"><i class="fas fa-users"></i></div>
-      <div class="nav-label">Team</div>
-    </div>
-    <div class="nav-item active" onclick="navigateTo('profile.html')">
-      <div class="nav-icon"><i class="fas fa-user"></i></div>
-      <div class="nav-label">Profile</div>
+    
+    <div class="note-box">
+      <strong>Important Notes:</strong>
+      <ul>
+        <li>Recharge amount will be added to your wallet balance</li>
+        <li>Transactions are secure and encrypted</li>
+        <li>If you face any issues, contact our support team</li>
+      </ul>
     </div>
   </div>
+</div>
 
-  <script>
-    // Load current balance from localStorage or API
-    document.addEventListener('DOMContentLoaded', function() {
-      const balance = localStorage.getItem('userBalance') || '0.00';
-      document.getElementById('currentBalance').textContent = `₹${parseFloat(balance).toFixed(2)}`;
+<script>
+  // Sample balance data - in a real app, this would come from your backend
+  document.getElementById("balance").textContent = "500.00";
+  
+  // Get all recharge options
+  const rechargeOptions = document.querySelectorAll('.recharge-option');
+  let selectedAmount = 0;
+  
+  // Add click event to each option
+  rechargeOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      // Remove selected class from all options
+      rechargeOptions.forEach(opt => opt.classList.remove('selected'));
       
-      // Enable amount input validation
-      document.getElementById('amount').addEventListener('input', validateAmount);
+      // Add selected class to clicked option
+      this.classList.add('selected');
+      
+      // Get the amount from data attribute
+      selectedAmount = this.getAttribute('data-amount');
+      
+      // Update selected amount display
+      document.getElementById('selected-amount').textContent = `₹${selectedAmount}`;
+      
+      // Show the corresponding image
+      const imageDisplay = document.getElementById('recharge-image-display');
+      const imageSrc = `${selectedAmount}.png`;
+      imageDisplay.src = imageSrc;
+      imageDisplay.style.display = 'block';
+      imageDisplay.alt = `₹${selectedAmount} Recharge`;
     });
-    
-    // Navigation function
-    function navigateTo(page) {
-      window.location.href = page;
+  });
+  
+  // Function to process recharge
+  function processRecharge() {
+    if (selectedAmount === 0) {
+      alert('Please select a recharge amount first');
+      return;
     }
     
-    // Select amount from buttons
-    let selectedAmountBtn = null;
-    function selectAmount(value, button) {
-      document.getElementById('amount').value = value;
-      
-      // Remove active class from all buttons
-      document.querySelectorAll('.amount-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      // Add active class to clicked button
-      button.classList.add('active');
-      selectedAmountBtn = button;
-      
-      validateAmount();
-    }
+    // Disable button to prevent multiple clicks
+    const rechargeBtn = document.getElementById('recharge-btn');
+    rechargeBtn.disabled = true;
+    rechargeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     
-    // Clear active buttons when typing custom amount
-    function clearActiveButtons() {
-      if (selectedAmountBtn) {
-        selectedAmountBtn.classList.remove('active');
-        selectedAmountBtn = null;
-      }
-      validateAmount();
-    }
-    
-    // Select payment method
-    let selectedPaymentMethod = 'upi';
-    function selectPaymentMethod(method, element) {
-      selectedPaymentMethod = method;
+    // Simulate processing delay
+    setTimeout(() => {
+      alert(`Recharge of ₹${selectedAmount} processed successfully!`);
       
-      // Remove active class from all methods
-      document.querySelectorAll('.method-option').forEach(option => {
-        option.classList.remove('active');
-      });
+      // Calculate new balance (in a real app, this would update in your database)
+      const currentBalance = parseFloat(document.getElementById("balance").textContent);
+      const newBalance = currentBalance + parseFloat(selectedAmount);
+      document.getElementById("balance").textContent = newBalance.toFixed(2);
       
-      // Add active class to selected method
-      element.classList.add('active');
-    }
-    
-    // Validate amount input
-    function validateAmount() {
-      const amountInput = document.getElementById('amount');
-      const rechargeButton = document.getElementById('rechargeButton');
-      const amount = parseInt(amountInput.value);
-      
-      if (isNaN(amount) || amount < 110) {
-        rechargeButton.disabled = true;
-      } else {
-        rechargeButton.disabled = false;
-      }
-    }
-    
-    // Process recharge
-    function processRecharge() {
-      const amount = parseInt(document.getElementById('amount').value);
-      
-      if (isNaN(amount) || amount < 110) {
-        alert("Minimum recharge amount is ₹110");
-        return;
-      }
-      
-      // Store recharge details temporarily
-      const rechargeData = {
-        amount: amount,
-        method: selectedPaymentMethod,
-        timestamp: new Date().toISOString()
-      };
-      
-      localStorage.setItem('pendingRecharge', JSON.stringify(rechargeData));
-      
-      // Redirect to confirmation page
-      window.location.href = 'recharge-confirm.html';
-    }
-  </script>
+      // Reset UI
+      rechargeBtn.disabled = false;
+      rechargeBtn.innerHTML = '<i class="fas fa-credit-card"></i> Proceed to Recharge';
+      document.getElementById('selected-amount').textContent = '₹0';
+      document.getElementById('recharge-image-display').style.display = 'none';
+      rechargeOptions.forEach(opt => opt.classList.remove('selected'));
+      selectedAmount = 0;
+    }, 2000);
+  }
+</script>
 </body>
 </html>
