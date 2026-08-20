@@ -1,0 +1,195 @@
+:root {
+  --eco-forest: #123f35;
+  --eco-green: #1d7654;
+  --eco-lime: #c8ef72;
+  --eco-mint: #e9f6df;
+  --eco-ink: #17312a;
+  --eco-muted: #667a72;
+  --eco-paper: #fffdf7;
+  --eco-line: #d9e5d4;
+  --eco-shadow: 0 14px 36px rgba(18, 63, 53, 0.12);
+  --eco-radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  background-color: #dcebd4 !important;
+  background-image: linear-gradient(rgba(18, 63, 53, 0.78), rgba(18, 63, 53, 0.78)), url('Rikshaw.png') !important;
+  background-position: center !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  color: var(--eco-ink) !important;
+  font-family: 'Poppins', 'Segoe UI', sans-serif !important;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 15% 10%, rgba(200, 239, 114, 0.16), transparent 32%), radial-gradient(circle at 85% 90%, rgba(255, 253, 247, 0.12), transparent 28%);
+  z-index: -1;
+}
+
+header,
+.header {
+  background: linear-gradient(135deg, var(--eco-forest), var(--eco-green)) !important;
+  color: #fff !important;
+  border-radius: 0 0 22px 22px !important;
+  box-shadow: 0 8px 24px rgba(18, 63, 53, 0.24) !important;
+}
+
+header h1,
+header h2,
+header h3,
+.header h1,
+.header h2,
+.header h3,
+h1,
+h2,
+h3,
+h4 {
+  color: var(--eco-forest) !important;
+}
+
+header h1,
+header h2,
+.header h1,
+.header h2,
+.header h3 {
+  color: #fff !important;
+}
+
+.card,
+.form-box,
+.login-container,
+.plan-card,
+.plan-box,
+.featured-plan,
+.section,
+.balance-section,
+.options-list,
+.team-container > .card,
+.record-card,
+.container > .card {
+  background: rgba(255, 253, 247, 0.97) !important;
+  border: 1px solid rgba(217, 229, 212, 0.9) !important;
+  border-radius: var(--eco-radius) !important;
+  box-shadow: var(--eco-shadow) !important;
+}
+
+button,
+.login-btn,
+.collect-btn,
+.claim-btn,
+.logout-btn,
+.submit-btn,
+.btn-share,
+.balance-btn,
+.recharge-btn {
+  background: var(--eco-green) !important;
+  color: #fff !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 18px rgba(29, 118, 84, 0.2) !important;
+}
+
+button:hover,
+.login-btn:hover,
+.collect-btn:hover:enabled,
+.claim-btn:hover,
+.logout-btn:hover,
+.submit-btn:hover:not(:disabled),
+.btn-share:hover,
+.balance-btn:hover,
+.recharge-btn:hover {
+  background: var(--eco-forest) !important;
+}
+
+input,
+select,
+textarea {
+  background: #fbfdf8 !important;
+  border: 1px solid var(--eco-line) !important;
+  border-radius: 10px !important;
+  color: var(--eco-ink) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--eco-green) !important;
+  box-shadow: 0 0 0 3px rgba(29, 118, 84, 0.16) !important;
+}
+
+label,
+.text-light,
+.subtext,
+.plan-label,
+.detail-label,
+.balance-title,
+.profile-phone,
+.member-phone {
+  color: var(--eco-muted) !important;
+}
+
+a,
+.plan-value,
+.highlight-value,
+.balance-amount,
+.detail-value.highlight,
+.action-icon,
+.option-icon,
+.member-recharge {
+  color: var(--eco-green) !important;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, var(--eco-forest), var(--eco-green)) !important;
+  border-radius: var(--eco-radius) !important;
+  box-shadow: var(--eco-shadow) !important;
+}
+
+.amount-option,
+.recharge-option,
+.referral-box,
+.note-box,
+.task-status {
+  background: var(--eco-mint) !important;
+  border-color: var(--eco-line) !important;
+}
+
+.amount-option.selected,
+.recharge-option.selected {
+  background: var(--eco-green) !important;
+  border-color: var(--eco-green) !important;
+  color: #fff !important;
+}
+
+.bottom-nav {
+  background: var(--eco-forest) !important;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -8px 24px rgba(18, 63, 53, 0.22) !important;
+}
+
+.active-nav,
+.nav-item:hover {
+  color: var(--eco-lime) !important;
+}
+
+.profile-banner {
+  background-image: linear-gradient(rgba(18, 63, 53, 0.55), rgba(18, 63, 53, 0.78)), url('Rikshaw.png') !important;
+}
+
+@media (max-width: 600px) {
+  body {
+    background-attachment: scroll !important;
+  }
+}

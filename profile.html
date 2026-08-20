@@ -389,6 +389,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
   <!-- Top Banner Section -->
@@ -397,8 +398,8 @@
       <img id="userProfileImage" src="https://via.placeholder.com/80" alt="Profile">
     </div>
     <div class="profile-info">
-      <div class="profile-name" id="userName">Mr. Anas</div>
-      <div class="profile-phone" id="userPhone">807*****736</div>
+      <div class="profile-name" id="userName"></div>
+      <div class="profile-phone" id="userPhone"></div>
     </div>
   </div>
 
@@ -407,7 +408,7 @@
     <div class="balance-title">Current Balance</div>
     <div class="balance-amount" id="currentBalance">₹0.00</div>
     <div class="balance-actions">
-      <button class="balance-btn recharge-btn" onclick="navigateTo('recharge.html')">
+      <button class="balance-btn recharge-btn" onclick="navigateTo('recharge-confirm.html')">
         <i class="fas fa-rupee-sign"></i> Recharge
       </button>
       <button class="balance-btn withdraw-btn" onclick="navigateTo('withdraw.html')">
@@ -426,7 +427,7 @@
       <div class="action-icon"><i class="fas fa-tasks"></i></div>
       <div class="action-label">Mission</div>
     </div>
-    <div class="action-btn" onclick="navigateTo('recharge.html')">
+    <div class="action-btn" onclick="navigateTo('recharge-confirm.html')">
       <div class="action-icon"><i class="fas fa-rupee-sign"></i></div>
       <div class="action-label">Recharge</div>
     </div>

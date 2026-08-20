@@ -347,6 +347,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
@@ -367,7 +368,7 @@
       <h4>Available Balance</h4>
       <div class="balance-amount">₹0</div>
     </div>
-    <button class="recharge-btn" onclick="window.location.href='recharge.html'">
+    <button class="recharge-btn" onclick="window.location.href='recharge-confirm.html'">
       <i class="fas fa-plus"></i> Recharge
     </button>
   </div>
@@ -531,7 +532,7 @@
             });
           } else {
             alert("Not enough balance. Redirecting to recharge page...");
-            setTimeout(() => window.location.href = "recharge.html", 1500);
+            setTimeout(() => window.location.href = "recharge-confirm.html", 1500);
           }
         });
       };
