@@ -1,64 +1,98 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Investment Plans</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary-color: #2e7d32;
-      --primary-light: #60ad5e;
-      --primary-dark: #005005;
-      --secondary-color: #f5f5f5;
-      --text-dark: #333;
-      --text-light: #666;
-      --white: #ffffff;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
-    }
-
+    /* ─── Reset & Base ─── */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
+    /* Golden Hour – body base for aura blend */
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f5f5;
-      color: var(--text-dark);
-      padding-bottom: 70px;
+      background-color: #faf8f2;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      padding-bottom: 80px;
+      color: #2d241a;
+      line-height: 1.6;
     }
 
+    /* ─── Aura Background (fixed) ─── */
+    .aura-bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .aura-layer-1,
+    .aura-layer-2 {
+      position: absolute;
+      inset: 0;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .aura-layer-1 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(125px);
+    }
+    .aura-layer-2 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(100px);
+    }
+    @media (min-width: 768px) {
+      .aura-layer-1 { filter: blur(180px); }
+      .aura-layer-2 { filter: blur(144px); }
+    }
+
+    /* ─── Content wrapper (above aura) ─── */
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* ─── Header ─── */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--white);
-      padding: 16px 20px;
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      box-shadow: 0 4px 12px rgba(160, 120, 80, 0.06);
+      margin-bottom: 16px;
     }
 
     .header h3 {
       margin: 0;
-      color: var(--primary-color);
+      color: #7a4f2b;
       font-size: 1.4rem;
       font-weight: 600;
     }
 
     .header-actions {
       display: flex;
-      gap: 12px;
+      gap: 10px;
     }
 
     .header-btn {
-      background: var(--secondary-color);
+      background: rgba(200, 180, 160, 0.15);
       border: none;
       border-radius: 50%;
       width: 40px;
@@ -68,65 +102,68 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--primary-color);
-      transition: var(--transition);
+      color: #7a4f2b;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
     }
-
     .header-btn:hover {
-      background: var(--primary-light);
-      color: var(--white);
+      background: #b8702a;
+      color: #fff;
+      transform: translateY(-2px);
     }
 
+    /* ─── Balance Card ─── */
     .balance-card {
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-      color: var(--white);
-      padding: 16px;
-      margin: 16px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      padding: 18px 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.25);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 18px;
       animation: fadeIn 0.5s ease;
     }
 
     .balance-info h4 {
       font-size: 0.9rem;
       font-weight: 500;
-      margin-bottom: 4px;
       opacity: 0.9;
+      margin-bottom: 2px;
     }
-
     .balance-amount {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 700;
     }
 
     .recharge-btn {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255,255,255,0.2);
       border: none;
-      border-radius: 20px;
+      border-radius: 30px;
       padding: 8px 16px;
-      color: var(--white);
+      color: #fff;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: var(--transition);
+      transition: background 0.2s, transform 0.15s;
     }
-
     .recharge-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
     }
 
+    /* ─── Tabs ─── */
     .tabs {
       display: flex;
-      margin: 16px;
-      border-radius: 12px;
+      margin-bottom: 18px;
+      border-radius: 14px;
       overflow: hidden;
-      background: var(--secondary-color);
-      box-shadow: var(--shadow);
+      background: rgba(255, 252, 248, 0.8);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 215, 180, 0.2);
+      box-shadow: 0 2px 8px rgba(160, 120, 80, 0.04);
     }
 
     .tabs button {
@@ -134,63 +171,71 @@
       padding: 12px;
       border: none;
       background: transparent;
-      color: var(--text-light);
+      color: #7a6555;
       font-weight: 600;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.25s ease;
       position: relative;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
     }
 
     .tabs button.active {
-      color: var(--primary-color);
-      background: var(--white);
+      color: #b8702a;
+      background: rgba(255, 255, 255, 0.5);
     }
-
     .tabs button.active::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 60%;
+      width: 40%;
       height: 3px;
-      background: var(--primary-color);
+      background: #b8702a;
       border-radius: 3px;
     }
 
+    /* ─── Plan List ─── */
     .plan-list {
-      padding: 0 16px 16px;
       display: grid;
       gap: 16px;
+      animation: fadeIn 0.4s ease;
     }
 
     .plan-box {
-      background: var(--white);
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-      animation: slideUp 0.5s ease;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      box-shadow: 0 4px 12px rgba(160, 120, 80, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      animation: slideUp 0.5s ease forwards;
+      opacity: 0;
       position: relative;
       overflow: hidden;
     }
 
     .plan-box:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(160, 120, 80, 0.12);
+      border-color: rgba(200, 150, 100, 0.5);
     }
 
     .plan-box.featured::before {
       content: 'Popular';
       position: absolute;
-      top: 10px;
-      right: -30px;
-      background: var(--primary-color);
-      color: var(--white);
+      top: 12px;
+      right: -28px;
+      background: #b8702a;
+      color: #fff;
       padding: 4px 30px;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 600;
       transform: rotate(45deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
     .plan-header {
@@ -199,19 +244,17 @@
       align-items: center;
       margin-bottom: 12px;
     }
-
     .plan-box h4 {
       margin: 0;
-      color: var(--primary-color);
+      color: #7a4f2b;
       font-size: 1.1rem;
       font-weight: 600;
     }
-
     .plan-badge {
-      background: var(--secondary-color);
-      color: var(--primary-color);
-      padding: 4px 8px;
-      border-radius: 4px;
+      background: rgba(200, 180, 160, 0.2);
+      color: #7a4f2b;
+      padding: 4px 10px;
+      border-radius: 20px;
       font-size: 0.7rem;
       font-weight: 600;
     }
@@ -220,183 +263,213 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin: 16px 0;
+      margin: 14px 0 16px;
     }
-
     .detail-item {
       display: flex;
       flex-direction: column;
     }
-
     .detail-label {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      margin-bottom: 4px;
+      font-size: 0.75rem;
+      color: #7a6555;
+      margin-bottom: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
-
     .detail-value {
       font-size: 1rem;
       font-weight: 600;
-      color: var(--text-dark);
+      color: #2d241a;
     }
-
     .detail-value.highlight {
-      color: var(--primary-color);
+      color: #b8702a;
       font-size: 1.1rem;
     }
 
     .plan-box button {
-      margin-top: 8px;
+      margin-top: 4px;
       padding: 12px;
-      background: var(--primary-color);
-      color: var(--white);
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: 600;
       cursor: pointer;
       width: 100%;
-      transition: var(--transition);
+      transition: background 0.3s, transform 0.15s, box-shadow 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.2);
     }
-
-    .plan-box button:hover {
-      background: var(--primary-dark);
+    .plan-box button:hover:not(:disabled) {
+      background: linear-gradient(145deg, #d8954a, #b8702a);
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.3);
+      transform: translateY(-2px);
     }
-
+    .plan-box button:active {
+      transform: scale(0.97);
+    }
     .plan-box button:disabled {
       background: #cccccc;
       cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
     }
 
+    /* ─── Bottom Nav ─── */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--white);
+      background: rgba(255, 252, 248, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-around;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-      padding: 12px 0;
-      z-index: 10;
+      padding: 10px 0 6px;
+      border-top: 1px solid rgba(255, 215, 180, 0.3);
+      z-index: 1000;
+      box-shadow: 0 -4px 20px rgba(160, 120, 80, 0.06);
     }
 
     .nav-item {
       text-align: center;
-      color: var(--text-light);
+      color: #b8a898;
       font-weight: 500;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       cursor: pointer;
-      transition: var(--transition);
+      transition: color 0.2s, transform 0.2s;
       flex: 1;
+      padding: 4px 0;
     }
-
+    .nav-item:hover {
+      transform: translateY(-2px);
+    }
     .nav-item.active {
-      color: var(--primary-color);
+      color: #b8702a;
     }
-
     .nav-item i {
       display: block;
-      margin: 0 auto 4px;
+      margin: 0 auto 2px;
       font-size: 1.2rem;
     }
 
+    /* ─── Loading ─── */
     .loading {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 200px;
     }
-
     .spinner {
       width: 40px;
       height: 40px;
-      border: 4px solid rgba(0, 0, 0, 0.1);
+      border: 4px solid rgba(200, 180, 160, 0.2);
       border-radius: 50%;
-      border-top-color: var(--primary-color);
-      animation: spin 1s ease-in-out infinite;
+      border-top-color: #b8702a;
+      animation: spin 0.8s linear infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
+    @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Responsive adjustments */
+    /* ─── Responsive ─── */
     @media (min-width: 768px) {
-      .plan-list {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .plan-list { grid-template-columns: repeat(2, 1fr); }
+      .content-wrapper { max-width: 720px; }
     }
-
     @media (min-width: 1024px) {
-      .plan-list {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .plan-list { grid-template-columns: repeat(3, 1fr); }
+      .content-wrapper { max-width: 960px; }
+    }
+    @media (max-width: 520px) {
+      .content-wrapper { padding: 12px; }
+      .header { padding: 12px 14px; }
+      .header h3 { font-size: 1.2rem; }
+      .balance-amount { font-size: 1.3rem; }
+      .plan-box { padding: 16px; }
+      .plan-details { gap: 8px; }
     }
   </style>
-  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
-  <div class="header">
-    <h3>Investment Plans</h3>
-    <div class="header-actions">
-      <button class="header-btn" onclick="window.location.href='notifications.html'">
-        <i class="fas fa-bell"></i>
+  <!-- ─── AURA LAYERS ─── -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
+  </div>
+
+  <!-- ─── CONTENT ─── -->
+  <div class="content-wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <h3>Investment Plans</h3>
+      <div class="header-actions">
+        <button class="header-btn" onclick="window.location.href='notifications.html'">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="header-btn" onclick="window.location.href='history.html'">
+          <i class="fas fa-history"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Balance Card -->
+    <div class="balance-card" id="balanceCard">
+      <div class="balance-info">
+        <h4>Available Balance</h4>
+        <div class="balance-amount" id="balanceAmount">₹0.00</div>
+      </div>
+      <button class="recharge-btn" onclick="window.location.href='recharge-confirm.html'">
+        <i class="fas fa-plus"></i> Recharge
       </button>
-      <button class="header-btn" onclick="window.location.href='history.html'">
-        <i class="fas fa-history"></i>
-      </button>
     </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button id="dailyBtn" class="active" data-type="daily">Daily Plans</button>
+      <button id="weeklyBtn" data-type="weekly">Weekly Plans</button>
+    </div>
+
+    <!-- Plan List -->
+    <div class="plan-list" id="plansContainer">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="window.location.href='rikshawhome.html'">
+        <i class="fas fa-home"></i><span>Home</span>
+      </div>
+      <div class="nav-item active" onclick="window.location.href='plans.html'">
+        <i class="fas fa-wallet"></i><span>Invest</span>
+      </div>
+      <div class="nav-item" onclick="window.location.href='team.html'">
+        <i class="fas fa-users"></i><span>Team</span>
+      </div>
+      <div class="nav-item" onclick="window.location.href='profile.html'">
+        <i class="fas fa-user"></i><span>Profile</span>
+      </div>
+    </div>
+
   </div>
 
-  <div class="balance-card" id="balanceCard">
-    <div class="balance-info">
-      <h4>Available Balance</h4>
-      <div class="balance-amount">₹0</div>
-    </div>
-    <button class="recharge-btn" onclick="window.location.href='recharge-confirm.html'">
-      <i class="fas fa-plus"></i> Recharge
-    </button>
-  </div>
-
-  <div class="tabs">
-    <button id="dailyBtn" class="active" onclick="showPlans('daily')">Daily Plans</button>
-    <button id="weeklyBtn" onclick="showPlans('weekly')">Weekly Plans</button>
-  </div>
-
-  <div class="plan-list" id="plansContainer">
-    <div class="loading"><div class="spinner"></div></div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="window.location.href='rikshawhome.html'">
-      <i class="fas fa-home"></i><span>Home</span>
-    </div>
-    <div class="nav-item active" onclick="window.location.href='plans.html'">
-      <i class="fas fa-wallet"></i><span>Invest</span>
-    </div>
-    <div class="nav-item" onclick="window.location.href='team.html'">
-      <i class="fas fa-users"></i><span>Team</span>
-    </div>
-    <div class="nav-item" onclick="window.location.href='profile.html'">
-      <i class="fas fa-user"></i><span>Profile</span>
-    </div>
-  </div>
-
+  <!-- ─── FIREBASE MODULE ─── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
@@ -416,137 +489,178 @@
     const db = getDatabase();
     const auth = getAuth();
 
+    let currentUid = null;
+    let userRef = null;
+
+    // ─── Plans Data ───
+    const dailyPlans = [
+      { name: "Basic Plan", price: 499, daily: 109.8, total: 1098, days: 10, badge: "Starter", featured: false },
+      { name: "Standard Plan", price: 110, daily: 22, total: 220, days: 10, badge: "Popular", featured: true },
+      { name: "Premium Plan", price: 2100, daily: 450, total: 4500, days: 10, badge: "Best Value", featured: false },
+      { name: "Short-Term Plan", price: 2500, daily: 900, total: 4500, days: 5, badge: "Quick Return", featured: false },
+      { name: "Weekly Plus", price: 4990, daily: 6000, total: 12000, days: 2, badge: "Featured", featured: true },
+      { name: "Turbo Plan", price: 9990, daily: 3500, total: 24500, days: 7, badge: "High Yield", featured: false },
+      { name: "Elite Plan", price: 20000, daily: 10000, total: 60000, days: 6, badge: "VIP", featured: true }
+    ];
+
+    const weeklyPlans = [
+      { name: "Weekly Basic", price: 3990, daily: 900, total: 6300, days: 7, badge: "Starter", featured: false },
+      { name: "Weekly Pro", price: 5990, daily: 2300, total: 16100, days: 7, badge: "Popular", featured: true },
+      { name: "Weekly Premium", price: 8990, daily: 4000, total: 28000, days: 7, badge: "Best Value", featured: false },
+      { name: "Weekly Max", price: 14990, daily: 12000, total: 84000, days: 7, badge: "VIP", featured: true }
+    ];
+
+    // ─── Auth ───
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        init(user.uid);
+        currentUid = user.uid;
+        userRef = ref(db, "users/" + currentUid);
+        init();
       } else {
         window.location.href = "login.html";
       }
     });
 
-    function init(uid) {
-      const userRef = ref(db, "users/" + uid);
-      const plansContainer = document.getElementById("plansContainer");
-      const balanceAmount = document.querySelector(".balance-amount");
-
-      const dailyPlans = [
-        { name: "Basic Plan", price: 499, daily: 109.8, total: 1098, days: 10, badge: "Starter", featured: false },
-        { name: "Standard Plan", price: 110, daily: 22, total: 220, days: 10, badge: "Popular", featured: true },
-        { name: "Premium Plan", price: 2100, daily: 450, total: 4500, days: 10, badge: "Best Value", featured: false },
-        { name: "Short-Term Plan", price: 2500, daily: 900, total: 4500, days: 5, badge: "Quick Return", featured: false },
-        { name: "Weekly Plus", price: 4990, daily: 6000, total: 12000, days: 2, badge: "Featured", featured: true },
-        { name: "Turbo Plan", price: 9990, daily: 3500, total: 24500, days: 7, badge: "High Yield", featured: false },
-        { name: "Elite Plan", price: 20000, daily: 10000, total: 60000, days: 6, badge: "VIP", featured: true }
-      ];
-
-      const weeklyPlans = [
-        { name: "Weekly Basic", price: 3990, daily: 900, total: 6300, days: 7, badge: "Starter", featured: false },
-        { name: "Weekly Pro", price: 5990, daily: 2300, total: 16100, days: 7, badge: "Popular", featured: true },
-        { name: "Weekly Premium", price: 8990, daily: 4000, total: 28000, days: 7, badge: "Best Value", featured: false },
-        { name: "Weekly Max", price: 14990, daily: 12000, total: 84000, days: 7, badge: "VIP", featured: true }
-      ];
-
-      function showPlans(type) {
-        document.getElementById("dailyBtn").classList.toggle("active", type === "daily");
-        document.getElementById("weeklyBtn").classList.toggle("active", type === "weekly");
-
-        const plans = type === "daily" ? dailyPlans : weeklyPlans;
-        plansContainer.innerHTML = "";
-
-        get(userRef).then(snap => {
-          const userBalance = snap.exists() ? (snap.val().balance || 0) : 0;
-
-          plans.forEach((plan, index) => {
-            const canAfford = userBalance >= plan.price;
-            const delay = index * 0.1;
-
-            plansContainer.innerHTML += `
-              <div class="plan-box ${plan.featured ? 'featured' : ''}" style="animation-delay: ${delay}s">
-                <div class="plan-header">
-                  <h4>${plan.name}</h4>
-                  <span class="plan-badge">${plan.badge}</span>
-                </div>
-                <div class="plan-details">
-                  <div class="detail-item">
-                    <span class="detail-label">Investment</span>
-                    <span class="detail-value">₹${plan.price.toLocaleString()}</span>
-                  </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Daily Return</span>
-                    <span class="detail-value highlight">₹${plan.daily.toLocaleString()}</span>
-                  </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Total Return</span>
-                    <span class="detail-value">₹${plan.total.toLocaleString()}</span>
-                  </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Duration</span>
-                    <span class="detail-value">${plan.days} days</span>
-                  </div>
-                </div>
-                <button onclick="buy(${plan.price}, '${plan.name}', ${plan.daily}, ${plan.total}, ${plan.days})" ${canAfford ? '' : 'disabled'}>
-                  <i class="fas fa-shopping-cart"></i>
-                  ${canAfford ? 'Invest Now' : 'Insufficient Balance'}
-                </button>
-              </div>
-            `;
-          });
-        });
-      }
-
-      window.buy = (price, planName, dailyIncome, totalIncome, days) => {
-        if (!confirm(`Are you sure you want to invest ₹${price.toLocaleString()} in ${planName}?`)) return;
-
-        get(userRef).then(snap => {
-          if (!snap.exists()) return alert("User not found");
-
-          const user = snap.val();
-          if ((user.balance || 0) >= price) {
-            const newBal = user.balance - price;
-
-            const investment = {
-              planName, amount: price, dailyIncome, totalIncome, days,
-              date: new Date().toISOString(), status: "active"
-            };
-
-            const collectionData = {
-              planName, amount: price, dailyIncome, totalIncome, days,
-              date: new Date().toISOString(), userId: uid
-            };
-
-            const updates = {
-              balance: newBal,
-              [`investments/${Date.now()}`]: investment,
-              [`collectionQueue/${Date.now()}`]: collectionData
-            };
-
-            update(userRef, updates).then(() => {
-              balanceAmount.textContent = `₹${newBal}`;
-              alert(`Success! You've invested ₹${price.toLocaleString()} in ${planName}.`);
-              showPlans(document.querySelector(".tabs button.active").id === "dailyBtn" ? "daily" : "weekly");
-              setTimeout(() => {
-                window.location.href = `collect.html?plan=${encodeURIComponent(planName)}&amount=${price}&daily=${dailyIncome}&total=${totalIncome}&days=${days}`;
-              }, 1000);
-            }).catch(error => {
-              alert("Error processing investment: " + error.message);
-            });
-          } else {
-            alert("Not enough balance. Redirecting to recharge page...");
-            setTimeout(() => window.location.href = "recharge-confirm.html", 1500);
-          }
-        });
-      };
-
-      // Load default plans
+    // ─── Init ───
+    async function init() {
+      await updateBalanceDisplay();
+      // Attach tab events
+      document.getElementById("dailyBtn").addEventListener("click", () => showPlans("daily"));
+      document.getElementById("weeklyBtn").addEventListener("click", () => showPlans("weekly"));
+      // Show default
       showPlans("daily");
+    }
 
-      // Show balance
-      get(userRef).then(snap => {
-        if (snap.exists()) {
-          balanceAmount.textContent = `₹${snap.val().balance || 0}`;
-        }
+    // ─── Update Balance Display ───
+    async function updateBalanceDisplay() {
+      if (!userRef) return;
+      const snap = await get(userRef);
+      const balance = snap.exists() ? (snap.val().balance || 0) : 0;
+      document.getElementById("balanceAmount").textContent = `₹${balance.toFixed(2)}`;
+    }
+
+    // ─── Show Plans ───
+    async function showPlans(type) {
+      // Update active tab
+      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = type === 'daily' ? document.getElementById('dailyBtn') : document.getElementById('weeklyBtn');
+      activeBtn.classList.add('active');
+
+      const plans = type === 'daily' ? dailyPlans : weeklyPlans;
+      const container = document.getElementById('plansContainer');
+      container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+      // Get user balance
+      const snap = await get(userRef);
+      const userBalance = snap.exists() ? (snap.val().balance || 0) : 0;
+
+      container.innerHTML = '';
+      plans.forEach((plan, index) => {
+        const canAfford = userBalance >= plan.price;
+        const delay = index * 0.08;
+
+        const box = document.createElement('div');
+        box.className = `plan-box${plan.featured ? ' featured' : ''}`;
+        box.style.animationDelay = `${delay}s`;
+        box.innerHTML = `
+          <div class="plan-header">
+            <h4>${plan.name}</h4>
+            <span class="plan-badge">${plan.badge}</span>
+          </div>
+          <div class="plan-details">
+            <div class="detail-item">
+              <span class="detail-label">Investment</span>
+              <span class="detail-value">₹${plan.price.toLocaleString()}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Daily Return</span>
+              <span class="detail-value highlight">₹${plan.daily.toLocaleString()}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Total Return</span>
+              <span class="detail-value">₹${plan.total.toLocaleString()}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Duration</span>
+              <span class="detail-value">${plan.days} days</span>
+            </div>
+          </div>
+          <button ${canAfford ? '' : 'disabled'}>
+            <i class="fas fa-shopping-cart"></i>
+            ${canAfford ? 'Invest Now' : 'Insufficient Balance'}
+          </button>
+        `;
+
+        // Attach click event to button
+        const btn = box.querySelector('button');
+        btn.addEventListener('click', () => {
+          buyPlan(plan.price, plan.name, plan.daily, plan.total, plan.days);
+        });
+
+        container.appendChild(box);
       });
     }
+
+    // ─── Buy Plan ───
+    async function buyPlan(price, planName, dailyIncome, totalIncome, days) {
+      if (!confirm(`Are you sure you want to invest ₹${price.toLocaleString()} in ${planName}?`)) return;
+
+      const snap = await get(userRef);
+      if (!snap.exists()) return alert("User not found");
+
+      const user = snap.val();
+      const balance = user.balance || 0;
+
+      if (balance < price) {
+        alert("Not enough balance. Redirecting to recharge page...");
+        setTimeout(() => window.location.href = "recharge-confirm.html", 1500);
+        return;
+      }
+
+      const newBal = balance - price;
+      const investment = {
+        planName,
+        amount: price,
+        dailyIncome,
+        totalIncome,
+        days,
+        date: new Date().toISOString(),
+        status: "active"
+      };
+      const collectionData = {
+        planName,
+        amount: price,
+        dailyIncome,
+        totalIncome,
+        days,
+        date: new Date().toISOString(),
+        userId: currentUid
+      };
+
+      const updates = {
+        balance: newBal,
+        [`investments/${Date.now()}`]: investment,
+        [`collectionQueue/${Date.now()}`]: collectionData
+      };
+
+      try {
+        await update(userRef, updates);
+        document.getElementById("balanceAmount").textContent = `₹${newBal.toFixed(2)}`;
+        alert(`Success! You've invested ₹${price.toLocaleString()} in ${planName}.`);
+        // Refresh the current tab
+        const activeType = document.querySelector('.tabs button.active').dataset.type;
+        showPlans(activeType);
+        setTimeout(() => {
+          window.location.href = `collect.html?plan=${encodeURIComponent(planName)}&amount=${price}&daily=${dailyIncome}&total=${totalIncome}&days=${days}`;
+        }, 1000);
+      } catch (err) {
+        alert("Error processing investment: " + err.message);
+      }
+    }
+
+    // ─── Expose for global use (if any inline calls) ───
+    window.showPlans = showPlans;
+    window.buyPlan = buyPlan;
   </script>
 </body>
 </html>

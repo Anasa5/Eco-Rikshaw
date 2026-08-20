@@ -2,145 +2,185 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rikshaw Home</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary-color: #00aa00;
-      --primary-dark: #008800;
-      --primary-light: #ccffcc;
-      --background: #f5fff5;
-      --card-bg: #ffffff;
-      --text-dark: #333333;
-      --text-light: #666666;
-      --shadow: 0 4px 12px rgba(0, 100, 0, 0.1);
-      --transition: all 0.3s ease;
-    }
-
+    /* ─── Reset & Base ─── */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    /* Golden Hour – body base color for aura blend */
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--background);
-      color: var(--text-dark);
+      background-color: #faf8f2;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
       padding-bottom: 80px;
+      color: #2d241a;
       line-height: 1.6;
     }
 
-    .header {
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-      color: white;
-      padding: 18px;
-      font-size: 22px;
-      text-align: center;
+    /* ─── Aura Background (fixed) ─── */
+    .aura-bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .aura-layer-1,
+    .aura-layer-2 {
+      position: absolute;
+      inset: 0;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .aura-layer-1 {
+      background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(255, 183, 77, 0.12) 28%, rgb(255, 255, 255) 18%, rgb(255, 138, 61) 68%, rgb(183, 77, 0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(125px);
+    }
+
+    .aura-layer-2 {
+      background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(255, 183, 77, 0.22) 34%, rgb(255, 255, 255) 66%, rgb(255, 138, 61) 82%, rgb(183, 77, 0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(100px);
+    }
+
+    @media (min-width: 768px) {
+      .aura-layer-1 {
+        filter: blur(180px);
+      }
+      .aura-layer-2 {
+        filter: blur(144px);
+      }
+    }
+
+    /* ─── Content wrapper (above aura) ─── */
+    .content-wrapper {
       position: relative;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      z-index: 10;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      padding: 18px 16px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.25);
+      backdrop-filter: blur(4px);
+    }
+
+    .header-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
     }
 
     .balance-display {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
       background: rgba(255, 255, 255, 0.2);
-      padding: 5px 10px;
-      border-radius: 20px;
+      padding: 6px 14px;
+      border-radius: 30px;
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 500;
       display: flex;
       align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(2px);
     }
 
     .balance-display i {
-      margin-right: 5px;
+      font-size: 16px;
     }
 
-    .top-banner img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-bottom: 3px solid var(--primary-dark);
-    }
-
+    /* ─── Quick Actions ─── */
     .quick-actions {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      padding: 15px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-bottom: 24px;
     }
 
     .action-card {
-      background: var(--card-bg);
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 18px 10px;
       text-align: center;
-      padding: 20px 10px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      font-weight: 600;
-      color: var(--text-dark);
+      font-weight: 500;
+      color: #2d241a;
       cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      box-shadow: 0 4px 12px rgba(160, 120, 80, 0.06);
     }
 
     .action-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px rgba(0, 128, 0, 0.15);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(160, 120, 80, 0.12);
+      border-color: rgba(200, 150, 100, 0.5);
     }
 
     .action-card i {
       font-size: 28px;
-      margin-bottom: 10px;
-      color: var(--primary-dark);
+      color: #b8702a;
+      margin-bottom: 8px;
+      display: block;
     }
 
+    .action-card span {
+      font-size: 14px;
+    }
+
+    /* ─── Featured Plan ─── */
     .featured-plan {
-      background: var(--card-bg);
-      margin: 20px 15px;
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 16px;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: var(--shadow);
-      text-align: center;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      box-shadow: 0 4px 12px rgba(160, 120, 80, 0.06);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      margin-bottom: 20px;
     }
 
     .featured-plan:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 128, 0, 0.2);
-    }
-
-    .featured-plan::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 5px;
-      height: 100%;
-      background: var(--primary-color);
+      box-shadow: 0 8px 24px rgba(160, 120, 80, 0.12);
+      border-color: rgba(200, 150, 100, 0.5);
     }
 
     .featured-plan h3 {
-      margin-bottom: 15px;
-      color: var(--primary-dark);
+      color: #7a4f2b;
       font-size: 18px;
+      margin-bottom: 14px;
+      font-weight: 600;
+      text-align: center;
     }
 
     .plan-details {
       display: flex;
       justify-content: space-between;
-      margin: 12px 0;
-      padding-bottom: 8px;
-      border-bottom: 1px dashed #e0e0e0;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(200, 180, 160, 0.3);
     }
 
     .plan-details:last-child {
@@ -148,74 +188,78 @@
     }
 
     .plan-label {
-      color: var(--text-light);
+      color: #7a6555;
       font-size: 14px;
     }
 
     .plan-value {
       font-weight: 600;
-      color: var(--primary-dark);
+      color: #7a4f2b;
     }
 
     .highlight-value {
-      color: var(--primary-dark);
-      font-weight: bold;
+      color: #b8702a;
     }
 
-    /* Bottom Navigation */
+    /* ─── Bottom Navigation ─── */
     .bottom-nav {
       position: fixed;
       bottom: 0;
-      width: 100%;
-      background-color: var(--primary-dark);
+      left: 0;
+      right: 0;
+      background: rgba(255, 252, 248, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-around;
-      padding: 12px 0;
+      padding: 10px 0 6px;
+      border-top: 1px solid rgba(255, 215, 180, 0.3);
       z-index: 1000;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 -4px 20px rgba(160, 120, 80, 0.06);
     }
 
     .nav-item {
-      color: white;
       text-align: center;
-      flex: 1;
       cursor: pointer;
-      transition: var(--transition);
-      padding: 5px;
+      transition: transform 0.2s ease, color 0.2s ease;
+      padding: 4px 0;
+      color: #b8a898;
+      text-decoration: none;
+      flex: 1;
     }
 
     .nav-item:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
+    }
+
+    .nav-item.active-nav {
+      color: #b8702a;
     }
 
     .nav-icon {
       font-size: 20px;
-      margin-bottom: 3px;
+      display: block;
+      margin-bottom: 2px;
     }
 
     .nav-label {
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 500;
     }
 
-    .active-nav {
-      color: #aaffaa;
-    }
-
-    /* Modals */
+    /* ─── Modals ─── */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 1001;
       opacity: 0;
       visibility: hidden;
-      transition: var(--transition);
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     .modal-overlay.active {
@@ -224,230 +268,284 @@
     }
 
     .modal-content {
-      background: white;
+      background: rgba(255, 252, 248, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       width: 90%;
       max-width: 400px;
-      border-radius: 15px;
+      border-radius: 20px;
       overflow: hidden;
-      transform: translateY(20px);
-      transition: var(--transition);
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     }
 
     .modal-overlay.active .modal-content {
-      transform: translateY(0);
+      transform: scale(1) translateY(0);
     }
 
     .modal-header {
-      background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
-      color: white;
-      padding: 15px;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      padding: 16px;
       font-size: 18px;
-      font-weight: bold;
+      font-weight: 600;
       text-align: center;
     }
 
     .modal-body {
-      padding: 20px;
+      padding: 24px 20px;
       text-align: center;
     }
 
     .modal-body img {
-      width: 100px;
-      margin: 10px auto;
-      border-radius: 10px;
+      width: 80px;
+      margin: 0 auto 12px;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .modal-body .plan-details {
+      border-bottom: 1px dashed rgba(200, 180, 160, 0.2);
     }
 
     .modal-footer {
       display: flex;
       justify-content: center;
-      padding: 0 20px 20px;
-      gap: 10px;
+      gap: 12px;
+      padding: 0 20px 24px;
     }
 
     .modal-btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
       border-radius: 30px;
       font-weight: 600;
+      font-size: 14px;
       cursor: pointer;
-      transition: var(--transition);
+      transition: background 0.2s, transform 0.15s;
       flex: 1;
-      max-width: 150px;
+      max-width: 160px;
     }
 
     .modal-btn.secondary {
-      background: #f0f0f0;
-      color: var(--text-dark);
+      background: rgba(200, 180, 160, 0.2);
+      color: #5a4030;
+    }
+
+    .modal-btn.secondary:hover {
+      background: rgba(200, 180, 160, 0.35);
     }
 
     .modal-btn.primary {
-      background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
-      color: white;
-      box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2);
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.25);
     }
 
-    .modal-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .modal-btn.primary:hover {
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.35);
     }
 
     .modal-btn:active {
-      transform: translateY(0);
+      transform: scale(0.96);
     }
 
-    /* Loading animation */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 8px;
-      vertical-align: middle;
+    .modal-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
-      .header {
-        font-size: 20px;
-        padding: 15px;
-      }
-      
-      .balance-display {
-        font-size: 12px;
-        padding: 3px 8px;
-      }
-      
-      .action-card {
-        padding: 15px 8px;
-        font-size: 14px;
-      }
-      
-      .action-card i {
-        font-size: 24px;
-      }
-      
-      .featured-plan {
-        padding: 15px;
-      }
-      
-      .featured-plan h3 {
-        font-size: 16px;
-      }
-    }
-
-    /* Alert notification */
+    /* ─── Alert ─── */
     .alert {
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 15px 25px;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 14px 24px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 500;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
       z-index: 1002;
       display: flex;
       align-items: center;
-      animation: fadeIn 0.3s ease;
+      gap: 12px;
+      animation: slideDown 0.35s ease forwards;
       max-width: 90%;
+      backdrop-filter: blur(4px);
     }
-    
+
     .alert.success {
-      background: linear-gradient(to right, #00aa00, #008800);
+      background: linear-gradient(145deg, #7a9f5a, #5f8a3a);
     }
-    
     .alert.error {
-      background: linear-gradient(to right, #ff3333, #cc0000);
+      background: linear-gradient(145deg, #d45a4a, #b84a3a);
     }
-    
     .alert i {
-      margin-right: 10px;
-      font-size: 20px;
+      font-size: 22px;
     }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
     }
-    
-    @keyframes fadeOut {
-      from { opacity: 1; transform: translateX(-50%) translateY(0); }
-      to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+
+    @keyframes slideUp {
+      from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+    }
+
+    .alert.hide {
+      animation: slideUp 0.3s ease forwards;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 520px) {
+      .content-wrapper {
+        padding: 12px;
+      }
+      .header {
+        padding: 14px 12px;
+      }
+      .header-title {
+        font-size: 17px;
+      }
+      .balance-display {
+        font-size: 12px;
+        padding: 4px 12px;
+      }
+      .quick-actions {
+        gap: 10px;
+      }
+      .action-card {
+        padding: 14px 8px;
+      }
+      .action-card i {
+        font-size: 24px;
+      }
+      .action-card span {
+        font-size: 13px;
+      }
+      .featured-plan {
+        padding: 16px;
+      }
+    }
+
+    /* ─── Loading spinner ─── */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ─── Misc ─── */
+    .mt-2 {
+      margin-top: 8px;
+    }
+    .text-muted {
+      color: #7a6555;
+      font-size: 13px;
     }
   </style>
-  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
-  <div class="header">
-    <div class="balance-display">
-      <i class="fas fa-wallet"></i>
-      <span id="user-balance">₹0.00</span>
-    </div>
-    Eco Rikshaw
+  <!-- ─── AURA LAYERS ─── -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
   </div>
 
-  <div class="top-banner">
-    <img src="Rikshaw.png" alt="Eco Rikshaw" />
+  <!-- ─── CONTENT ─── -->
+  <div class="content-wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <span class="header-title">Eco Rikshaw</span>
+      <div class="balance-display">
+        <i class="fas fa-wallet"></i>
+        <span id="user-balance">₹0.00</span>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <div class="action-card" id="checkinBtn">
+        <i class="fas fa-calendar-check"></i>
+        <span>Daily Check‑In</span>
+      </div>
+      <div class="action-card" onclick="window.location.href='invite.html'">
+        <i class="fas fa-user-plus"></i>
+        <span>Invite Friends</span>
+      </div>
+      <div class="action-card" onclick="window.location.href='recharge-confirm.html'">
+        <i class="fas fa-rupee-sign"></i>
+        <span>Recharge</span>
+      </div>
+      <div class="action-card" onclick="window.location.href='withdraw.html'">
+        <i class="fas fa-money-bill-wave"></i>
+        <span>Withdraw</span>
+      </div>
+    </div>
+
+    <!-- Featured Plan -->
+    <div class="featured-plan" id="planCard">
+      <h3>Featured Plan</h3>
+      <div class="plan-details">
+        <span class="plan-label">Plan Name:</span>
+        <span class="plan-value">Eco Rikshaw (A)</span>
+      </div>
+      <div class="plan-details">
+        <span class="plan-label">Price:</span>
+        <span class="plan-value">₹449</span>
+      </div>
+      <div class="plan-details">
+        <span class="plan-label">Daily Income:</span>
+        <span class="plan-value highlight-value">₹109.8</span>
+      </div>
+      <div class="plan-details">
+        <span class="plan-label">Total Income:</span>
+        <span class="plan-value highlight-value">₹1098</span>
+      </div>
+      <div class="plan-details">
+        <span class="plan-label">Duration:</span>
+        <span class="plan-value">10 Days</span>
+      </div>
+    </div>
+
   </div>
 
-  <div class="quick-actions">
-    <div class="action-card" onclick="checkIn()">
-      <i class="fas fa-calendar-check"></i>
-      Daily Check-In
-    </div>
-    <div class="action-card" onclick="window.location.href='invite.html'">
-      <i class="fas fa-user-plus"></i>
-      Invite Friends
-    </div>
-    <div class="action-card" onclick="window.location.href='recharge-confirm.html'">
-      <i class="fas fa-rupee-sign"></i>
-      Recharge
-    </div>
-    <div class="action-card" onclick="window.location.href='withdraw.html'">
-      <i class="fas fa-money-bill-wave"></i>
-      Withdraw
-    </div>
-  </div>
-
-  <div class="featured-plan" onclick="showPlanPopup()">
-    <h3>Featured Plan</h3>
-    <div class="plan-details">
-      <span class="plan-label">Plan Name:</span>
-      <span class="plan-value">Eco Rikshaw (A)</span>
-    </div>
-    <div class="plan-details">
-      <span class="plan-label">Price:</span>
-      <span class="plan-value">₹449</span>
-    </div>
-    <div class="plan-details">
-      <span class="plan-label">Daily Income:</span>
-      <span class="plan-value highlight-value">₹109.8</span>
-    </div>
-    <div class="plan-details">
-      <span class="plan-label">Total Income:</span>
-      <span class="plan-value highlight-value">₹1098</span>
-    </div>
-    <div class="plan-details">
-      <span class="plan-label">Duration:</span>
-      <span class="plan-value">10 Days</span>
-    </div>
-  </div>
-
-  <!-- Plan Modal -->
+  <!-- ─── PLAN MODAL ─── -->
   <div class="modal-overlay" id="planModal">
     <div class="modal-content">
-      <div class="modal-header">
-        Eco Rikshaw Plan
-      </div>
+      <div class="modal-header">Eco Rikshaw Plan</div>
       <div class="modal-body">
         <img src="Rikshaw.png" alt="Eco Rikshaw" />
         <div class="plan-details">
@@ -468,59 +566,54 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="modal-btn secondary" onclick="closePlan()">
-          Maybe Later
-        </button>
-        <button class="modal-btn primary" onclick="buyPlan()">
-          Buy Now
-        </button>
+        <button class="modal-btn secondary" id="closePlanBtn">Maybe Later</button>
+        <button class="modal-btn primary" id="buyPlanBtn">Buy Now</button>
       </div>
     </div>
   </div>
 
-  <!-- Check-in Modal -->
+  <!-- ─── CHECK-IN MODAL ─── -->
   <div class="modal-overlay" id="checkinModal">
     <div class="modal-content">
-      <div class="modal-header">
-        Daily Check-In
-      </div>
+      <div class="modal-header">Daily Check‑In</div>
       <div class="modal-body">
-        <i class="fas fa-calendar-check" style="font-size: 50px; color: var(--primary-color); margin: 15px 0;"></i>
-        <p id="checkinText">Checking time...</p>
-        <button id="claimBtn" class="modal-btn primary" style="display:none; margin-top: 15px;" onclick="claimBonus()">
+        <i class="fas fa-calendar-check" style="font-size:48px; color:#b8702a; margin-bottom:12px;"></i>
+        <p id="checkinText" style="margin-bottom:12px;">Loading...</p>
+        <button id="claimBtn" class="modal-btn primary" style="display:none; width:100%; max-width:200px; margin:0 auto;">
           Claim ₹5 Bonus
         </button>
+        <p id="countdownText" class="text-muted mt-2" style="display:none;"></p>
       </div>
       <div class="modal-footer">
-        <button class="modal-btn secondary" onclick="closeCheckinModal()">
-          Close
-        </button>
+        <button class="modal-btn secondary" id="closeCheckinBtn">Close</button>
       </div>
     </div>
   </div>
 
+  <!-- ─── BOTTOM NAV ─── -->
   <div class="bottom-nav">
     <div class="nav-item active-nav" onclick="window.location.href='rikshawhome.html'">
-      <div class="nav-icon"><i class="fas fa-home"></i></div>
-      <div class="nav-label">Home</div>
+      <span class="nav-icon"><i class="fas fa-home"></i></span>
+      <span class="nav-label">Home</span>
     </div>
     <div class="nav-item" onclick="window.location.href='plans.html'">
-      <div class="nav-icon"><i class="fas fa-tractor"></i></div>
-      <div class="nav-label">Plans</div>
+      <span class="nav-icon"><i class="fas fa-tractor"></i></span>
+      <span class="nav-label">Plans</span>
     </div>
     <div class="nav-item" onclick="window.location.href='team.html'">
-      <div class="nav-icon"><i class="fas fa-users"></i></div>
-      <div class="nav-label">Team</div>
+      <span class="nav-icon"><i class="fas fa-users"></i></span>
+      <span class="nav-label">Team</span>
     </div>
     <div class="nav-item" onclick="window.location.href='profile.html'">
-      <div class="nav-icon"><i class="fas fa-user"></i></div>
-      <div class="nav-label">Profile</div>
+      <span class="nav-icon"><i class="fas fa-user"></i></span>
+      <span class="nav-label">Profile</span>
     </div>
   </div>
 
+  <!-- ─── FIREBASE MODULE ─── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getDatabase, ref, get, update, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
     const firebaseConfig = {
@@ -536,163 +629,200 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const auth = getAuth(app);
+
+    let currentUid = null;
+    let userData = null;
+
+    // ─── Auth State ───
     onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html";
-  } else {
-    const uid = user.uid;
-
-    // Continue loading balance and user data here
-    updateBalance(uid); // Pass uid
-    setupCheckin(uid);  // Optional if you use it
-  }
-});
-
-
-    // Update balance display
-    function updateBalance(uid) {
-  const userRef = ref(db, "users/" + uid);
-  get(userRef).then((snap) => {
-    if (snap.exists()) {
-      const user = snap.val();
-      const displayBalance = user.balance < 0 ? 0 : user.balance;
-      document.getElementById("user-balance").textContent = `₹${displayBalance.toFixed(2)}`;
-    }
-  });
-}
-
-
-    // Initial balance load
-    updateBalance();
-
-    // Check-in function
-    window.checkIn = function() {
-      const now = new Date();
-      const hour = now.getHours();
-      const modal = document.getElementById("checkinModal");
-      
-      modal.classList.add("active");
-      document.getElementById("claimBtn").style.display = "none";
-
-      if (hour >= 6) {
-        document.getElementById("checkinText").textContent = "You can claim your ₹5 daily bonus now!";
-        document.getElementById("claimBtn").style.display = "block";
-      } else {
-        document.getElementById("checkinText").textContent = "Come back after 6 AM to claim your daily bonus.";
+      if (!user) {
+        window.location.href = "login.html";
+        return;
       }
-    };
+      currentUid = user.uid;
+      loadUserData();
+    });
 
-    window.closeCheckinModal = function() {
-      document.getElementById("checkinModal").classList.remove("active");
-    };
+    // ─── Load user data ───
+    async function loadUserData() {
+      if (!currentUid) return;
+      const snap = await get(ref(db, `users/${currentUid}`));
+      if (snap.exists()) {
+        userData = snap.val();
+        updateBalanceDisplay(userData.balance || 0);
+      } else {
+        // new user – initialize
+        const initData = { balance: 0, lastCheckin: null };
+        await set(ref(db, `users/${currentUid}`), initData);
+        userData = initData;
+        updateBalanceDisplay(0);
+      }
+    }
 
-    window.claimBonus = function() {
-      const btn = document.getElementById("claimBtn");
-      btn.innerHTML = '<span class="loading"></span> Processing...';
-      btn.disabled = true;
-      
-      const userRef = ref(db, "users/" + uid);
-      get(userRef).then((snap) => {
-        const user = snap.val();
-        const newBal = (user.balance || 0) + 5;
-        
-        update(userRef, { 
-          balance: newBal,
-          lastCheckin: new Date().toISOString()
-        }).then(() => {
-          updateBalance();
-          showAlert('success', 'Bonus Claimed!', '₹5 has been added to your balance.');
-          closeCheckinModal();
-        }).catch(error => {
-          showAlert('error', 'Error', 'Failed to claim bonus. Please try again.');
-          console.error(error);
-        }).finally(() => {
-          btn.innerHTML = 'Claim ₹5 Bonus';
-          btn.disabled = false;
-        });
-      });
-    };
+    function updateBalanceDisplay(balance) {
+      const display = document.getElementById("user-balance");
+      display.textContent = `₹${(balance || 0).toFixed(2)}`;
+    }
 
-    // Plan modal functions
-    window.showPlanPopup = function() {
-      document.getElementById("planModal").classList.add("active");
-    };
+    // ─── Update balance in DB and UI ───
+    async function updateBalance(amount, add = true) {
+      if (!currentUid) return;
+      const userRef = ref(db, `users/${currentUid}`);
+      const snap = await get(userRef);
+      let current = snap.exists() ? snap.val().balance || 0 : 0;
+      const newBalance = add ? current + amount : current - amount;
+      await update(userRef, { balance: newBalance });
+      userData.balance = newBalance;
+      updateBalanceDisplay(newBalance);
+      return newBalance;
+    }
 
-    window.closePlan = function() {
-      document.getElementById("planModal").classList.remove("active");
-    };
-
-    window.buyPlan = function() {
-      const btn = document.querySelector('#planModal .modal-btn.primary');
-      btn.innerHTML = '<span class="loading"></span> Processing...';
-      btn.disabled = true;
-      
-      const userRef = ref(db, "users/" + uid);
-      get(userRef).then((snap) => {
-        const user = snap.val();
-        
-        if ((user.balance || 0) >= 449) {
-          const newBal = user.balance - 449;
-          
-          // Update balance and add to purchased plans
-          update(userRef, { 
-            balance: newBal,
-            plans: [...(user.plans || []), {
-              name: "Eco Rikshaw (A)",
-              price: 449,
-              purchased: new Date().toISOString(),
-              status: "active"
-            }]
-          }).then(() => {
-            updateBalance();
-            showAlert('success', 'Plan Purchased!', 'Eco Rikshaw (A) plan activated successfully.');
-            closePlan();
-          }).catch(error => {
-            showAlert('error', 'Error', 'Failed to purchase plan. Please try again.');
-            console.error(error);
-          });
-        } else {
-          showAlert('error', 'Insufficient Balance', 'You need more balance to purchase this plan.');
-          setTimeout(() => {
-            window.location.href = "recharge-confirm.html";
-          }, 2000);
-        }
-      }).finally(() => {
-        btn.innerHTML = 'Buy Now';
-        btn.disabled = false;
-      });
-    };
-
-    // Alert notification
+    // ─── Alert system ───
     function showAlert(type, title, message) {
+      const existing = document.querySelector('.alert');
+      if (existing) existing.remove();
+
       const alertDiv = document.createElement('div');
       alertDiv.className = `alert ${type}`;
       alertDiv.innerHTML = `
         <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-        <div>
-          <div>${title}</div>
-          <div style="font-weight: normal; font-size: 14px;">${message}</div>
-        </div>
+        <div><strong>${title}</strong><br><span style="font-weight:400;font-size:14px;">${message}</span></div>
       `;
-      
       document.body.appendChild(alertDiv);
-      
       setTimeout(() => {
-        alertDiv.style.animation = 'fadeOut 0.3s ease';
-        setTimeout(() => {
-          document.body.removeChild(alertDiv);
-        }, 300);
-      }, 3000);
+        alertDiv.classList.add('hide');
+        setTimeout(() => alertDiv.remove(), 350);
+      }, 3500);
     }
 
-    // Close modals when clicking outside
-    document.querySelectorAll('.modal-overlay').forEach(modal => {
-      modal.addEventListener('click', function(e) {
-        if (e.target === this) {
-          this.classList.remove('active');
+    // ─── Check-In Logic ───
+    async function handleCheckIn() {
+      if (!currentUid || !userData) return;
+
+      const last = userData.lastCheckin ? new Date(userData.lastCheckin) : null;
+      const now = new Date();
+      const diff = last ? (now - last) / (1000 * 60 * 60) : 999; // hours since last
+
+      const modal = document.getElementById('checkinModal');
+      const text = document.getElementById('checkinText');
+      const claimBtn = document.getElementById('claimBtn');
+      const countdownEl = document.getElementById('countdownText');
+
+      modal.classList.add('active');
+      claimBtn.style.display = 'none';
+      countdownEl.style.display = 'none';
+
+      if (last && diff < 24) {
+        const remaining = 24 - diff;
+        const hours = Math.floor(remaining);
+        const minutes = Math.floor((remaining - hours) * 60);
+        text.textContent = `You've already claimed today.`;
+        countdownEl.textContent = `Next claim in ${hours}h ${minutes}m`;
+        countdownEl.style.display = 'block';
+        claimBtn.style.display = 'none';
+      } else {
+        text.textContent = 'You are eligible for ₹5 bonus!';
+        claimBtn.style.display = 'inline-block';
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = 'Claim ₹5 Bonus';
+        countdownEl.style.display = 'none';
+      }
+    }
+
+    // ─── Claim Bonus ───
+    async function claimBonus() {
+      const claimBtn = document.getElementById('claimBtn');
+      claimBtn.disabled = true;
+      claimBtn.innerHTML = '<span class="spinner"></span> Processing...';
+
+      try {
+        // Add ₹5
+        await updateBalance(5, true);
+        // Update lastCheckin
+        await update(ref(db, `users/${currentUid}`), { lastCheckin: new Date().toISOString() });
+        userData.lastCheckin = new Date().toISOString();
+
+        showAlert('success', 'Bonus Claimed!', '₹5 added to your balance.');
+        // Close modal
+        document.getElementById('checkinModal').classList.remove('active');
+        // Update UI
+        updateBalanceDisplay(userData.balance);
+      } catch (err) {
+        console.error(err);
+        showAlert('error', 'Error', 'Could not claim bonus. Try again.');
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = 'Claim ₹5 Bonus';
+      }
+    }
+
+    // ─── Buy Plan ───
+    async function buyPlan() {
+      const btn = document.getElementById('buyPlanBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Processing...';
+
+      try {
+        if (!userData || (userData.balance || 0) < 449) {
+          showAlert('error', 'Insufficient Balance', 'You need at least ₹449 to buy this plan.');
+          btn.disabled = false;
+          btn.innerHTML = 'Buy Now';
+          return;
         }
+
+        // Deduct balance
+        await updateBalance(449, false);
+        // Add plan to user's plans array
+        const plansRef = ref(db, `users/${currentUid}/plans`);
+        const snap = await get(plansRef);
+        const plans = snap.exists() ? snap.val() : [];
+        plans.push({
+          name: "Eco Rikshaw (A)",
+          price: 449,
+          purchased: new Date().toISOString(),
+          status: "active"
+        });
+        await set(plansRef, plans);
+
+        showAlert('success', 'Plan Activated!', 'Eco Rikshaw (A) plan is now active.');
+        document.getElementById('planModal').classList.remove('active');
+        updateBalanceDisplay(userData.balance);
+      } catch (err) {
+        console.error(err);
+        showAlert('error', 'Error', 'Failed to purchase plan.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Buy Now';
+      }
+    }
+
+    // ─── DOM Event Bindings ───
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check-in button
+      document.getElementById('checkinBtn').addEventListener('click', handleCheckIn);
+      document.getElementById('closeCheckinBtn').addEventListener('click', () => {
+        document.getElementById('checkinModal').classList.remove('active');
+      });
+      document.getElementById('claimBtn').addEventListener('click', claimBonus);
+
+      // Plan modal
+      document.getElementById('planCard').addEventListener('click', () => {
+        document.getElementById('planModal').classList.add('active');
+      });
+      document.getElementById('closePlanBtn').addEventListener('click', () => {
+        document.getElementById('planModal').classList.remove('active');
+      });
+      document.getElementById('buyPlanBtn').addEventListener('click', buyPlan);
+
+      // Click outside modal to close
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) overlay.classList.remove('active');
+        });
       });
     });
+
+    // ─── Expose for inline onclick (if needed) ───
+    window.handleCheckIn = handleCheckIn;
   </script>
 </body>
 </html>

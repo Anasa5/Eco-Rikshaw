@@ -1,384 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #2e7d32;
-      --primary-dark: #1b5e20;
-      --primary-light: #e8f5e9;
-      --error: #d32f2f;
-      --text: #333;
-      --border: #e0e0e0;
-      --shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e0f7e9 100%);
-      min-height: 100vh;
-      padding: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: var(--text);
-    }
-    
-    .form-container {
-      width: 100%;
-      max-width: 440px;
-    }
-    
-    .form-box {
-      background: #fff;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .form-box:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-    }
-    
-    .logo {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-    
-    .logo svg {
-      width: 48px;
-      height: 48px;
-      fill: var(--primary);
-    }
-    
-    h2 {
-      text-align: center;
-      margin-bottom: 24px;
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 24px;
-    }
-    
-    .form-group {
-      margin-bottom: 16px;
-      position: relative;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-    }
-    
-    .input-field {
-      position: relative;
-    }
-    
-    input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 15px;
-      transition: border 0.3s ease, box-shadow 0.3s ease;
-      background-color: #fafafa;
-    }
-    
-    input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
-      background-color: #fff;
-    }
-    
-    .phone-prefix {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #666;
-      font-size: 15px;
-    }
-    
-    #phone {
-      padding-left: 40px;
-    }
-    
-    .error {
-      color: var(--error);
-      font-size: 13px;
-      margin-top: 6px;
-      display: block;
-      min-height: 18px;
-    }
-    
-    button {
-      width: 100%;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 500;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-      margin-top: 8px;
-    }
-    
-    button:hover {
-      background: var(--primary-dark);
-    }
-    
-    button:active {
-      transform: scale(0.98);
-    }
-    
-    .login-link {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    
-    .login-link a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-    
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-    
-    @media (max-width: 480px) {
-      body {
-        padding: 16px;
-      }
-      
-      .form-box {
-        padding: 30px 20px;
-      }
-    }
-  </style>
-  <link rel="stylesheet" href="theme.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ── Golden Hour Aura – body base ── */
+        body {
+            background-color: #faf8f2;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2d241a;
+        }
+
+        /* ── Aura container ── */
+        .aura-bg {
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .aura-layer-1,
+        .aura-layer-2 {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .aura-layer-1 {
+            background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(255, 183, 77, 0.12) 28%, rgb(255, 255, 255) 18%, rgb(255, 138, 61) 68%, rgb(183, 77, 0) 100%);
+            mix-blend-mode: multiply;
+            filter: blur(125px);
+        }
+
+        .aura-layer-2 {
+            background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(255, 183, 77, 0.22) 34%, rgb(255, 255, 255) 66%, rgb(255, 138, 61) 82%, rgb(183, 77, 0) 100%);
+            mix-blend-mode: multiply;
+            filter: blur(100px);
+        }
+
+        /* ── Content wrapper (sits above aura) ── */
+        .content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        /* ── Form Card ── */
+        .form-box {
+            background: rgba(255, 252, 248, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px 36px;
+            border-radius: 20px;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.02),
+                0 8px 32px rgba(180, 120, 60, 0.10),
+                0 0 0 1px rgba(255, 215, 160, 0.30) inset;
+            transition: box-shadow 0.35s ease, transform 0.30s ease;
+        }
+
+        .form-box:hover {
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.02),
+                0 16px 48px rgba(180, 120, 60, 0.14),
+                0 0 0 1px rgba(255, 200, 140, 0.45) inset;
+            transform: translateY(-1px);
+        }
+
+        /* ── Logo ── */
+        .logo {
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .logo svg {
+            width: 48px;
+            height: 48px;
+            fill: #c8833a;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 28px;
+            font-weight: 600;
+            font-size: 24px;
+            color: #7a4f2b;
+            letter-spacing: -0.3px;
+        }
+
+        /* ── Form groups ── */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #5a4030;
+            letter-spacing: 0.2px;
+        }
+
+        .input-field {
+            position: relative;
+        }
+
+        /* ── Inputs – smooth & refined ── */
+        input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #e8ddd0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            background: rgba(255, 252, 248, 0.70);
+            color: #2d241a;
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease,
+                transform 0.15s ease;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input::placeholder {
+            color: #b8a898;
+            font-weight: 400;
+            font-size: 14px;
+            opacity: 0.75;
+            transition: opacity 0.25s ease;
+        }
+
+        input:hover {
+            border-color: #d4bcab;
+            background: rgba(255, 252, 248, 0.90);
+        }
+
+        input:focus {
+            border-color: #c8833a;
+            box-shadow: 0 0 0 4px rgba(200, 131, 58, 0.12), 0 2px 8px rgba(200, 131, 58, 0.06);
+            background: #fffdfa;
+            transform: scale(1.002);
+        }
+
+        input:focus::placeholder {
+            opacity: 0.35;
+        }
+
+        /* ── Phone prefix ── */
+        .phone-prefix {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7a6555;
+            font-size: 15px;
+            font-weight: 500;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity 0.25s ease;
+        }
+
+        .input-field:focus-within .phone-prefix {
+            opacity: 1;
+            color: #c8833a;
+        }
+
+        #phone {
+            padding-left: 44px;
+        }
+
+        /* ── Error message ── */
+        .error {
+            color: #b54a3a;
+            font-size: 12.5px;
+            margin-top: 6px;
+            display: block;
+            min-height: 20px;
+            font-weight: 450;
+            letter-spacing: 0.1px;
+            transition: opacity 0.2s ease;
+        }
+
+        /* ── Submit button ── */
+        button {
+            width: 100%;
+            background: linear-gradient(145deg, #d48e45, #b8702a);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 12px;
+            cursor: pointer;
+            transition:
+                background 0.30s ease,
+                box-shadow 0.30s ease,
+                transform 0.18s ease;
+            margin-top: 6px;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 16px rgba(184, 112, 42, 0.25);
+        }
+
+        button:hover {
+            background: linear-gradient(145deg, #d8954a, #b8702a);
+            box-shadow: 0 6px 24px rgba(184, 112, 42, 0.35);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: scale(0.975);
+            box-shadow: 0 2px 8px rgba(184, 112, 42, 0.20);
+        }
+
+        /* ── Login link ── */
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 14px;
+            color: #5a4030;
+        }
+
+        .login-link a {
+            color: #b8702a;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease, text-decoration-color 0.2s ease;
+            text-decoration: underline transparent 1.5px;
+            text-underline-offset: 3px;
+        }
+
+        .login-link a:hover {
+            color: #9a5f22;
+            text-decoration-color: #b8702a;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            body {
+                padding: 16px;
+            }
+            .aura-bg {
+                padding: 16px;
+            }
+            .form-box {
+                padding: 28px 18px;
+                border-radius: 16px;
+            }
+            .aura-layer-1 {
+                filter: blur(125px);
+            }
+            .aura-layer-2 {
+                filter: blur(100px);
+            }
+            input {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+            #phone {
+                padding-left: 40px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .aura-layer-1 {
+                filter: blur(180px);
+            }
+            .aura-layer-2 {
+                filter: blur(144px);
+            }
+        }
+
+        /* ── Tiny smoothness for autofill ── */
+        input:-webkit-autofill {
+            transition: background-color 5000s ease-in-out 0s;
+            -webkit-box-shadow: 0 0 0 30px #fffdfa inset !important;
+        }
+
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 30px #fffdfa inset, 0 0 0 4px rgba(200, 131, 58, 0.12) !important;
+        }
+
+        /* ── Remove number spinner ── */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* ── Custom scroll (just in case) ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5ede6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4bcab;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c8833a;
+        }
+    </style>
 </head>
 <body>
-  <div class="form-container">
-    <div class="form-box">
-      <div class="logo">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-        </svg>
-      </div>
-      <h2>Create Account</h2>
-      
-      <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="Enter your full name" />
-      </div>
-      
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <div class="input-field">
-          <span class="phone-prefix">+91</span>
-          <input type="tel" id="phone" placeholder="9876543210" maxlength="10" pattern="[6-9]\d{9}" inputmode="numeric"/>
+
+    <!-- ─── AURA BACKGROUND ─── -->
+    <div class="aura-bg">
+        <div class="aura-layer-1" aria-hidden="true"></div>
+        <div class="aura-layer-2" aria-hidden="true"></div>
+
+        <!-- ─── CONTENT ─── -->
+        <div class="content">
+            <div class="form-box">
+
+                <!-- Logo -->
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                    </svg>
+                </div>
+                <h2>Create Account</h2>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" autocomplete="name" />
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <div class="input-field">
+                        <span class="phone-prefix">+91</span>
+                        <input type="tel" id="phone" placeholder="9876543210" maxlength="10" pattern="[6-9]\d{9}" inputmode="numeric" autocomplete="tel" />
+                    </div>
+                    <span class="error" id="phoneError"></span>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Create a password" autocomplete="new-password" />
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="confirm">Confirm Password</label>
+                    <input type="password" id="confirm" placeholder="Re-enter your password" autocomplete="new-password" />
+                </div>
+
+                <!-- Referral -->
+                <div class="form-group">
+                    <label for="referral">Referral Code <span style="font-weight:400;color:#9a8a7a;">(Optional)</span></label>
+                    <input type="text" id="referral" placeholder="If you have one" autocomplete="off" />
+                </div>
+
+                <!-- Register -->
+                <button id="registerBtn">Register</button>
+
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Sign in</a>
+                </div>
+            </div>
         </div>
-        <span class="error" id="phoneError"></span>
-      </div>
-      
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Create a password" />
-      </div>
-      
-      <div class="form-group">
-        <label for="confirm">Confirm Password</label>
-        <input type="password" id="confirm" placeholder="Re-enter your password" />
-      </div>
-      
-      <div class="form-group">
-        <label for="referral">Referral Code (Optional)</label>
-        <input type="text" id="referral" placeholder="If you have one" />
-      </div>
-      
-      <button id="registerBtn">Register</button>
-      
-      <div class="login-link">
-        Already have an account? <a href="login.html">Sign in</a>
-      </div>
     </div>
-  </div>
 
-  <script type="module">
-    // Load Firebase asynchronously for better performance
-    const firebaseScript = document.createElement('script');
-    firebaseScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
-    firebaseScript.async = true;
-    document.head.appendChild(firebaseScript);
-    
-    const firebaseDBScript = document.createElement('script');
-    firebaseDBScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js';
-    firebaseDBScript.async = true;
-    document.head.appendChild(firebaseDBScript);
+    <!-- ─── FIREBASE ─── -->
+    <script>
+        // Load Firebase asynchronously
+        const firebaseScript = document.createElement('script');
+        firebaseScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
+        firebaseScript.async = true;
+        document.head.appendChild(firebaseScript);
 
-    const firebaseAuthScript = document.createElement('script');
-    firebaseAuthScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js';
-    firebaseAuthScript.async = true;
-    document.head.appendChild(firebaseAuthScript);
-    
-    // Wait for Firebase to load
-    Promise.all([
-    new Promise(resolve => firebaseScript.onload = resolve),
-    new Promise(resolve => firebaseDBScript.onload = resolve),
-    new Promise(resolve => firebaseAuthScript.onload = resolve)
-])
-.then(() => {
-      const firebaseConfig = {
-        apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
-        authDomain: "rikshaw-67877.firebaseapp.com",
-        databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
-        projectId: "rikshaw-67877",
-        storageBucket: "rikshaw-67877.appspot.com",
-        messagingSenderId: "953540778276",
-        appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
-      };
+        const firebaseDBScript = document.createElement('script');
+        firebaseDBScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js';
+        firebaseDBScript.async = true;
+        document.head.appendChild(firebaseDBScript);
 
-      const app = firebase.initializeApp(firebaseConfig);
-      const db = firebase.database(app);
-      const auth = firebase.auth();
+        const firebaseAuthScript = document.createElement('script');
+        firebaseAuthScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js';
+        firebaseAuthScript.async = true;
+        document.head.appendChild(firebaseAuthScript);
 
-      // Form validation
-      const phoneInput = document.getElementById("phone");
-      const phoneError = document.getElementById("phoneError");
-      
-      phoneInput.addEventListener('input', () => {
-        if (!/^[6-9]\d{0,9}$/.test(phoneInput.value)) {
-          phoneError.textContent = "Enter valid 10-digit Indian number";
-        } else {
-          phoneError.textContent = "";
-        }
-      });
-      
-      // Password match validation
-      const passwordInput = document.getElementById("password");
-      const confirmInput = document.getElementById("confirm");
-      
-      function validatePasswords() {
-        if (passwordInput.value && confirmInput.value && passwordInput.value !== confirmInput.value) {
-          confirmInput.setCustomValidity("Passwords don't match");
-        } else {
-          confirmInput.setCustomValidity("");
-        }
-      }
-      
-      passwordInput.addEventListener('input', validatePasswords);
-      confirmInput.addEventListener('input', validatePasswords);
+        Promise.all([
+            new Promise(resolve => firebaseScript.onload = resolve),
+            new Promise(resolve => firebaseDBScript.onload = resolve),
+            new Promise(resolve => firebaseAuthScript.onload = resolve)
+        ]).then(() => {
+            const firebaseConfig = {
+                apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+                authDomain: "rikshaw-67877.firebaseapp.com",
+                databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+                projectId: "rikshaw-67877",
+                storageBucket: "rikshaw-67877.appspot.com",
+                messagingSenderId: "953540778276",
+                appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+            };
 
-      // Registration handler
-      document.getElementById("registerBtn").addEventListener("click", async () => {
-        const name = document.getElementById("name").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        const password = document.getElementById("password").value;
-        const confirm = document.getElementById("confirm").value;
-        const referral = document.getElementById("referral").value.trim().toUpperCase();
-        
-        // Validate phone number
-        if (!/^[6-9]\d{9}$/.test(phone)) {
-          phoneError.textContent = "Enter valid 10-digit Indian number";
-          phoneInput.focus();
-          return;
-        } else {
-          phoneError.textContent = "";
-        }
+            const app = firebase.initializeApp(firebaseConfig);
+            const db = firebase.database(app);
+            const auth = firebase.auth();
 
-        if (!name || !password || !confirm) {
-          alert("Please fill all required fields.");
-          return;
-        }
+            // ── Phone validation ──
+            const phoneInput = document.getElementById("phone");
+            const phoneError = document.getElementById("phoneError");
 
-        if (password !== confirm) {
-          alert("Passwords do not match!");
-          confirmInput.focus();
-          return;
-        }
+            phoneInput.addEventListener('input', () => {
+                const val = phoneInput.value;
+                if (val.length > 0 && !/^[6-9]\d{0,9}$/.test(val)) {
+                    phoneError.textContent = "Enter a valid 10-digit Indian number";
+                } else if (val.length === 10 && !/^[6-9]\d{9}$/.test(val)) {
+                    phoneError.textContent = "Must start with 6,7,8, or 9";
+                } else {
+                    phoneError.textContent = "";
+                }
+            });
 
-        const userCredential = await auth.createUserWithEmailAndPassword(phone + "@rikshaw.com", password);
-        const uid = userCredential.user.uid; // get the real UID from Firebase Auth
-        const myReferral = Math.random().toString(36).substring(2, 8).toUpperCase();
+            // ── Password match ──
+            const passwordInput = document.getElementById("password");
+            const confirmInput = document.getElementById("confirm");
 
-        const userData = {
-          name,
-          phone,
-          password,
-          referral: myReferral,
-          invitedBy: referral || "",
-          recharge: 0,
-          profileComplete: true,
-          registeredAt: Date.now()
-        };
-
-        try {
-          // Check if phone already exists
-          const usersRef = firebase.database().ref("users");
-          const snapshot = await usersRef.orderByChild("phone").equalTo(phone).once("value");
-          
-          if (snapshot.exists()) {
-            alert("This phone number is already registered.");
-            return;
-          }
-
-          // Save user data
-          await usersRef.child(uid).set(userData);
-
-          // If referred, add to referrer's team
-          if (referral) {
-            const allUsersSnap = await usersRef.once("value");
-            const allUsers = allUsersSnap.exists() ? allUsersSnap.val() : {};
-            let referUid = null;
-
-            for (const key in allUsers) {
-              if (allUsers[key].referral === referral) {
-                referUid = key;
-                break;
-              }
+            function validatePasswords() {
+                if (passwordInput.value && confirmInput.value && passwordInput.value !== confirmInput.value) {
+                    confirmInput.setCustomValidity("Passwords don't match");
+                } else {
+                    confirmInput.setCustomValidity("");
+                }
             }
 
-            if (referUid) {
-              await firebase.database().ref(`team/${referUid}/${uid}`).set({
-                name,
-                phone,
-                joinedAt: Date.now(),
-                invested: false
-              });
-            }
-          }
+            passwordInput.addEventListener('input', validatePasswords);
+            confirmInput.addEventListener('input', validatePasswords);
 
-          alert("Registration successful!");
-          window.location.href = "login.html";
-        } catch (err) {
-          console.error("Registration error:", err);
-          alert("An error occurred during registration. Please try again.");
-        }
-      });
-    }).catch(error => {
-      console.error("Failed to load Firebase:", error);
-      alert("Failed to load required resources. Please check your connection.");
-    });
-  </script>
+            // ── Register ──
+            document.getElementById("registerBtn").addEventListener("click", async () => {
+                const name = document.getElementById("name").value.trim();
+                const phone = document.getElementById("phone").value.trim();
+                const password = document.getElementById("password").value;
+                const confirm = document.getElementById("confirm").value;
+                const referral = document.getElementById("referral").value.trim().toUpperCase();
+
+                // Validate phone
+                if (!/^[6-9]\d{9}$/.test(phone)) {
+                    phoneError.textContent = "Enter a valid 10-digit Indian number";
+                    phoneInput.focus();
+                    return;
+                } else {
+                    phoneError.textContent = "";
+                }
+
+                if (!name || !password || !confirm) {
+                    alert("Please fill all required fields.");
+                    return;
+                }
+
+                if (password !== confirm) {
+                    alert("Passwords do not match!");
+                    confirmInput.focus();
+                    return;
+                }
+
+                try {
+                    const userCredential = await auth.createUserWithEmailAndPassword(phone + "@rikshaw.com", password);
+                    const uid = userCredential.user.uid;
+                    const myReferral = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+                    const userData = {
+                        name,
+                        phone,
+                        password,
+                        referral: myReferral,
+                        invitedBy: referral || "",
+                        recharge: 0,
+                        profileComplete: true,
+                        registeredAt: Date.now()
+                    };
+
+                    // Check if phone exists
+                    const usersRef = firebase.database().ref("users");
+                    const snapshot = await usersRef.orderByChild("phone").equalTo(phone).once("value");
+
+                    if (snapshot.exists()) {
+                        alert("This phone number is already registered.");
+                        return;
+                    }
+
+                    // Save user
+                    await usersRef.child(uid).set(userData);
+
+                    // Referral
+                    if (referral) {
+                        const allUsersSnap = await usersRef.once("value");
+                        const allUsers = allUsersSnap.exists() ? allUsersSnap.val() : {};
+                        let referUid = null;
+                        for (const key in allUsers) {
+                            if (allUsers[key].referral === referral) {
+                                referUid = key;
+                                break;
+                            }
+                        }
+                        if (referUid) {
+                            await firebase.database().ref(`team/${referUid}/${uid}`).set({
+                                name,
+                                phone,
+                                joinedAt: Date.now(),
+                                invested: false
+                            });
+                        }
+                    }
+
+                    alert("Registration successful!");
+                    window.location.href = "login.html";
+                } catch (err) {
+                    console.error("Registration error:", err);
+                    alert("An error occurred during registration. Please try again.");
+                }
+            });
+        }).catch(error => {
+            console.error("Failed to load Firebase:", error);
+            alert("Failed to load required resources. Please check your connection.");
+        });
+    </script>
 </body>
 </html>
