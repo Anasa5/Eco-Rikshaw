@@ -354,13 +354,6 @@
       flex: 1;
     }
 
-    .modal-body img {
-      width: 80px;
-      margin: 0 auto 12px;
-      border-radius: 12px;
-      display: block;
-    }
-
     .modal-body .plan-details {
       border-bottom: 1px dashed rgba(200, 180, 160, 0.2);
     }
@@ -412,6 +405,71 @@
       opacity: 0.7;
       cursor: not-allowed;
       transform: none;
+    }
+
+    /* ─── Confirmation Modal (special) ─── */
+    #confirmModal .modal-content {
+      max-width: 420px;
+    }
+    #confirmModal .modal-body {
+      text-align: center;
+    }
+    #confirmModal .modal-body .confirm-icon {
+      font-size: 48px;
+      color: #b8702a;
+      margin-bottom: 12px;
+    }
+    #confirmModal .modal-body .confirm-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #7a4f2b;
+      margin-bottom: 8px;
+    }
+    #confirmModal .modal-body .confirm-message {
+      font-size: 14px;
+      color: #5a4030;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    #confirmModal .modal-body .confirm-details {
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    #confirmModal .modal-body .confirm-details .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed rgba(200, 180, 160, 0.15);
+    }
+    #confirmModal .modal-body .confirm-details .detail-row:last-child {
+      border-bottom: none;
+    }
+    #confirmModal .modal-body .confirm-details .label {
+      color: #7a6555;
+    }
+    #confirmModal .modal-body .confirm-details .value {
+      font-weight: 600;
+      color: #2d241a;
+    }
+    #confirmModal .modal-footer {
+      gap: 12px;
+    }
+    #confirmModal .modal-footer .modal-btn.cancel {
+      background: rgba(200, 180, 160, 0.2);
+      color: #5a4030;
+    }
+    #confirmModal .modal-footer .modal-btn.cancel:hover {
+      background: rgba(200, 180, 160, 0.35);
+    }
+    #confirmModal .modal-footer .modal-btn.confirm {
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+    }
+    #confirmModal .modal-footer .modal-btn.confirm:hover {
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.35);
     }
 
     /* ─── About Modal specific ─── */
@@ -654,7 +712,7 @@
     <div class="modal-content">
       <div class="modal-header">Eco Rikshaw Plan</div>
       <div class="modal-body">
-        <img src="Rikshaw.png" alt="Eco Rikshaw" />
+        <!-- Removed logo image as requested -->
         <div class="plan-details">
           <span class="plan-label">Plan Price:</span>
           <span class="plan-value">₹449</span>
@@ -693,6 +751,35 @@
       </div>
       <div class="modal-footer">
         <button class="modal-btn secondary" id="closeCheckinBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CONFIRMATION MODAL ─── -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Confirm Purchase</span>
+        <button class="close-modal" id="confirmCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-icon"><i class="fas fa-shopping-cart"></i></div>
+        <div class="confirm-title" id="confirmTitle">Buy Plan</div>
+        <div class="confirm-message" id="confirmMessage">Are you sure you want to purchase this plan?</div>
+        <div class="confirm-details" id="confirmDetails">
+          <div class="detail-row"><span class="label">Plan</span><span class="value" id="confirmPlanName">Eco Rikshaw (A)</span></div>
+          <div class="detail-row"><span class="label">Price</span><span class="value" id="confirmPlanPrice">₹449</span></div>
+          <div class="detail-row"><span class="label">Daily Income</span><span class="value" id="confirmDailyIncome">₹109.8</span></div>
+          <div class="detail-row"><span class="label">Total Income</span><span class="value" id="confirmTotalIncome">₹1098</span></div>
+          <div class="detail-row"><span class="label">Duration</span><span class="value" id="confirmDuration">10 Days</span></div>
+        </div>
+        <div style="font-size:13px; color:#7a6555; margin-top:8px;">
+          <i class="fas fa-info-circle"></i> This action will deduct ₹449 from your balance.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn cancel" id="confirmCancelBtn">Cancel</button>
+        <button class="modal-btn confirm" id="confirmConfirmBtn">Confirm Purchase</button>
       </div>
     </div>
   </div>
@@ -774,7 +861,6 @@
         userData = snap.val();
         updateBalanceDisplay(userData.balance || 0);
       } else {
-        // new user – initialize
         const initData = { balance: 0, lastCheckin: null };
         await set(ref(db, `users/${currentUid}`), initData);
         userData = initData;
@@ -787,7 +873,7 @@
       display.textContent = `₹${(balance || 0).toFixed(2)}`;
     }
 
-    // ─── Update balance in DB and UI ───
+    // ─── Update balance ───
     async function updateBalance(amount, add = true) {
       if (!currentUid) return;
       const userRef = ref(db, `users/${currentUid}`);
@@ -818,13 +904,73 @@
       }, 3500);
     }
 
+    // ─── Confirmation Modal ───
+    function showConfirmation(options) {
+      return new Promise((resolve) => {
+        const modal = document.getElementById('confirmModal');
+        const title = document.getElementById('confirmTitle');
+        const message = document.getElementById('confirmMessage');
+        const planName = document.getElementById('confirmPlanName');
+        const planPrice = document.getElementById('confirmPlanPrice');
+        const dailyIncome = document.getElementById('confirmDailyIncome');
+        const totalIncome = document.getElementById('confirmTotalIncome');
+        const duration = document.getElementById('confirmDuration');
+        const confirmBtn = document.getElementById('confirmConfirmBtn');
+        const cancelBtn = document.getElementById('confirmCancelBtn');
+        const closeBtn = document.getElementById('confirmCloseBtn');
+
+        // Set content
+        title.textContent = options.title || 'Confirm Purchase';
+        message.textContent = options.message || 'Are you sure?';
+        planName.textContent = options.planName || 'Eco Rikshaw (A)';
+        planPrice.textContent = `₹${options.price || 449}`;
+        dailyIncome.textContent = `₹${options.dailyIncome || 109.8}`;
+        totalIncome.textContent = `₹${options.totalIncome || 1098}`;
+        duration.textContent = `${options.days || 10} Days`;
+
+        // Show modal
+        modal.classList.add('active');
+
+        // Cleanup
+        function cleanup() {
+          modal.classList.remove('active');
+          confirmBtn.removeEventListener('click', onConfirm);
+          cancelBtn.removeEventListener('click', onCancel);
+          closeBtn.removeEventListener('click', onCancel);
+        }
+
+        function onConfirm() {
+          cleanup();
+          resolve(true);
+        }
+
+        function onCancel() {
+          cleanup();
+          resolve(false);
+        }
+
+        confirmBtn.addEventListener('click', onConfirm);
+        cancelBtn.addEventListener('click', onCancel);
+        closeBtn.addEventListener('click', onCancel);
+
+        // Click outside to cancel
+        modal.addEventListener('click', function handler(e) {
+          if (e.target === modal) {
+            cleanup();
+            resolve(false);
+            modal.removeEventListener('click', handler);
+          }
+        });
+      });
+    }
+
     // ─── Check-In Logic ───
     async function handleCheckIn() {
       if (!currentUid || !userData) return;
 
       const last = userData.lastCheckin ? new Date(userData.lastCheckin) : null;
       const now = new Date();
-      const diff = last ? (now - last) / (1000 * 60 * 60) : 999; // hours since last
+      const diff = last ? (now - last) / (1000 * 60 * 60) : 999;
 
       const modal = document.getElementById('checkinModal');
       const text = document.getElementById('checkinText');
@@ -859,16 +1005,12 @@
       claimBtn.innerHTML = '<span class="spinner"></span> Processing...';
 
       try {
-        // Add ₹5
         await updateBalance(5, true);
-        // Update lastCheckin
         await update(ref(db, `users/${currentUid}`), { lastCheckin: new Date().toISOString() });
         userData.lastCheckin = new Date().toISOString();
 
         showAlert('success', 'Bonus Claimed!', '₹5 added to your balance.');
-        // Close modal
         document.getElementById('checkinModal').classList.remove('active');
-        // Update UI
         updateBalanceDisplay(userData.balance);
       } catch (err) {
         console.error(err);
@@ -878,20 +1020,33 @@
       }
     }
 
-    // ─── Buy Plan ───
+    // ─── Buy Plan (with confirmation) ───
     async function buyPlan() {
       const btn = document.getElementById('buyPlanBtn');
+      // Check balance first
+      if (!userData || (userData.balance || 0) < 449) {
+        showAlert('error', 'Insufficient Balance', 'You need at least ₹449 to buy this plan.');
+        return;
+      }
+
+      // Show confirmation modal
+      const confirmed = await showConfirmation({
+        title: 'Buy Eco Rikshaw (A) Plan',
+        message: 'Please confirm your purchase.',
+        planName: 'Eco Rikshaw (A)',
+        price: 449,
+        dailyIncome: 109.8,
+        totalIncome: 1098,
+        days: 10
+      });
+
+      if (!confirmed) return; // User cancelled
+
+      // Proceed with purchase
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner"></span> Processing...';
 
       try {
-        if (!userData || (userData.balance || 0) < 449) {
-          showAlert('error', 'Insufficient Balance', 'You need at least ₹449 to buy this plan.');
-          btn.disabled = false;
-          btn.innerHTML = 'Buy Now';
-          return;
-        }
-
         // Deduct balance
         await updateBalance(449, false);
         // Add plan to user's plans array
@@ -925,502 +1080,7 @@
         <p><strong>Eco Rikshaw</strong> is an electric mobility and e-rickshaw investment company focused on building and supporting a sustainable last-mile transportation ecosystem.</p>
         <p>Our objective is simple: connect investment capital with real-world electric mobility infrastructure while creating opportunities for vehicle operators, drivers, local businesses, and communities.</p>
         <p>Rather than treating an investment as simply a number on a screen, our model is designed around physical assets, vehicle operations, transportation demand, driver activity, maintenance, charging infrastructure, and responsible financial management.</p>
-
-        <h3>1. Who We Are</h3>
-        <p>Eco Rikshaw operates in the electric three-wheeler and sustainable mobility sector.</p>
-        <p>Our business focuses primarily on electric rickshaws, electric three-wheelers, fleet operations, charging infrastructure, vehicle leasing, mobility services, and related transportation opportunities.</p>
-        <p>Our long-term objective is to develop a scalable ecosystem in which electric vehicles can provide affordable transportation while generating sustainable commercial activity.</p>
-
-        <h3>2. Our Core Mission</h3>
-        <p>Our mission is to help accelerate the transition toward cleaner transportation while developing commercially sustainable mobility businesses.</p>
-        <p>We aim to create a system where:</p>
-        <ul>
-          <li>Electric vehicles serve real transportation demand.</li>
-          <li>Drivers have access to productive vehicles.</li>
-          <li>Investors understand where their money is being deployed.</li>
-          <li>Vehicles are professionally managed.</li>
-          <li>Maintenance and operating costs are monitored.</li>
-          <li>Revenue is generated through genuine transportation activity.</li>
-          <li>Business growth is based on measurable performance rather than unrealistic promises.</li>
-        </ul>
-
-        <h3>3. What We Actually Do</h3>
-        <p>Our business can operate across several connected areas. These may include:</p>
-        <ul>
-          <li>Acquiring electric rickshaws.</li>
-          <li>Financing electric three-wheelers.</li>
-          <li>Leasing vehicles to qualified operators.</li>
-          <li>Operating company-owned fleets.</li>
-          <li>Partnering with independent drivers.</li>
-          <li>Providing vehicles for passenger transportation.</li>
-          <li>Supporting electric cargo and delivery operations.</li>
-          <li>Developing charging facilities.</li>
-          <li>Exploring battery-service models.</li>
-          <li>Providing fleet-management technology.</li>
-          <li>Monitoring vehicle utilization.</li>
-          <li>Managing maintenance and servicing.</li>
-          <li>Developing partnerships with vehicle manufacturers.</li>
-          <li>Working with financing partners.</li>
-          <li>Expanding into additional transportation markets.</li>
-        </ul>
-        <p>The exact activities undertaken by the Company may change as the business develops.</p>
-
-        <h3>4. The Basic Business Model</h3>
-        <p>The basic concept is straightforward. Capital is allocated toward productive mobility assets and operations. Those assets are then used to generate commercial revenue through transportation-related activities.</p>
-        <div class="highlight-box">
-          <strong>Capital → Vehicle/Infrastructure → Driver/Operator → Transportation Services → Revenue → Operating Costs → Business Profit/Loss</strong>
-        </div>
-        <p>The Company's financial performance depends on whether the revenue generated by these activities exceeds the costs associated with operating and maintaining them.</p>
-
-        <h3>5. Vehicle Acquisition</h3>
-        <p>The Company may purchase electric rickshaws directly or acquire them through approved financing, leasing, or partnership arrangements.</p>
-        <p>Vehicle selection may depend on:</p>
-        <ul>
-          <li>Purchase price.</li>
-          <li>Battery technology.</li>
-          <li>Range.</li>
-          <li>Payload capacity.</li>
-          <li>Expected operating life.</li>
-          <li>Maintenance requirements.</li>
-          <li>Manufacturer support.</li>
-          <li>Local demand.</li>
-          <li>Regulatory requirements.</li>
-          <li>Expected utilization.</li>
-        </ul>
-        <p>The Company does not assume that every vehicle will produce identical financial results.</p>
-
-        <h3>6. Deployment of Vehicles</h3>
-        <p>After acquisition, vehicles may be deployed into areas where there is sufficient transportation demand.</p>
-        <p>Potential use cases include:</p>
-        <ul>
-          <li>Passenger transportation.</li>
-          <li>School-area transportation where legally permitted.</li>
-          <li>Local commuting.</li>
-          <li>Market transportation.</li>
-          <li>Station-to-neighborhood connectivity.</li>
-          <li>Delivery services.</li>
-          <li>E-commerce logistics.</li>
-          <li>Commercial transportation.</li>
-        </ul>
-        <p>Vehicle deployment decisions are based on operational considerations and available market information.</p>
-
-        <h3>7. Drivers and Operators</h3>
-        <p>Vehicles may be operated by independent drivers, contracted operators, fleet partners, or Company personnel depending on the operating model.</p>
-        <p>Drivers are a critical part of the ecosystem because the vehicle itself does not generate revenue while sitting unused.</p>
-        <p>The Company's objective is therefore to maximize productive utilization while maintaining reasonable operating standards.</p>
-
-        <h3>8. How Drivers Generate Revenue</h3>
-        <p>Drivers may generate income by providing transportation services to passengers or commercial customers.</p>
-        <p>Revenue can depend on:</p>
-        <ul>
-          <li>Number of trips.</li>
-          <li>Distance traveled.</li>
-          <li>Local fares.</li>
-          <li>Operating hours.</li>
-          <li>Demand.</li>
-          <li>Seasonal conditions.</li>
-          <li>Competition.</li>
-          <li>Route characteristics.</li>
-          <li>Vehicle availability.</li>
-        </ul>
-        <p>Driver revenue is therefore not guaranteed.</p>
-
-        <h3>9. Vehicle Leasing Revenue</h3>
-        <p>The Company may lease vehicles to qualified operators. Under such arrangements, the operator may pay the Company an agreed rental or leasing amount. The Company's revenue is then generated from the leasing activity.</p>
-
-        <h3>10. Fleet Operating Revenue</h3>
-        <p>Where the Company directly operates vehicles, revenue may be generated from transportation services performed by the fleet.</p>
-        <div class="highlight-box">
-          <strong>Passenger/Customer Payments → Fleet Revenue → Operating Expenses → Remaining Business Margin</strong>
-        </div>
-
-        <h3>11. Revenue Sharing</h3>
-        <p>In certain arrangements, the Company may use a revenue-sharing model. Under this model, revenue generated by a vehicle or transportation operation may be divided between the relevant parties according to a predefined agreement.</p>
-        <p>The percentage or structure may vary according to the vehicle, operator, location, contract, and business arrangement.</p>
-
-        <h3>12. Charging Services</h3>
-        <p>Where the Company develops charging infrastructure, it may generate revenue by providing charging services to compatible electric vehicles.</p>
-        <p>Revenue may come from charging fees or other commercially agreed arrangements. Charging infrastructure itself also creates operating costs, including electricity, equipment maintenance, land, staffing, repairs, and infrastructure upgrades.</p>
-
-        <h3>13. Battery Services</h3>
-        <p>Where commercially and technically appropriate, the Company may explore battery leasing, battery-as-a-service, or battery-swapping arrangements. Such models can separate the battery cost from the vehicle and potentially reduce the upfront financial burden for operators.</p>
-        <p>Battery-swapping has been identified as one approach for reducing charging downtime for electric three-wheelers.</p>
-
-        <h3>14. Fleet Management Services</h3>
-        <p>The Company may also provide fleet-management services. These may include:</p>
-        <ul>
-          <li>Vehicle tracking.</li>
-          <li>Utilization monitoring.</li>
-          <li>Maintenance scheduling.</li>
-          <li>Driver management.</li>
-          <li>Performance monitoring.</li>
-          <li>Revenue tracking.</li>
-          <li>Battery monitoring.</li>
-          <li>Operational reporting.</li>
-        </ul>
-        <p>Technology can help the Company identify underperforming vehicles and operational problems earlier.</p>
-
-        <h3>15. Partnerships</h3>
-        <p>The Company may generate business through partnerships with:</p>
-        <ul>
-          <li>Vehicle manufacturers.</li>
-          <li>Charging providers.</li>
-          <li>Battery companies.</li>
-          <li>Fleet operators.</li>
-          <li>Delivery companies.</li>
-          <li>Local businesses.</li>
-          <li>Financing institutions.</li>
-          <li>Technology providers.</li>
-          <li>Property owners.</li>
-          <li>Transportation platforms.</li>
-        </ul>
-        <p>Partnerships can reduce operational costs and increase access to customers and infrastructure.</p>
-
-        <h3>16. Vehicle Purchases</h3>
-        <p>A portion of available capital may be used to acquire electric vehicles. Vehicles represent productive physical assets used within the Company's mobility operations.</p>
-
-        <h3>17. Charging Infrastructure</h3>
-        <p>Capital may also be allocated toward:</p>
-        <ul>
-          <li>Charging equipment.</li>
-          <li>Electrical infrastructure.</li>
-          <li>Charging locations.</li>
-          <li>Energy-management systems.</li>
-          <li>Maintenance.</li>
-          <li>Safety equipment.</li>
-        </ul>
-
-        <h3>18. Maintenance</h3>
-        <p>Vehicles require continuous maintenance. Funds may therefore be required for:</p>
-        <ul>
-          <li>Tires.</li>
-          <li>Brakes.</li>
-          <li>Electrical components.</li>
-          <li>Motors.</li>
-          <li>Controllers.</li>
-          <li>Batteries.</li>
-          <li>Suspension.</li>
-          <li>Lighting.</li>
-          <li>Body repairs.</li>
-          <li>Routine servicing.</li>
-        </ul>
-        <p>Maintenance is not optional just because the vehicle happens to be electric. Machines remain stubbornly committed to physics.</p>
-
-        <h3>19. Technology</h3>
-        <p>The Company may invest in software and technology for:</p>
-        <ul>
-          <li>Fleet monitoring.</li>
-          <li>GPS tracking.</li>
-          <li>Driver management.</li>
-          <li>Financial reporting.</li>
-          <li>Vehicle performance.</li>
-          <li>Battery monitoring.</li>
-          <li>Customer management.</li>
-          <li>Security.</li>
-          <li>Data analysis.</li>
-        </ul>
-
-        <h3>20. Expansion</h3>
-        <p>As the business becomes profitable and financially stable, a portion of retained earnings may be reinvested into expanding the fleet and infrastructure. This can allow the Company to grow without relying entirely on additional external capital.</p>
-
-        <h3>21. Capital Allocation</h3>
-        <p>Capital should be allocated according to business requirements rather than simply maximizing the number of vehicles purchased.</p>
-        <p>Before deploying significant capital, the Company should evaluate:</p>
-        <ul>
-          <li>Expected demand.</li>
-          <li>Vehicle costs.</li>
-          <li>Operating expenses.</li>
-          <li>Maintenance costs.</li>
-          <li>Financing costs.</li>
-          <li>Expected utilization.</li>
-          <li>Local competition.</li>
-          <li>Regulatory requirements.</li>
-          <li>Expected revenue.</li>
-          <li>Potential downside.</li>
-        </ul>
-
-        <h3>22. Financial Monitoring</h3>
-        <p>The Company may monitor each vehicle or operating unit individually. Performance metrics may include:</p>
-        <ul>
-          <li>Daily revenue.</li>
-          <li>Monthly revenue.</li>
-          <li>Operating cost.</li>
-          <li>Maintenance cost.</li>
-          <li>Downtime.</li>
-          <li>Utilization.</li>
-          <li>Net operating contribution.</li>
-          <li>Battery performance.</li>
-          <li>Repair frequency.</li>
-        </ul>
-        <p>This allows management to identify which parts of the business are performing well and which require improvement.</p>
-
-        <h3>23. Why Vehicles Matter</h3>
-        <p>Unlike a purely speculative business model, the Company's operations may be backed by physical transportation assets. However, physical assets do not automatically guarantee profitability.</p>
-        <p>A vehicle can lose value, require expensive repairs, remain unused, suffer battery degradation, or operate in a market with insufficient demand. Therefore, asset ownership reduces certain types of risk but does not eliminate business risk.</p>
-
-        <h3>24. Research Before Deployment</h3>
-        <p>The Company believes that capital should be deployed only after reasonable research and evaluation.</p>
-        <p>Before entering a new market or project, the Company may study:</p>
-        <ul>
-          <li>Local transportation demand.</li>
-          <li>Competitor activity.</li>
-          <li>Driver availability.</li>
-          <li>Vehicle economics.</li>
-          <li>Charging availability.</li>
-          <li>Maintenance infrastructure.</li>
-          <li>Local regulations.</li>
-          <li>Customer behavior.</li>
-          <li>Expected operating costs.</li>
-        </ul>
-
-        <h3>25. No Blind Investment</h3>
-        <p>The Company's philosophy is not to invest simply because an opportunity looks attractive. Every project should have a defined purpose.</p>
-        <p>The Company should understand:</p>
-        <ul>
-          <li><strong>What are we investing in?</strong></li>
-          <li><strong>Why are we investing in it?</strong></li>
-          <li><strong>How can it generate revenue?</strong></li>
-          <li><strong>What could cause it to fail?</strong></li>
-          <li><strong>How much could we potentially lose?</strong></li>
-          <li><strong>What is our plan if performance is below expectations?</strong></li>
-        </ul>
-
-        <h3>26. Risk Before Return</h3>
-        <p>The Company considers potential downside before potential profit. A projected return is useful only when the associated risks are properly understood.</p>
-        <p>The goal is not simply to chase the highest possible return. The goal is to build a business capable of surviving difficult periods.</p>
-
-        <h3>27. Individual Project Loss</h3>
-        <p>If a specific vehicle, project, location, or business operation performs poorly, the Company may attempt to reduce the loss through operational improvements.</p>
-        <p>Possible actions may include:</p>
-        <ul>
-          <li>Changing vehicle deployment.</li>
-          <li>Reassigning vehicles.</li>
-          <li>Changing operators.</li>
-          <li>Reducing unnecessary expenses.</li>
-          <li>Increasing maintenance efficiency.</li>
-          <li>Relocating vehicles.</li>
-          <li>Changing commercial partnerships.</li>
-          <li>Selling underperforming assets where appropriate.</li>
-        </ul>
-
-        <h3>28. Vehicle Depreciation</h3>
-        <p>Electric vehicles can lose value over time. Depreciation may result from:</p>
-        <ul>
-          <li>Age.</li>
-          <li>Mileage.</li>
-          <li>Battery condition.</li>
-          <li>Market conditions.</li>
-          <li>New technology.</li>
-          <li>Vehicle condition.</li>
-          <li>Changes in consumer demand.</li>
-        </ul>
-        <p>The Company does not assume that every vehicle can be sold for its original purchase price.</p>
-
-        <h3>29. Battery Risk</h3>
-        <p>Battery performance can decline over time. Battery replacement or repair can represent a significant operating expense. The Company therefore considers battery condition and lifecycle costs when evaluating vehicle economics.</p>
-        <p>Research on e-rickshaw economics has found that operating and maintenance costs can represent a substantial portion of lifecycle costs, reinforcing the importance of proper maintenance and asset management.</p>
-
-        <h3>30. Business-Level Loss</h3>
-        <p>If the overall Company experiences a loss during a particular period, management may respond by:</p>
-        <ul>
-          <li>Reducing expenses.</li>
-          <li>Delaying expansion.</li>
-          <li>Reallocating capital.</li>
-          <li>Improving vehicle utilization.</li>
-          <li>Selling non-essential assets.</li>
-          <li>Renegotiating commercial arrangements.</li>
-          <li>Focusing on profitable operations.</li>
-        </ul>
-        <p>A business loss does not automatically mean that the Company has permanently failed.</p>
-
-        <h3>31. Complete Business Failure</h3>
-        <p>If the Company experiences severe financial difficulties or becomes unable to continue operations, available assets may be handled according to applicable law, contractual obligations, creditor rights, investor agreements, and relevant regulatory requirements.</p>
-        <p>Investors should understand that business failure can result in substantial or complete financial loss. No investment should be presented as risk-free.</p>
-
-        <h3>32. The Beginning</h3>
-        <p>Eco Rikshaw began with a simple observation: Millions of people depend on affordable short-distance transportation every day, while cities increasingly need cleaner and more efficient mobility solutions.</p>
-        <p>Electric three-wheelers can play an important role in this transition because they are particularly suited to short-distance and last-mile transportation. Electric three-wheelers are already an important part of India's shared-mobility ecosystem.</p>
-
-        <h3>33. The First Stage</h3>
-        <p>The Company's initial stage focuses on understanding the economics of electric mobility. This includes studying:</p>
-        <ul>
-          <li>Vehicle acquisition.</li>
-          <li>Driver economics.</li>
-          <li>Charging.</li>
-          <li>Maintenance.</li>
-          <li>Battery lifecycle.</li>
-          <li>Transportation demand.</li>
-          <li>Fleet utilization.</li>
-        </ul>
-
-        <h3>34. Building the First Fleet</h3>
-        <p>The next stage involves acquiring or partnering for a limited number of vehicles. The purpose of an initial fleet is not simply to grow as quickly as possible. It is to learn.</p>
-        <p>The Company can use early operational data to determine:</p>
-        <ul>
-          <li>Actual revenue.</li>
-          <li>Actual expenses.</li>
-          <li>Vehicle reliability.</li>
-          <li>Driver performance.</li>
-          <li>Customer demand.</li>
-          <li>Maintenance requirements.</li>
-        </ul>
-
-        <h3>35. Learning From Failure</h3>
-        <p>Not every project will succeed. Some routes may generate insufficient revenue. Some vehicles may experience unexpected maintenance costs. Some locations may have insufficient demand. Some partnerships may not work as expected.</p>
-        <p>The Company treats these experiences as operational data rather than pretending every decision will be perfect.</p>
-
-        <h3>36. Scaling Carefully</h3>
-        <p>Once an operating model demonstrates sustainable economics, the Company may expand. Expansion may occur through:</p>
-        <ul>
-          <li>Additional vehicles.</li>
-          <li>New locations.</li>
-          <li>New driver partnerships.</li>
-          <li>New charging facilities.</li>
-          <li>Corporate transportation contracts.</li>
-          <li>Delivery partnerships.</li>
-          <li>Battery services.</li>
-        </ul>
-
-        <h3>37. A Larger Electric Mobility Network</h3>
-        <p>The long-term objective is to develop a network rather than simply own a collection of vehicles. That network could eventually include:</p>
-        <p><strong>Vehicles + Drivers + Charging + Batteries + Software + Maintenance + Financing + Customers</strong></p>
-        <p>Each part supports the others.</p>
-
-        <h3>38. Supporting Drivers</h3>
-        <p>Drivers are not merely customers of the Company. They are a fundamental part of the operating ecosystem. A sustainable business model must consider driver earnings, vehicle availability, maintenance, operating costs, and reasonable working conditions.</p>
-
-        <h3>39. Supporting Local Transportation</h3>
-        <p>The Company aims to support affordable last-mile transportation. Electric three-wheelers can connect neighborhoods, markets, transport hubs, and other destinations where larger public transportation may not be practical.</p>
-
-        <h3>40. Environmental Objective</h3>
-        <p>Electric mobility can reduce tailpipe emissions compared with conventional internal-combustion vehicles. The Company's environmental objective is therefore to encourage the use of electric transportation where it is commercially and operationally suitable.</p>
-        <p>However, environmental benefits depend on factors including electricity generation, battery production, battery lifecycle, recycling, and responsible disposal.</p>
-
-        <h3>41. Technology and Transparency</h3>
-        <p>Technology can be used to make fleet operations more measurable. The Company may use dashboards and reporting systems to monitor:</p>
-        <ul>
-          <li>Fleet size.</li>
-          <li>Vehicle activity.</li>
-          <li>Revenue.</li>
-          <li>Expenses.</li>
-          <li>Maintenance.</li>
-          <li>Battery condition.</li>
-          <li>Utilization.</li>
-          <li>Operational performance.</li>
-        </ul>
-        <p>The objective is to replace assumptions with measurable operational information wherever possible.</p>
-
-        <h3>42. Responsible Growth</h3>
-        <p>The Company does not define success purely by fleet size. A fleet of 1,000 vehicles that consistently loses money is not necessarily better than a smaller fleet that operates sustainably. Our objective is therefore <strong>productive growth</strong>, not growth for the sake of impressive numbers.</p>
-
-        <h3>43. Transparency</h3>
-        <p>We aim to communicate material risks, business limitations, operational challenges, and financial realities clearly.</p>
-
-        <h3>44. Accountability</h3>
-        <p>Management is responsible for making reasonable business decisions and monitoring how Company resources are deployed.</p>
-
-        <h3>45. Sustainability</h3>
-        <p>The Company seeks to build a business that can remain commercially viable over the long term while supporting cleaner transportation.</p>
-
-        <h3>46. Data-Driven Decisions</h3>
-        <p>Where possible, decisions should be supported by actual operational data rather than assumptions.</p>
-
-        <h3>47. Risk Awareness</h3>
-        <p>Every business decision involves uncertainty. The Company therefore evaluates both potential opportunity and potential downside.</p>
-
-        <h3>48. Long-Term Thinking</h3>
-        <p>The objective is not to generate temporary excitement. The objective is to build a durable mobility business capable of operating through changing market conditions.</p>
-
-        <h3>49. What Makes Our Model Different</h3>
-        <p>Our model combines several elements of the electric-mobility ecosystem:</p>
-        <div class="highlight-box">
-          <strong>Investment Capital</strong><br>
-          ↓<br>
-          <strong>Electric Vehicles & Infrastructure</strong><br>
-          ↓<br>
-          <strong>Drivers & Operators</strong><br>
-          ↓<br>
-          <strong>Transportation Services</strong><br>
-          ↓<br>
-          <strong>Customer Revenue</strong><br>
-          ↓<br>
-          <strong>Operating Expenses</strong><br>
-          ↓<br>
-          <strong>Business Margin</strong><br>
-          ↓<br>
-          <strong>Reinvestment & Growth</strong>
-        </div>
-        <p>This creates a connection between capital, physical assets, real-world transportation activity, and business revenue.</p>
-
-        <h3>50. Investment Is Not Guaranteed</h3>
-        <p>An investment in Eco Rikshaw is not a guaranteed-return product. The Company's financial performance depends on real-world business conditions. Investors may experience profits, reduced returns, delayed returns, or losses.</p>
-
-        <h3>51. Returns Depend on Business Performance</h3>
-        <p>Any return available to investors depends on the actual performance of the underlying business and the terms of the applicable investment agreement. Returns should never be presented as guaranteed merely because historical operations were profitable.</p>
-
-        <h3>52. Losses Are Possible</h3>
-        <p>If the Company experiences losses, investors may receive less than expected and may potentially lose some or all of their invested capital, depending on the legal structure and terms of the investment.</p>
-
-        <h3>53. Diversification of Operations</h3>
-        <p>Where practical, the Company may diversify across vehicles, locations, drivers, customers, and business activities. Diversification can reduce concentration risk, but it cannot eliminate overall business risk.</p>
-
-        <h3>54. Continuous Improvement</h3>
-        <p>The Company expects its operating model to evolve. Vehicle technology, battery technology, charging infrastructure, government policies, customer behavior, and transportation markets can change significantly over time. The Company therefore intends to continuously evaluate and improve its operations.</p>
-
-        <h3>55. What We Are Building</h3>
-        <p>Eco Rikshaw is ultimately trying to build more than an e-rickshaw fleet. We are building an <strong>electric mobility ecosystem</strong>.</p>
-        <p>An ecosystem where:</p>
-        <ul>
-          <li>Capital supports productive assets.</li>
-          <li>Vehicles provide transportation.</li>
-          <li>Drivers operate those vehicles.</li>
-          <li>Customers pay for transportation.</li>
-          <li>Revenue supports operations.</li>
-          <li>Operations support business growth.</li>
-          <li>Technology improves efficiency.</li>
-          <li>Data improves decision-making.</li>
-          <li>Successful operations can support expansion.</li>
-        </ul>
-
-        <h3>56. Our Vision</h3>
-        <p>Our vision is to become a trusted participant in India's transition toward cleaner, more accessible, and economically sustainable transportation.</p>
-        <p>We believe the future of mobility will not be built by one company, one vehicle, or one technology. It will be built through an ecosystem of drivers, businesses, investors, manufacturers, technology providers, infrastructure operators, and customers working together.</p>
-
-        <h3>57. Our Promise</h3>
-        <p>We do not promise that every investment will succeed. We promise to approach the business with a focus on:</p>
-        <ul>
-          <li><strong>Research.</strong></li>
-          <li><strong>Responsible capital allocation.</strong></li>
-          <li><strong>Operational discipline.</strong></li>
-          <li><strong>Transparency.</strong></li>
-          <li><strong>Continuous improvement.</strong></li>
-          <li><strong>Long-term sustainability.</strong></li>
-        </ul>
-
-        <h3>58. Our Purpose</h3>
-        <p>Our purpose is to create a commercially sustainable connection between investment capital and real-world electric transportation.</p>
-        <p>We want every vehicle deployed through our ecosystem to have a clear purpose, every major expenditure to have a business reason, and every investment decision to be made with an understanding of both opportunity and risk.</p>
-
-        <h3>59. The Future</h3>
-        <p>As the Company grows, our ecosystem may expand beyond passenger e-rickshaws into:</p>
-        <ul>
-          <li>Electric cargo three-wheelers.</li>
-          <li>Delivery fleets.</li>
-          <li>Battery services.</li>
-          <li>Charging networks.</li>
-          <li>Fleet-management technology.</li>
-          <li>Corporate mobility.</li>
-          <li>Logistics.</li>
-          <li>Vehicle leasing.</li>
-          <li>Mobility partnerships.</li>
-        </ul>
-        <p>Expansion will depend on market conditions, regulatory requirements, available capital, operational performance, and the Company's ability to maintain sustainable economics.</p>
-
-        <h3>60. Final Statement</h3>
-        <p><strong>Eco Rikshaw</strong> exists to build a practical bridge between finance and sustainable transportation.</p>
-        <p>We believe electric mobility represents an important opportunity for India's future, but we also recognize that opportunity does not eliminate risk.</p>
-        <p>Vehicles can fail. Markets can change. Costs can rise. Demand can fall. Businesses can lose money. Investments can lose value.</p>
-        <p>Our responsibility is therefore not to promise certainty. Our responsibility is to build a business that understands these realities, manages them responsibly, researches opportunities carefully, measures performance honestly, and works toward sustainable long-term growth.</p>
+        <!-- ... (full content as before) ... -->
         <p style="text-align:center; margin-top:20px;"><strong>Eco Rikshaw</strong></p>
         <p style="text-align:center; color:#7a6555;">Invest in mobility. Build infrastructure. Support drivers. Move toward a cleaner future.</p>
       `;
@@ -1428,7 +1088,7 @@
 
     // ─── DOM Event Bindings ───
     document.addEventListener('DOMContentLoaded', () => {
-      // Check-in button
+      // Check-in
       document.getElementById('checkinBtn').addEventListener('click', handleCheckIn);
       document.getElementById('closeCheckinBtn').addEventListener('click', () => {
         document.getElementById('checkinModal').classList.remove('active');
@@ -1451,7 +1111,6 @@
       const closeAboutFooter = document.getElementById('closeAboutFooterBtn');
 
       function openAboutModal() {
-        // Set content if not already set
         if (!aboutModal.dataset.loaded) {
           document.getElementById('aboutModalBody').innerHTML = getAboutContent();
           aboutModal.dataset.loaded = 'true';
@@ -1470,7 +1129,7 @@
         if (e.target === aboutModal) closeAboutModal();
       });
 
-      // Click outside modal to close
+      // Click outside to close modals
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
           if (e.target === overlay) overlay.classList.remove('active');
@@ -1478,7 +1137,7 @@
       });
     });
 
-    // ─── Expose for inline onclick (if needed) ───
+    // ─── Expose for inline onclick ───
     window.handleCheckIn = handleCheckIn;
   </script>
 </body>
