@@ -1,253 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recharge Confirmation - Rikshaw Service</title>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recharge - Eco Rikshaw</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+    /* ─── Reset & Base ─── */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, #f5f7fa 0%, #e0f7e9 100%);
+      background-color: #faf8f2;
+      font-family: 'Poppins', sans-serif;
       min-height: 100vh;
-      padding: 30px;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
+      color: #2d241a;
     }
 
-    .container {
-      background-color: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    /* ─── Aura Background ─── */
+    .aura-bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .aura-layer-1,
+    .aura-layer-2 {
+      position: absolute;
+      inset: 0;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .aura-layer-1 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(125px);
+    }
+    .aura-layer-2 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(100px);
+    }
+    @media (min-width: 768px) {
+      .aura-layer-1 { filter: blur(180px); }
+      .aura-layer-2 { filter: blur(144px); }
+    }
+
+    /* ─── Content Wrapper ─── */
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
       width: 100%;
-      max-width: 500px;
-      padding: 30px;
+      max-width: 480px;
+      margin: 0 auto;
     }
 
+    /* ─── Card ─── */
+    .card {
+      background: rgba(255, 252, 248, 0.90);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 215, 180, 0.30);
+      box-shadow: 0 8px 32px rgba(160, 120, 80, 0.08), 0 0 0 1px rgba(255, 215, 180, 0.10) inset;
+      padding: 32px 24px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    .card:hover {
+      border-color: rgba(200, 150, 100, 0.40);
+      box-shadow: 0 12px 40px rgba(160, 120, 80, 0.12), 0 0 0 1px rgba(200, 150, 100, 0.18) inset;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Logo & Heading ─── */
     .logo {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 4px;
     }
-
     .logo svg {
       width: 48px;
       height: 48px;
-      fill: #2e7d32;
+      fill: #b8702a;
+      filter: drop-shadow(0 2px 8px rgba(184, 112, 42, 0.15));
     }
-
     h2 {
       text-align: center;
-      margin-bottom: 24px;
-      color: #2e7d32;
+      color: #7a4f2b;
       font-weight: 600;
       font-size: 24px;
+      letter-spacing: -0.3px;
+      margin-bottom: 24px;
+    }
+    h2 span {
+      color: #b8702a;
     }
 
-    .amount-options {
+    /* ─── Amount Grid ─── */
+    .amount-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
     }
-
     .amount-option {
-      border: 2px solid #C8E6C9;
-      border-radius: 8px;
-      padding: 15px;
+      padding: 14px 8px;
       text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid #e8ddd0;
+      border-radius: 14px;
       cursor: pointer;
-      transition: all 0.3s;
-      background-color: #E8F5E9;
-    }
-
-    .amount-option:hover {
-      border-color: #2E7D32;
-      transform: translateY(-2px);
-    }
-
-    .amount-option.selected {
-      background-color: #2E7D32;
-      color: white;
-      border-color: #2E7D32;
-    }
-
-    .amount-option .amount {
-      font-size: 20px;
       font-weight: 600;
+      font-size: 18px;
+      color: #5a4030;
+      transition: all 0.25s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    .amount-option:hover {
+      border-color: #d4c0b0;
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .amount-option.selected {
+      border-color: #b8702a;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(184, 112, 42, 0.25);
+      transform: scale(1.02);
+    }
+    .amount-option .sub {
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.7;
+      display: block;
+      margin-top: 2px;
+    }
+    .amount-option.selected .sub {
+      opacity: 0.9;
     }
 
+    /* ─── Instruction ─── */
+    .instruction-box {
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      border-left: 4px solid #b8702a;
+      display: none;
+      animation: slideIn 0.4s ease forwards;
+    }
+    .instruction-box.show {
+      display: block;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .instruction-box p {
+      font-size: 14px;
+      color: #5a4030;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .instruction-box p i {
+      color: #b8702a;
+      font-size: 18px;
+      margin-top: 2px;
+    }
+
+    /* ─── QR Section ─── */
     .qr-section {
       text-align: center;
-      margin: 25px 0;
-      padding: 20px;
-      border: 2px dashed #C8E6C9;
-      border-radius: 8px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      border: 1.5px dashed rgba(200, 180, 160, 0.3);
+      margin-bottom: 20px;
+      display: none;
     }
-
+    .qr-section.show {
+      display: block;
+      animation: fadeUp 0.4s ease forwards;
+    }
     .qr-container {
-      margin: 0 auto;
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 12px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
       display: flex;
-      justify-content: center;
       align-items: center;
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #C8E6C9;
+      justify-content: center;
     }
-
     .qr-container img {
       max-width: 100%;
       max-height: 100%;
+      border-radius: 4px;
     }
-
-    .payment-details {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-      color: #555;
-    }
-
-    .payment-details strong {
-      color: #2E7D32;
-    }
-
-    .utr-input {
-      margin-top: 20px;
-    }
-
-    .utr-input label {
-      display: block;
-      margin-bottom: 8px;
-      color: #2E7D32;
+    .qr-label {
+      font-size: 13px;
+      color: #7a6555;
       font-weight: 500;
     }
-
-    .utr-input input {
-      width: 100%;
-      padding: 12px 15px;
-      border: 2px solid #C8E6C9;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: all 0.3s;
-      background-color: #E8F5E9;
+    .qr-label strong {
+      color: #b8702a;
     }
 
-    .utr-input input:focus {
-      border-color: #2E7D32;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+    /* ─── Payment Apps ─── */
+    .pay-apps {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 16px 0 20px;
+      flex-wrap: wrap;
     }
-
-    .error-message {
-      color: #D32F2F;
-      margin-top: 10px;
-      font-size: 14px;
-      display: none;
+    .pay-app-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1.5px solid #e8ddd0;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      color: #2d241a;
+      text-decoration: none;
     }
-
-    .success-message {
-      color: #2E7D32;
-      margin-top: 10px;
-      font-size: 14px;
-      display: none;
+    .pay-app-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      border-color: #b8702a;
+      background: rgba(255, 255, 255, 0.8);
     }
+    .pay-app-btn img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+    }
+    .pay-app-btn .icon-phonepe { color: #5f259f; }
+    .pay-app-btn .icon-paytm { color: #003366; }
+    .pay-app-btn .icon-gpay { color: #1a73e8; }
 
-    .submit-btn {
+    /* ─── I Have Paid Button ─── */
+    .paid-btn {
       width: 100%;
       padding: 14px;
-      background-color: #2E7D32;
-      color: white;
+      background: linear-gradient(145deg, #7a9f5a, #5f8a3a);
+      color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 14px;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      margin-top: 20px;
-      transition: background-color 0.3s, transform 0.2s;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 16px rgba(95, 138, 58, 0.25);
+      display: none;
+      margin-bottom: 16px;
     }
-
-    .submit-btn:hover {
-      background-color: #1B5E20;
+    .paid-btn.show {
+      display: block;
+      animation: fadeUp 0.4s ease forwards;
+    }
+    .paid-btn:hover {
       transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(95, 138, 58, 0.35);
+    }
+    .paid-btn:active {
+      transform: scale(0.97);
     }
 
-    .submit-btn:disabled {
-      background-color: #81C784;
-      cursor: not-allowed;
-      transform: none;
+    /* ─── UTR Input ─── */
+    .utr-section {
+      display: none;
+      animation: slideIn 0.4s ease forwards;
+      margin-top: 4px;
     }
+    .utr-section.show {
+      display: block;
+    }
+    .utr-section label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #5a4030;
+      margin-bottom: 6px;
+    }
+    .utr-section .input-wrap {
+      position: relative;
+    }
+    .utr-section .input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b8a898;
+      font-size: 16px;
+    }
+    .utr-section input {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      border: 1.5px solid #e8ddd0;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      background: rgba(255, 252, 248, 0.6);
+      color: #2d241a;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      outline: none;
+      letter-spacing: 0.5px;
+    }
+    .utr-section input:focus {
+      border-color: #b8702a;
+      box-shadow: 0 0 0 4px rgba(184, 112, 42, 0.08);
+      background: #fffdfa;
+    }
+    .utr-section input::placeholder {
+      color: #b8a898;
+      font-weight: 400;
+      font-size: 14px;
+    }
+    .utr-section .error-msg {
+      color: #b54a3a;
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+    }
+    .utr-section .error-msg.show {
+      display: block;
+    }
+
+    /* ─── Submit Button ─── */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 16px rgba(184, 112, 42, 0.25);
+      margin-top: 16px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .submit-btn.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .submit-btn.enabled:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(184, 112, 42, 0.35);
+    }
+    .submit-btn:active {
+      transform: scale(0.97);
+    }
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* ─── Success / Error Messages ─── */
+    .msg {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 12px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    .msg.show {
+      display: flex;
+      animation: fadeUp 0.35s ease forwards;
+    }
+    .msg.success {
+      background: rgba(122, 159, 90, 0.15);
+      color: #5f8a3a;
+      border: 1px solid rgba(122, 159, 90, 0.25);
+    }
+    .msg.error {
+      background: rgba(181, 74, 58, 0.10);
+      color: #b54a3a;
+      border: 1px solid rgba(181, 74, 58, 0.15);
+    }
+    .msg i {
+      font-size: 18px;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 520px) {
+      .card { padding: 24px 16px; }
+      .amount-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .amount-option { font-size: 16px; padding: 12px 6px; }
+      .pay-apps { gap: 8px; }
+      .pay-app-btn { padding: 8px 12px; font-size: 12px; }
+      .pay-app-btn img { width: 22px; height: 22px; }
+      .qr-container { width: 150px; height: 150px; }
+    }
+
+    /* ─── Spinner ─── */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Toast ─── */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,252,248,0.96);
+      backdrop-filter: blur(8px);
+      padding: 14px 24px;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,215,180,0.3);
+      color: #2d241a;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      z-index: 1002;
+      animation: slideUp 0.35s ease forwards;
+      max-width: 90%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast i { font-size: 18px; }
+    .toast.success i { color: #7a9f5a; }
+    .toast.error i { color: #b54a3a; }
+    @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+    @keyframes slideDown { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
   </style>
-  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-      </svg>
-    </div>
-    <h2>Recharge Your Wallet</h2>
 
-    <div class="amount-options">
-      <div class="amount-option" data-amount="110">
-        <div class="amount">₹110</div>
-      </div>
-      <div class="amount-option" data-amount="200">
-        <div class="amount">₹200</div>
-      </div>
-      <div class="amount-option" data-amount="500">
-        <div class="amount">₹500</div>
-      </div>
-      <div class="amount-option" data-amount="1100">
-        <div class="amount">₹1100</div>
-      </div>
-      <div class="amount-option" data-amount="2000">
-        <div class="amount">₹2000</div>
-      </div>
-      <div class="amount-option" data-amount="5000">
-        <div class="amount">₹5000</div>
-      </div>
-    </div>
-
-    <div class="qr-section">
-      <div class="qr-container">
-        <img src="110.png" alt="Payment QR Code" id="qrImage">
-      </div>
-      <div class="payment-details">
-        <p><strong>UPI ID:</strong> 8077921736-la4d@ybl </p>
-        <p><strong>Account Name:</strong> Eco Rikshaw </p>
-      </div>
-      <p>After payment, enter the UTR number below</p>
-    </div>
-
-    <div class="utr-input">
-      <label for="utr">UTR Number</label>
-      <input type="text" id="utr" placeholder="Enter 12-digit UTR number" maxlength="12">
-      <div id="errorMessage" class="error-message"></div>
-      <div id="successMessage" class="success-message"></div>
-    </div>
-
-    <button id="submitBtn" class="submit-btn" disabled>Submit Recharge Request</button>
+  <!-- ─── AURA LAYERS ─── -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
   </div>
 
-  <script>
-    // Firebase configuration
+  <!-- ─── CONTENT ─── -->
+  <div class="content-wrapper">
+    <div class="card">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+        </svg>
+      </div>
+      <h2>Recharge <span>Wallet</span></h2>
+
+      <!-- Amount Selection -->
+      <div class="amount-grid" id="amountGrid">
+        <div class="amount-option" data-amount="110">₹110 <span class="sub">Min</span></div>
+        <div class="amount-option" data-amount="200">₹200</div>
+        <div class="amount-option" data-amount="500">₹500</div>
+        <div class="amount-option" data-amount="1100">₹1,100</div>
+        <div class="amount-option" data-amount="2000">₹2,000</div>
+        <div class="amount-option" data-amount="5000">₹5,000 <span class="sub">Max</span></div>
+      </div>
+
+      <!-- Instruction -->
+      <div class="instruction-box" id="instructionBox">
+        <p><i class="fas fa-info-circle"></i> <span><strong>How to pay:</strong> Scan the QR code with your UPI app or tap a payment app below to pay ₹<span id="instructionAmount">0</span>.</span></p>
+      </div>
+
+      <!-- QR Section -->
+      <div class="qr-section" id="qrSection">
+        <div class="qr-container">
+          <img src="110.png" alt="Payment QR" id="qrImage" />
+        </div>
+        <div class="qr-label">Scan with <strong>PhonePe</strong> · <strong>Paytm</strong> · <strong>Google Pay</strong></div>
+        <div class="qr-label" style="font-size:12px;margin-top:4px;color:#b8a898;">UPI: <strong>8077921736-la4d@ybl</strong></div>
+      </div>
+
+      <!-- Payment Apps -->
+      <div class="pay-apps" id="payApps">
+        <button class="pay-app-btn" data-app="phonepe">
+          <i class="fas fa-mobile-alt icon-phonepe" style="font-size:20px;"></i> PhonePe
+        </button>
+        <button class="pay-app-btn" data-app="paytm">
+          <i class="fas fa-mobile-alt icon-paytm" style="font-size:20px;"></i> Paytm
+        </button>
+        <button class="pay-app-btn" data-app="gpay">
+          <i class="fas fa-mobile-alt icon-gpay" style="font-size:20px;"></i> Google Pay
+        </button>
+      </div>
+
+      <!-- I Have Paid Button -->
+      <button class="paid-btn" id="paidBtn">
+        <i class="fas fa-check-circle"></i> I Have Paid
+      </button>
+
+      <!-- UTR Section -->
+      <div class="utr-section" id="utrSection">
+        <label for="utrInput"><i class="fas fa-receipt" style="margin-right:6px;color:#b8702a;"></i> Enter UTR Number</label>
+        <div class="input-wrap">
+          <i class="fas fa-hashtag"></i>
+          <input type="text" id="utrInput" placeholder="12-digit UTR number" maxlength="12" inputmode="numeric" />
+        </div>
+        <div class="error-msg" id="utrError">UTR must be exactly 12 digits.</div>
+      </div>
+
+      <!-- Submit Button -->
+      <button class="submit-btn" id="submitBtn" disabled>Submit Recharge Request</button>
+
+      <!-- Messages -->
+      <div class="msg success" id="successMsg"><i class="fas fa-check-circle"></i> <span id="successText">Request submitted!</span></div>
+      <div class="msg error" id="errorMsg"><i class="fas fa-exclamation-circle"></i> <span id="errorText">Something went wrong.</span></div>
+    </div>
+  </div>
+
+  <!-- ─── FIREBASE MODULE ─── -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
       authDomain: "rikshaw-67877.firebaseapp.com",
@@ -258,137 +565,247 @@
       appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
     };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const database = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
 
-    // Selected amount variable
+    // ─── State ───
     let selectedAmount = 0;
+    let hasPaid = false;
+    let currentUser = null;
 
-    // Amount selection
-    document.querySelectorAll('.amount-option').forEach(option => {
-      option.addEventListener('click', function() {
-        // Remove selected class from all options
-        document.querySelectorAll('.amount-option').forEach(opt => {
-          opt.classList.remove('selected');
-        });
-        
-        // Add selected class to clicked option
-        this.classList.add('selected');
-        
-        // Set selected amount
-        selectedAmount = parseInt(this.getAttribute('data-amount'));
-        // Change QR image
-        document.getElementById('qrImage').src = selectedAmount + ".png";
-        
-        // Enable submit button if UTR is already entered
-        const utr = document.getElementById('utr').value;
-        if (utr.length === 12) {
-          document.getElementById('submitBtn').disabled = false;
+    // ─── DOM refs ───
+    const amountOptions = document.querySelectorAll('.amount-option');
+    const instructionBox = document.getElementById('instructionBox');
+    const instructionAmount = document.getElementById('instructionAmount');
+    const qrSection = document.getElementById('qrSection');
+    const qrImage = document.getElementById('qrImage');
+    const payApps = document.getElementById('payApps');
+    const paidBtn = document.getElementById('paidBtn');
+    const utrSection = document.getElementById('utrSection');
+    const utrInput = document.getElementById('utrInput');
+    const utrError = document.getElementById('utrError');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('successMsg');
+    const successText = document.getElementById('successText');
+    const errorMsg = document.getElementById('errorMsg');
+    const errorText = document.getElementById('errorText');
+
+    // ─── Auth ───
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+    });
+
+    // ─── Amount Selection ───
+    amountOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        amountOptions.forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        selectedAmount = parseInt(opt.dataset.amount);
+        hasPaid = false;
+        paidBtn.classList.remove('show');
+        utrSection.classList.remove('show');
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('enabled');
+        hideMessages();
+
+        // Update instruction
+        instructionAmount.textContent = selectedAmount.toLocaleString();
+        instructionBox.classList.add('show');
+
+        // Show QR
+        qrImage.src = selectedAmount + '.png';
+        qrSection.classList.add('show');
+        payApps.style.display = 'flex';
+        paidBtn.classList.add('show');
+      });
+    });
+
+    // ─── Payment App Buttons ───
+    payApps.querySelectorAll('.pay-app-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!selectedAmount) {
+          showToast('Please select an amount first.', 'error');
+          return;
+        }
+        const app = btn.dataset.app;
+        const upiId = '8077921736-la4d@ybl';
+        const name = 'Eco%20Rikshaw';
+        const amount = selectedAmount;
+        let url = '';
+
+        // Build UPI intent URL
+        const upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+
+        switch (app) {
+          case 'phonepe':
+            url = `phonepe://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+            break;
+          case 'paytm':
+            url = `paytmmp://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+            break;
+          case 'gpay':
+            url = `tez://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+            break;
+          default:
+            url = upiUrl;
+        }
+
+        // Try to open the app, fallback to UPI intent
+        try {
+          window.location.href = url;
+          // If app doesn't open, fallback after a delay
+          setTimeout(() => {
+            window.location.href = upiUrl;
+          }, 800);
+        } catch (e) {
+          // Fallback to UPI intent
+          window.location.href = upiUrl;
         }
       });
     });
 
-    // UTR validation
-    document.getElementById('utr').addEventListener('input', function() {
-      const utr = this.value;
-      const errorMessage = document.getElementById('errorMessage');
-      const submitBtn = document.getElementById('submitBtn');
-      
-      if (utr.length === 12 && /^\d+$/.test(utr)) {
-        errorMessage.style.display = 'none';
-        if (selectedAmount > 0) {
-          submitBtn.disabled = false;
-        }
+    // ─── I Have Paid ───
+    paidBtn.addEventListener('click', () => {
+      if (!selectedAmount) {
+        showToast('Please select an amount first.', 'error');
+        return;
+      }
+      hasPaid = true;
+      paidBtn.classList.remove('show');
+      utrSection.classList.add('show');
+      utrInput.focus();
+      hideMessages();
+      showToast('Great! Enter the UTR number from your payment.', 'success');
+    });
+
+    // ─── UTR Validation ───
+    utrInput.addEventListener('input', () => {
+      const val = utrInput.value.trim();
+      if (val.length === 12 && /^\d+$/.test(val)) {
+        utrError.classList.remove('show');
+        submitBtn.disabled = false;
+        submitBtn.classList.add('enabled');
       } else {
-        if (utr.length > 0) {
-          errorMessage.textContent = 'UTR must be exactly 12 digits';
-          errorMessage.style.display = 'block';
+        if (val.length > 0) {
+          utrError.classList.add('show');
         } else {
-          errorMessage.style.display = 'none';
+          utrError.classList.remove('show');
         }
         submitBtn.disabled = true;
+        submitBtn.classList.remove('enabled');
       }
     });
 
-    // Submit recharge request
-    document.getElementById('submitBtn').addEventListener('click', async function() {
-      const utr = document.getElementById('utr').value;
-      const errorMessage = document.getElementById('errorMessage');
-      const successMessage = document.getElementById('successMessage');
-      const submitBtn = this;
-      
-      // Validate again
-      if (utr.length !== 12 || !/^\d+$/.test(utr) || selectedAmount <= 0) {
-        errorMessage.textContent = 'Please select an amount and enter a valid UTR';
-        errorMessage.style.display = 'block';
+    // ─── Submit ───
+    submitBtn.addEventListener('click', async () => {
+      const utr = utrInput.value.trim();
+      if (!selectedAmount || !hasPaid || utr.length !== 12 || !/^\d+$/.test(utr)) {
+        showToast('Please complete all steps first.', 'error');
         return;
-      }
-      
-      // Get current user
-      const user = auth.currentUser;
-      if (!user) {
-        errorMessage.textContent = 'You need to login first';
-        errorMessage.style.display = 'block';
-        return;
-      }
-      
-      // Get user name from database
-      let userName = "Customer";
-      try {
-        const userSnapshot = await database.ref('users/' + user.uid).once('value');
-        if (userSnapshot.exists()) {
-          userName = userSnapshot.val().name || "Customer";
-        }
-      } catch (error) {
-        console.log("Couldn't fetch user name:", error);
       }
 
-      // Disable button during processing
+      if (!currentUser) {
+        showToast('Please login first.', 'error');
+        return;
+      }
+
+      // Disable button
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Processing...';
-      
-      // Create recharge request
-      const rechargeData = {
-        userId: user.uid,
-        name: userName,
-        phone: user.email.split('@')[0],
-        amount: selectedAmount,
-        utr: utr,
-        status: 'pending',
-        timestamp: Date.now()
-      };
-      
-      // Save to Firebase
+      submitBtn.classList.remove('enabled');
+      submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+      hideMessages();
+
       try {
-        await database.ref('balanceRequests').push(rechargeData);
-        
-        successMessage.textContent = 'Recharge request submitted successfully! It will be processed shortly.';
-        successMessage.style.display = 'block';
-        errorMessage.style.display = 'none';
-        
+        // Get user name
+        let userName = 'Customer';
+        try {
+          const userSnap = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js')
+            .then(({ getDatabase, ref, get }) => {
+              const db = getDatabase(app);
+              return get(ref(db, `users/${currentUser.uid}`));
+            });
+          if (userSnap.exists()) {
+            userName = userSnap.val().name || 'Customer';
+          }
+        } catch (e) {}
+
+        const rechargeData = {
+          userId: currentUser.uid,
+          name: userName,
+          phone: currentUser.email ? currentUser.email.split('@')[0] : '',
+          amount: selectedAmount,
+          utr: utr,
+          status: 'pending',
+          timestamp: Date.now()
+        };
+
+        const dbRef = ref(db, 'balanceRequests');
+        await push(dbRef, rechargeData);
+
+        // Success
+        successText.textContent = `Recharge request of ₹${selectedAmount.toLocaleString()} submitted successfully! It will be processed shortly.`;
+        successMsg.classList.add('show');
+        errorMsg.classList.remove('show');
+
         // Reset form
-        document.querySelectorAll('.amount-option').forEach(opt => {
-          opt.classList.remove('selected');
-        });
-        document.getElementById('utr').value = '';
-        selectedAmount = 0;
-        
-        // Re-enable button after delay
         setTimeout(() => {
-          submitBtn.textContent = 'Submit Recharge Request';
+          amountOptions.forEach(o => o.classList.remove('selected'));
+          selectedAmount = 0;
+          hasPaid = false;
+          instructionBox.classList.remove('show');
+          qrSection.classList.remove('show');
+          payApps.style.display = 'none';
+          paidBtn.classList.remove('show');
+          utrSection.classList.remove('show');
+          utrInput.value = '';
           submitBtn.disabled = true;
-        }, 2000);
-      } catch (error) {
-        errorMessage.textContent = 'Error submitting request: ' + error.message;
-        errorMessage.style.display = 'block';
-        successMessage.style.display = 'none';
-        
-        submitBtn.textContent = 'Submit Recharge Request';
+          submitBtn.classList.remove('enabled');
+          submitBtn.innerHTML = 'Submit Recharge Request';
+          hideMessages();
+          showToast('Request submitted! Check status in your profile.', 'success');
+        }, 3000);
+
+      } catch (err) {
+        console.error('Submit error:', err);
+        errorText.textContent = 'Failed to submit request: ' + err.message;
+        errorMsg.classList.add('show');
+        successMsg.classList.remove('show');
+        submitBtn.innerHTML = 'Submit Recharge Request';
         submitBtn.disabled = false;
+        submitBtn.classList.add('enabled');
       }
     });
+
+    // ─── Helpers ───
+    function hideMessages() {
+      successMsg.classList.remove('show');
+      errorMsg.classList.remove('show');
+    }
+
+    function showToast(message, type = 'info') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+      toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'slideDown 0.35s ease forwards';
+        setTimeout(() => toast.remove(), 350);
+      }, 4000);
+    }
+
+    // ─── Show UPI apps by default (hidden until amount selected) ───
+    payApps.style.display = 'none';
+    qrSection.classList.remove('show');
+    instructionBox.classList.remove('show');
+    paidBtn.classList.remove('show');
   </script>
 </body>
 </html>

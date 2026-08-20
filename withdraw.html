@@ -2,362 +2,821 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Withdraw - Eco Rikshaw</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Withdraw - Eco Rikshaw</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary-color: #00e64d;
-      --secondary-color: #009933;
-      --dark-color: #006622;
-      --light-color: #e6ffe6;
-      --error-color: #ff4444;
-      --warning-color: #ffbb33;
-    }
-    body {
+    /* ─── Reset & Base ─── */
+    * {
       margin: 0;
-      background: #f5f5f5;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #333;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    header {
-      background: var(--primary-color);
-      color: white;
-      padding: 15px 0;
-      text-align: center;
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: var(--dark-color);
-    }
-    .card {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .balance-box {
-      text-align: center;
-      font-size: 18px;
-      position: relative;
-    }
-    .balance-amount {
-      font-size: 28px;
-      font-weight: bold;
-      color: var(--secondary-color);
-      margin: 10px 0;
-    }
-    .input-group {
-      margin-bottom: 20px;
-      position: relative;
-    }
-    .input-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: #555;
-    }
-    .input-group input {
-      width: 100%;
-      padding: 15px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
+      padding: 0;
       box-sizing: border-box;
-      transition: all 0.3s;
     }
-    .input-group input:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(0, 230, 77, 0.2);
-      outline: none;
+
+    body {
+      background-color: #faf8f2;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      padding: 16px 16px 80px;
+      color: #2d241a;
     }
-    button {
-      background: var(--secondary-color);
-      color: white;
-      padding: 16px;
-      font-size: 18px;
+
+    /* ─── Aura Background ─── */
+    .aura-bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .aura-layer-1,
+    .aura-layer-2 {
+      position: absolute;
+      inset: 0;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .aura-layer-1 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(125px);
+    }
+    .aura-layer-2 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(100px);
+    }
+    @media (min-width: 768px) {
+      .aura-layer-1 { filter: blur(180px); }
+      .aura-layer-2 { filter: blur(144px); }
+    }
+
+    /* ─── Content Wrapper ─── */
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 180, 0.30);
+      box-shadow: 0 4px 16px rgba(160, 120, 80, 0.06);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .header:hover {
+      border-color: rgba(200, 150, 100, 0.45);
+      box-shadow: 0 6px 24px rgba(160, 120, 80, 0.10);
+    }
+    .header h1 {
+      font-size: 1.4rem;
       font-weight: 600;
-      border: none;
-      border-radius: 12px;
-      width: 100%;
-      cursor: pointer;
-      transition: all 0.3s;
+      color: #7a4f2b;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header h1 i {
+      color: #b8702a;
+    }
+
+    /* ─── Balance Card ─── */
+    .balance-card {
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      border-radius: 16px;
+      padding: 18px 20px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.20);
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    .balance-card .info h2 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      opacity: 0.9;
+      margin: 0 0 4px;
+    }
+    .balance-card .info .amount {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .balance-card .icon {
+      background: rgba(255,255,255,0.2);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      font-size: 1.4rem;
     }
-    button:hover {
-      background: var(--dark-color);
+
+    /* ─── Card (generic) ─── */
+    .card {
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 215, 180, 0.25);
+      box-shadow: 0 4px 12px rgba(160, 120, 80, 0.06);
+      padding: 20px 18px;
+      margin-bottom: 16px;
+      transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(200, 150, 100, 0.45);
+      box-shadow: 0 8px 24px rgba(160, 120, 80, 0.10), 0 0 0 1px rgba(200, 150, 100, 0.15) inset;
+    }
+    .card h3 {
+      color: #7a4f2b;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card h3 i {
+      color: #b8702a;
+    }
+
+    /* ─── Form inputs ─── */
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #5a4030;
+      margin-bottom: 4px;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #e2d6c8;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: 'Poppins', sans-serif;
+      background: rgba(255, 252, 248, 0.6);
+      color: #2d241a;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #b8702a;
+      box-shadow: 0 0 0 4px rgba(184, 112, 42, 0.08);
+      background: #fffdfa;
+    }
+    .form-group input::placeholder {
+      color: #b8a898;
+      font-weight: 400;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b8a898' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      cursor: pointer;
+    }
+    .form-group .input-error {
+      color: #b54a3a;
+      font-size: 0.75rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .form-group .input-error.show {
+      display: block;
+    }
+
+    .btn-save {
+      background: rgba(200, 180, 160, 0.20);
+      color: #5a4030;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: 'Poppins', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-save:hover {
+      background: rgba(200, 180, 160, 0.35);
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    button:active {
-      transform: translateY(0);
+    .btn-save:active {
+      transform: scale(0.97);
     }
-    button:disabled {
-      background: #cccccc;
+    .btn-save.saved {
+      background: rgba(122, 159, 90, 0.15);
+      color: #5f8a3a;
+    }
+    .btn-save.saved:hover {
+      background: rgba(122, 159, 90, 0.25);
+    }
+
+    /* ─── Withdraw Section ─── */
+    .withdraw-section {
+      margin-top: 4px;
+    }
+    .withdraw-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 16px rgba(184, 112, 42, 0.20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .withdraw-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(184, 112, 42, 0.30);
+    }
+    .withdraw-btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+    .withdraw-btn:disabled {
+      background: rgba(200, 180, 160, 0.25);
+      color: #b8a898;
       cursor: not-allowed;
-      transform: none;
       box-shadow: none;
     }
-    .error-message {
-      color: var(--error-color);
-      font-size: 14px;
-      margin-top: -10px;
-      margin-bottom: 10px;
-      display: none;
-    }
-    .success-message {
-      display: none;
-      background: #d4edda;
-      color: #155724;
-      padding: 15px;
+
+    /* ─── Status messages ─── */
+    .msg {
+      padding: 12px 16px;
       border-radius: 10px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .processing-overlay {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 12px;
       display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      justify-content: center;
       align-items: center;
+      gap: 10px;
+    }
+    .msg.success {
+      background: rgba(122, 159, 90, 0.15);
+      color: #5f8a3a;
+      border: 1px solid rgba(122, 159, 90, 0.25);
+      display: flex;
+    }
+    .msg.error {
+      background: rgba(181, 74, 58, 0.10);
+      color: #b54a3a;
+      border: 1px solid rgba(181, 74, 58, 0.15);
+      display: flex;
+    }
+    .msg.info {
+      background: rgba(184, 112, 42, 0.08);
+      color: #7a4f2b;
+      border: 1px solid rgba(184, 112, 42, 0.15);
+      display: flex;
+    }
+    .msg i {
+      font-size: 1.2rem;
+    }
+
+    /* ─── Processing Overlay ─── */
+    .processing-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .processing-overlay.active {
+      display: flex;
+    }
+    .processing-box {
+      background: rgba(255, 252, 248, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 32px 40px;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     }
     .spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(255, 255, 255, 0.3);
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(200, 180, 160, 0.2);
       border-radius: 50%;
-      border-top-color: var(--primary-color);
-      animation: spin 1s ease-in-out infinite;
+      border-top-color: #b8702a;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .processing-box p {
+      color: #5a4030;
+      font-weight: 500;
     }
-    .processing-text {
-      color: white;
-      margin-top: 20px;
-      font-size: 18px;
-    }
-    .note-box {
-      background-color: var(--light-color);
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 20px;
+
+    /* ─── Toast ─── */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,252,248,0.96);
+      backdrop-filter: blur(8px);
+      padding: 14px 24px;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,215,180,0.3);
+      color: #2d241a;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
       font-size: 14px;
+      z-index: 1002;
+      animation: slideUp 0.35s ease forwards;
+      max-width: 90%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .note-box ul {
-      margin: 10px 0;
-      padding-left: 20px;
+    .toast.success i { color: #7a9f5a; }
+    .toast.error i { color: #b54a3a; }
+    @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+    @keyframes slideDown { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .note-box li {
-      margin-bottom: 5px;
+
+    /* ─── Responsive ─── */
+    @media (max-width: 520px) {
+      .header { padding: 14px 16px; }
+      .header h1 { font-size: 1.2rem; }
+      .balance-card .info .amount { font-size: 1.3rem; }
     }
   </style>
-  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
-<header>
-  <div class="container">
-    <h1>Withdraw Funds</h1>
-  </div>
-</header>
-
-<div class="container">
-  <div class="card balance-box">
-    <div>Available Balance</div>
-    <div class="balance-amount">₹<span id="balance">0</span></div>
-    <div>Withdraw to your bank account via UPI</div>
+  <!-- ─── AURA LAYERS ─── -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
   </div>
 
-  <div class="card">
-    <h2>Withdrawal Request</h2>
-    
-    <div class="input-group">
-      <label for="amount">Amount (₹)</label>
-      <input type="number" id="amount" placeholder="Enter amount (Min ₹190)" min="190" />
-      <div id="amount-error" class="error-message">Minimum withdrawal is ₹190</div>
+  <!-- ─── CONTENT ─── -->
+  <div class="content-wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <h1><i class="fas fa-money-bill-wave"></i> Withdraw</h1>
     </div>
-    
-    <div class="input-group">
-      <label for="upi">UPI ID</label>
-      <input type="text" id="upi" placeholder="Enter your UPI ID (e.g., name@upi)" />
-      <div id="upi-error" class="error-message">Please enter a valid UPI ID</div>
+
+    <!-- Balance -->
+    <div class="balance-card">
+      <div class="info">
+        <h2>Available Balance</h2>
+        <div class="amount" id="balanceDisplay">₹0.00</div>
+      </div>
+      <div class="icon"><i class="fas fa-wallet"></i></div>
     </div>
-    
-    <div id="success-message" class="success-message">
-      <i class="fas fa-check-circle"></i> Withdrawal request submitted successfully!
+
+    <!-- Payment Methods -->
+    <div class="card">
+      <h3><i class="fas fa-university"></i> Bank Details</h3>
+      <div class="form-group">
+        <label for="bankAccount">Account Number</label>
+        <input type="text" id="bankAccount" placeholder="Enter account number (9-18 digits)" maxlength="18" />
+        <div class="input-error" id="bankAccountError">Account number must be 9-18 digits.</div>
+      </div>
+      <div class="form-group">
+        <label for="bankIfsc">IFSC Code</label>
+        <input type="text" id="bankIfsc" placeholder="e.g., SBIN0001234" maxlength="11" style="text-transform:uppercase;" />
+        <div class="input-error" id="bankIfscError">IFSC must be 11 characters (e.g., SBIN0001234).</div>
+      </div>
+      <div class="form-group">
+        <label for="bankHolder">Account Holder Name</label>
+        <input type="text" id="bankHolder" placeholder="Enter account holder name" />
+      </div>
+      <button class="btn-save" id="saveBankBtn"><i class="fas fa-save"></i> Save Bank</button>
+      <div id="bankStatus" class="msg info" style="display:none;"><i class="fas fa-check-circle"></i> Bank details saved</div>
     </div>
-    
-    <button id="withdraw-btn" onclick="withdraw()">
-      <i class="fas fa-rupee-sign"></i> Request Withdraw
-    </button>
-    
-    <div class="note-box">
-      <strong>Important Notes:</strong>
-      <ul>
-        <li>Minimum withdrawal amount is ₹190</li>
-        <li>Withdrawal processing may take 24-48 hours</li>
-        <li>Ensure your UPI ID is correct before submitting</li>
-        <li>Amount will be deducted immediately upon withdrawal request</li>
-      </ul>
+
+    <div class="card">
+      <h3><i class="fas fa-mobile-alt"></i> UPI Details</h3>
+      <div class="form-group">
+        <label for="upiId">UPI ID</label>
+        <input type="text" id="upiId" placeholder="e.g., name@upi" />
+        <div class="input-error" id="upiError">Enter a valid UPI ID (e.g., name@upi).</div>
+      </div>
+      <div class="form-group">
+        <label for="upiName">Name (as per UPI)</label>
+        <input type="text" id="upiName" placeholder="Enter your full name" />
+      </div>
+      <button class="btn-save" id="saveUpiBtn"><i class="fas fa-save"></i> Save UPI</button>
+      <div id="upiStatus" class="msg info" style="display:none;"><i class="fas fa-check-circle"></i> UPI details saved</div>
+    </div>
+
+    <!-- Withdraw Section -->
+    <div class="card withdraw-section" id="withdrawSection" style="display:none;">
+      <h3><i class="fas fa-hand-holding-usd"></i> Withdraw Funds</h3>
+      <div class="form-group">
+        <label for="methodSelect">Select Payout Method</label>
+        <select id="methodSelect">
+          <option value="">-- Select a method --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="withdrawAmount">Amount (₹)</label>
+        <input type="number" id="withdrawAmount" placeholder="Min ₹190" min="190" />
+      </div>
+      <button class="withdraw-btn" id="withdrawBtn"><i class="fas fa-paper-plane"></i> Request Withdrawal</button>
+      <div id="withdrawMsg" class="msg" style="display:none;"></div>
+    </div>
+
+  </div>
+
+  <!-- ─── PROCESSING OVERLAY ─── -->
+  <div class="processing-overlay" id="processingOverlay">
+    <div class="processing-box">
+      <div class="spinner"></div>
+      <p>Processing your withdrawal...</p>
     </div>
   </div>
-</div>
 
-<div class="processing-overlay" id="processing-overlay">
-  <div style="text-align: center;">
-    <div class="spinner"></div>
-    <div class="processing-text">Processing your withdrawal...</div>
-  </div>
-</div>
+  <!-- ─── FIREBASE MODULE ─── -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, get, update, push, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-  import { getDatabase, ref, get, update, push } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
-    authDomain: "rikshaw-67877.firebaseapp.com",
-    databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
-    projectId: "rikshaw-67877",
-    storageBucket: "rikshaw-67877.appspot.com",
-    messagingSenderId: "953540778276",
-    appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
-  };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase();
-  const auth = getAuth();
+    let currentUser = null;
+    let userRef = null;
+    let userData = {};
+    let balance = 0;
 
-  let userRef;
-  let currentBalance = 0;
+    // DOM refs
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const bankAccount = document.getElementById('bankAccount');
+    const bankIfsc = document.getElementById('bankIfsc');
+    const bankHolder = document.getElementById('bankHolder');
+    const saveBankBtn = document.getElementById('saveBankBtn');
+    const bankStatus = document.getElementById('bankStatus');
+    const bankAccountError = document.getElementById('bankAccountError');
+    const bankIfscError = document.getElementById('bankIfscError');
+    const upiId = document.getElementById('upiId');
+    const upiName = document.getElementById('upiName');
+    const saveUpiBtn = document.getElementById('saveUpiBtn');
+    const upiStatus = document.getElementById('upiStatus');
+    const upiError = document.getElementById('upiError');
+    const withdrawSection = document.getElementById('withdrawSection');
+    const methodSelect = document.getElementById('methodSelect');
+    const withdrawAmount = document.getElementById('withdrawAmount');
+    const withdrawBtn = document.getElementById('withdrawBtn');
+    const withdrawMsg = document.getElementById('withdrawMsg');
+    const processingOverlay = document.getElementById('processingOverlay');
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      userRef = ref(db, "users/" + user.uid);
-      get(userRef).then(snapshot => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          currentBalance = data.balance || 0;
-          document.getElementById("balance").textContent = currentBalance.toFixed(2);
+    // ─── Auth ───
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+      userRef = ref(db, `users/${user.uid}`);
+      loadUserData();
+      // Listen for balance updates
+      onValue(userRef, (snap) => {
+        if (snap.exists()) {
+          const data = snap.val();
+          balance = data.balance || 0;
+          balanceDisplay.textContent = `₹${balance.toFixed(2)}`;
         }
       });
-    } else {
-      window.location.href = "login.html";
+    });
+
+    // ─── Load user data ───
+    async function loadUserData() {
+      const snap = await get(userRef);
+      if (snap.exists()) {
+        userData = snap.val();
+        // Pre-fill forms if saved
+        const payment = userData.paymentMethods || {};
+        if (payment.bank) {
+          bankAccount.value = payment.bank.accountNumber || '';
+          bankIfsc.value = payment.bank.ifsc || '';
+          bankHolder.value = payment.bank.accountHolder || '';
+          bankStatus.style.display = 'flex';
+          bankStatus.className = 'msg success';
+          bankStatus.innerHTML = `<i class="fas fa-check-circle"></i> Bank details saved`;
+          saveBankBtn.classList.add('saved');
+          saveBankBtn.innerHTML = '<i class="fas fa-edit"></i> Update Bank';
+        }
+        if (payment.upi) {
+          upiId.value = payment.upi.upiId || '';
+          upiName.value = payment.upi.name || '';
+          upiStatus.style.display = 'flex';
+          upiStatus.className = 'msg success';
+          upiStatus.innerHTML = `<i class="fas fa-check-circle"></i> UPI details saved`;
+          saveUpiBtn.classList.add('saved');
+          saveUpiBtn.innerHTML = '<i class="fas fa-edit"></i> Update UPI';
+        }
+        // Show withdraw section if any method exists
+        if (payment.bank || payment.upi) {
+          withdrawSection.style.display = 'block';
+          populateMethods(payment);
+        }
+      }
     }
-  });
 
-  function validateInputs(amount, upi) {
-    let isValid = true;
-    const amountError = document.getElementById("amount-error");
-    const upiError = document.getElementById("upi-error");
-    amountError.style.display = "none";
-    upiError.style.display = "none";
-
-    if (isNaN(amount) || amount < 190) {
-      amountError.textContent = "Minimum withdrawal is ₹190";
-      amountError.style.display = "block";
-      isValid = false;
-    } else if (amount > currentBalance) {
-      amountError.textContent = "Insufficient balance";
-      amountError.style.display = "block";
-      isValid = false;
+    // ─── Populate method dropdown ───
+    function populateMethods(payment) {
+      methodSelect.innerHTML = '<option value="">-- Select a method --</option>';
+      if (payment.bank) {
+        const opt = document.createElement('option');
+        opt.value = 'bank';
+        const masked = payment.bank.accountNumber.slice(-4);
+        opt.textContent = `Bank (••••${masked})`;
+        methodSelect.appendChild(opt);
+      }
+      if (payment.upi) {
+        const opt = document.createElement('option');
+        opt.value = 'upi';
+        opt.textContent = `UPI (${payment.upi.upiId})`;
+        methodSelect.appendChild(opt);
+      }
     }
 
-    const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
-    if (!upiRegex.test(upi)) {
-      upiError.textContent = "Enter valid UPI ID (e.g., name@upi)";
-      upiError.style.display = "block";
-      isValid = false;
+    // ─── Validate Bank Fields ───
+    function validateBank() {
+      const acc = bankAccount.value.trim();
+      const ifsc = bankIfsc.value.trim().toUpperCase();
+      const holder = bankHolder.value.trim();
+      let valid = true;
+
+      // Account number: 9-18 digits
+      if (!/^\d{9,18}$/.test(acc)) {
+        bankAccountError.classList.add('show');
+        valid = false;
+      } else {
+        bankAccountError.classList.remove('show');
+      }
+
+      // IFSC: 11 chars, first 4 letters, 5th is 0, rest alphanumeric
+      if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) {
+        bankIfscError.classList.add('show');
+        valid = false;
+      } else {
+        bankIfscError.classList.remove('show');
+      }
+
+      if (!holder) {
+        // show a generic error or just check
+        // we'll require holder name
+        if (!holder) {
+          // highlight the field by adding a class
+          bankHolder.style.borderColor = '#b54a3a';
+          valid = false;
+        } else {
+          bankHolder.style.borderColor = '';
+        }
+      } else {
+        bankHolder.style.borderColor = '';
+      }
+
+      return valid;
     }
-    return isValid;
-  }
 
-  async function withdraw() {
-    const amount = parseFloat(document.getElementById("amount").value);
-    const upi = document.getElementById("upi").value.trim();
-    const withdrawBtn = document.getElementById("withdraw-btn");
-    const processingOverlay = document.getElementById("processing-overlay");
-
-    if (!validateInputs(amount, upi)) return;
-
-    // Show processing overlay
-    processingOverlay.style.display = "flex";
-    withdrawBtn.disabled = true;
-
-    try {
-      // Get latest balance
-      const snapshot = await get(userRef);
-      const user = snapshot.val();
-      const currentBalance = user.balance || 0;
-      
-      if (amount > currentBalance) {
-        document.getElementById("amount-error").textContent = "Insufficient balance";
-        document.getElementById("amount-error").style.display = "block";
-        processingOverlay.style.display = "none";
-        withdrawBtn.disabled = false;
+    // ─── Save Bank ───
+    saveBankBtn.addEventListener('click', async () => {
+      if (!validateBank()) {
+        showToast('Please fix the errors in bank details.', 'error');
         return;
       }
 
-      // Calculate new balance
-      const newBalance = currentBalance - amount;
-      
-      // Update user balance
-      await update(userRef, {
-        balance: newBalance
-      });
+      const accountNumber = bankAccount.value.trim();
+      const ifsc = bankIfsc.value.trim().toUpperCase();
+      const accountHolder = bankHolder.value.trim();
 
-      // Record the withdrawal request
-      const requestsRef = ref(db, "withdrawRequests");
-      await push(requestsRef, {
-        uid: auth.currentUser.uid,
-        username: user.username || "Unknown",
-        amount,
-        upi,
-        status: "pending",
+      const bankData = { accountNumber, ifsc, accountHolder };
+      await update(userRef, { 'paymentMethods/bank': bankData });
+      showToast('Bank details saved!', 'success');
+      bankStatus.style.display = 'flex';
+      bankStatus.className = 'msg success';
+      bankStatus.innerHTML = `<i class="fas fa-check-circle"></i> Bank details saved`;
+      saveBankBtn.classList.add('saved');
+      saveBankBtn.innerHTML = '<i class="fas fa-edit"></i> Update Bank';
+      // Show withdraw section
+      withdrawSection.style.display = 'block';
+      const payment = (await get(userRef)).val().paymentMethods || {};
+      populateMethods(payment);
+    });
+
+    // ─── Save UPI ───
+    saveUpiBtn.addEventListener('click', async () => {
+      const upi = upiId.value.trim();
+      const name = upiName.value.trim();
+      const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+      if (!upiRegex.test(upi)) {
+        upiError.classList.add('show');
+        showToast('Invalid UPI ID format.', 'error');
+        return;
+      } else {
+        upiError.classList.remove('show');
+      }
+      if (!name) {
+        showToast('Please enter your name.', 'error');
+        return;
+      }
+      const upiData = { upiId: upi, name };
+      await update(userRef, { 'paymentMethods/upi': upiData });
+      showToast('UPI details saved!', 'success');
+      upiStatus.style.display = 'flex';
+      upiStatus.className = 'msg success';
+      upiStatus.innerHTML = `<i class="fas fa-check-circle"></i> UPI details saved`;
+      saveUpiBtn.classList.add('saved');
+      saveUpiBtn.innerHTML = '<i class="fas fa-edit"></i> Update UPI';
+      withdrawSection.style.display = 'block';
+      const payment = (await get(userRef)).val().paymentMethods || {};
+      populateMethods(payment);
+    });
+
+    // ─── Withdraw ───
+    withdrawBtn.addEventListener('click', async () => {
+      const method = methodSelect.value;
+      const amount = parseFloat(withdrawAmount.value);
+
+      // Validate
+      if (!method) {
+        showToast('Please select a payout method.', 'error');
+        return;
+      }
+      if (isNaN(amount) || amount < 190) {
+        showToast('Minimum withdrawal is ₹190.', 'error');
+        return;
+      }
+      if (amount > balance) {
+        showToast('Insufficient balance.', 'error');
+        return;
+      }
+
+      // Get latest user data
+      const snap = await get(userRef);
+      if (!snap.exists()) return;
+      const user = snap.val();
+      const currentBalance = user.balance || 0;
+      if (amount > currentBalance) {
+        showToast('Insufficient balance.', 'error');
+        return;
+      }
+
+      // Prepare withdrawal request with full details
+      const paymentMethod = user.paymentMethods[method];
+      let requestData = {
+        uid: currentUser.uid,
+        userName: user.name || 'User',
+        userPhone: user.phone || '',
+        amount: amount,
+        method: method,
+        status: 'pending',
         time: new Date().toISOString()
-      });
+      };
 
-      // Update UI
-      document.getElementById("success-message").style.display = "block";
-      document.getElementById("balance").textContent = newBalance.toFixed(2);
-      currentBalance = newBalance;
-      
-      // Reset form after delay
-      setTimeout(() => {
-        document.getElementById("success-message").style.display = "none";
-        document.getElementById("amount").value = "";
-        document.getElementById("upi").value = "";
-        processingOverlay.style.display = "none";
+      if (method === 'bank') {
+        requestData.bank = paymentMethod;
+      } else if (method === 'upi') {
+        requestData.upi = paymentMethod;
+      }
+
+      // Disable button and show overlay
+      withdrawBtn.disabled = true;
+      processingOverlay.classList.add('active');
+
+      try {
+        // Deduct balance
+        const newBalance = currentBalance - amount;
+        await update(userRef, { balance: newBalance });
+        balance = newBalance;
+        balanceDisplay.textContent = `₹${balance.toFixed(2)}`;
+
+        // Save request to Firebase
+        const requestsRef = ref(db, 'withdrawRequests');
+        await push(requestsRef, requestData);
+
+        // Show success
+        withdrawMsg.className = 'msg success';
+        withdrawMsg.innerHTML = `<i class="fas fa-check-circle"></i> Withdrawal request of ₹${amount} submitted successfully!`;
+        withdrawMsg.style.display = 'flex';
+
+        // Reset form after delay
+        setTimeout(() => {
+          withdrawAmount.value = '';
+          withdrawMsg.style.display = 'none';
+          withdrawBtn.disabled = false;
+          processingOverlay.classList.remove('active');
+        }, 3000);
+
+        showToast(`₹${amount} withdrawal request sent.`, 'success');
+
+      } catch (err) {
+        console.error('Withdrawal error:', err);
+        showToast('Failed to process withdrawal. Try again.', 'error');
         withdrawBtn.disabled = false;
-      }, 3000);
-    } catch (error) {
-      console.error("Withdrawal error:", error);
-      alert("An error occurred during withdrawal. Please try again.");
-      processingOverlay.style.display = "none";
-      withdrawBtn.disabled = false;
+        processingOverlay.classList.remove('active');
+      }
+    });
+
+    // ─── Toast helper ───
+    function showToast(message, type = 'success') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+      const color = type === 'success' ? '#7a9f5a' : '#b54a3a';
+      toast.innerHTML = `<i class="fas ${icon}" style="color:${color};"></i> ${message}`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'slideDown 0.35s ease forwards';
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
     }
-  }
-</script>
+
+    // ─── Real-time validation on input ───
+    bankAccount.addEventListener('input', () => {
+      const val = bankAccount.value.trim();
+      if (val && !/^\d{9,18}$/.test(val)) {
+        bankAccountError.classList.add('show');
+      } else {
+        bankAccountError.classList.remove('show');
+      }
+    });
+    bankIfsc.addEventListener('input', () => {
+      const val = bankIfsc.value.trim().toUpperCase();
+      bankIfsc.value = val;
+      if (val && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(val)) {
+        bankIfscError.classList.add('show');
+      } else {
+        bankIfscError.classList.remove('show');
+      }
+    });
+    upiId.addEventListener('input', () => {
+      const val = upiId.value.trim();
+      const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+      if (val && !upiRegex.test(val)) {
+        upiError.classList.add('show');
+      } else {
+        upiError.classList.remove('show');
+      }
+    });
+  </script>
 </body>
 </html>

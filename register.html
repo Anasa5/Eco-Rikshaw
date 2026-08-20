@@ -14,7 +14,6 @@
       box-sizing: border-box;
     }
 
-    /* Golden Hour – body base for aura blend */
     body {
       background-color: #faf8f2;
       font-family: 'Poppins', sans-serif;
@@ -26,7 +25,7 @@
       color: #2d241a;
     }
 
-    /* ─── Aura Background (fixed) ─── */
+    /* ─── Aura Background ─── */
     .aura-bg {
       position: fixed;
       inset: 0;
@@ -57,56 +56,62 @@
       .aura-layer-2 { filter: blur(144px); }
     }
 
-    /* ─── Content wrapper ─── */
+    /* ─── Content Wrapper ─── */
     .content-wrapper {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
     }
 
     /* ─── Card ─── */
     .card {
-      background: rgba(255, 252, 248, 0.88);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 215, 180, 0.35);
-      box-shadow: 0 8px 32px rgba(160, 120, 80, 0.08), 0 0 0 1px rgba(255, 215, 180, 0.15) inset;
-      padding: 32px 28px;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      background: rgba(255, 252, 248, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 215, 180, 0.30);
+      box-shadow: 0 20px 60px rgba(160, 120, 80, 0.10), 0 0 0 1px rgba(255, 215, 180, 0.10) inset;
+      padding: 40px 32px;
+      transition: transform 0.3s ease, box-shadow 0.4s ease;
       animation: fadeUp 0.6s ease forwards;
     }
     .card:hover {
-      border-color: rgba(200, 150, 100, 0.45);
-      box-shadow: 0 12px 40px rgba(160, 120, 80, 0.12), 0 0 0 1px rgba(200, 150, 100, 0.25) inset;
+      transform: translateY(-2px);
+      box-shadow: 0 30px 80px rgba(160, 120, 80, 0.14), 0 0 0 1px rgba(200, 150, 100, 0.20) inset;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .card .logo {
+    /* ─── Logo & Heading ─── */
+    .logo {
       text-align: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .card .logo svg {
-      width: 48px;
-      height: 48px;
+    .logo svg {
+      width: 52px;
+      height: 52px;
       fill: #b8702a;
+      filter: drop-shadow(0 4px 8px rgba(184, 112, 42, 0.15));
     }
-    .card h2 {
+    h2 {
       text-align: center;
       color: #7a4f2b;
       font-weight: 600;
-      font-size: 24px;
-      margin-bottom: 24px;
+      font-size: 26px;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+    }
+    h2 span {
+      color: #b8702a;
     }
 
-    /* ─── Form groups ─── */
+    /* ─── Form Groups ─── */
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     .form-group label {
       display: block;
@@ -118,12 +123,15 @@
     }
     .input-field {
       position: relative;
+      display: flex;
+      align-items: center;
     }
     .input-field input {
       width: 100%;
-      padding: 13px 16px;
-      border: 1.5px solid #e2d6c8;
-      border-radius: 12px;
+      padding: 14px 16px;
+      padding-right: 44px;
+      border: 1.5px solid #e8ddd0;
+      border-radius: 14px;
       font-size: 15px;
       font-family: 'Poppins', sans-serif;
       background: rgba(255, 252, 248, 0.6);
@@ -137,20 +145,22 @@
       color: #b8a898;
       font-weight: 400;
       font-size: 14px;
-      opacity: 0.75;
+      opacity: 0.7;
     }
     .input-field input:hover {
-      border-color: #cbb9a8;
-      background: rgba(255, 252, 248, 0.85);
+      border-color: #d4c0b0;
+      background: rgba(255, 252, 248, 0.8);
     }
     .input-field input:focus {
       border-color: #b8702a;
       background: #fffdfa;
-      box-shadow: 0 0 0 4px rgba(184, 112, 42, 0.12), 0 2px 8px rgba(184, 112, 42, 0.05);
+      box-shadow: 0 0 0 5px rgba(184, 112, 42, 0.08);
     }
+
+    /* Phone prefix */
     .phone-prefix {
       position: absolute;
-      left: 14px;
+      left: 16px;
       top: 50%;
       transform: translateY(-50%);
       color: #7a6555;
@@ -158,70 +168,152 @@
       font-weight: 500;
       pointer-events: none;
       opacity: 0.8;
+      z-index: 2;
     }
     .input-field:focus-within .phone-prefix {
       opacity: 1;
       color: #b8702a;
     }
     #phone {
-      padding-left: 44px;
+      padding-left: 48px;
     }
 
+    /* Password toggle button */
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #b8a898;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.2s;
+      z-index: 2;
+    }
+    .toggle-password:hover {
+      color: #b8702a;
+    }
+    .input-field:focus-within .toggle-password {
+      color: #b8702a;
+    }
+
+    /* Error message */
     .error {
       color: #b54a3a;
-      font-size: 12.5px;
+      font-size: 12px;
       margin-top: 6px;
       display: block;
-      min-height: 20px;
+      min-height: 18px;
       font-weight: 450;
     }
 
-    /* ─── Referral field (pre-filled, read-only) ─── */
+    /* ─── Referral Display ─── */
     .referral-display {
-      background: rgba(255, 255, 255, 0.4);
-      border-radius: 10px;
-      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      padding: 12px 16px;
       font-weight: 500;
       color: #7a4f2b;
-      border: 1px dashed #b8702a;
+      border: 1.5px dashed #b8702a;
       text-align: center;
       font-size: 14px;
-      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     .referral-display i {
-      margin-right: 6px;
       color: #b8702a;
+      font-size: 16px;
+    }
+    .referral-display .code {
+      font-weight: 600;
+      color: #b8702a;
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── Terms Checkbox ─── */
+    .terms-section {
+      margin-bottom: 20px;
+    }
+    .terms-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .terms-check input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: #b8702a;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .terms-check label {
+      font-size: 13px;
+      color: #5a4030;
+      font-weight: 500;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .terms-check label a {
+      color: #b8702a;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .terms-check label a:hover {
+      border-bottom-color: #b8702a;
     }
 
     /* ─── Submit Button ─── */
     .btn-submit {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       background: linear-gradient(145deg, #d48e45, #b8702a);
       color: #fff;
       border: none;
-      border-radius: 12px;
-      font-size: 16px;
+      border-radius: 14px;
+      font-size: 17px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s, box-shadow 0.3s, transform 0.15s;
+      transition: all 0.3s ease;
       box-shadow: 0 4px 16px rgba(184, 112, 42, 0.25);
       font-family: 'Poppins', sans-serif;
-      margin-top: 8px;
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+      opacity: 0.6;
+      pointer-events: none;
     }
-    .btn-submit:hover {
+    .btn-submit.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .btn-submit.enabled:hover {
       background: linear-gradient(145deg, #d8954a, #b8702a);
-      box-shadow: 0 6px 24px rgba(184, 112, 42, 0.35);
+      box-shadow: 0 8px 28px rgba(184, 112, 42, 0.35);
       transform: translateY(-2px);
     }
     .btn-submit:active {
       transform: scale(0.97);
+      box-shadow: 0 2px 8px rgba(184, 112, 42, 0.20);
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    /* ─── Login link ─── */
+    /* ─── Login Link ─── */
     .login-link {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 22px;
       font-size: 14px;
       color: #5a4030;
     }
@@ -229,13 +321,12 @@
       color: #b8702a;
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.2s, text-decoration-color 0.2s;
-      text-decoration: underline transparent 1.5px;
-      text-underline-offset: 3px;
+      transition: color 0.2s;
+      border-bottom: 1.5px solid transparent;
     }
     .login-link a:hover {
       color: #9a5f22;
-      text-decoration-color: #b8702a;
+      border-bottom-color: #b8702a;
     }
 
     /* ─── Toast ─── */
@@ -244,11 +335,11 @@
       bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(255,252,248,0.95);
+      background: rgba(255,252,248,0.96);
       backdrop-filter: blur(8px);
       padding: 14px 24px;
-      border-radius: 12px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
       border: 1px solid rgba(255,215,180,0.3);
       color: #2d241a;
       font-family: 'Poppins', sans-serif;
@@ -257,15 +348,170 @@
       z-index: 1002;
       animation: slideUp 0.35s ease forwards;
       max-width: 90%;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast i {
+      font-size: 18px;
     }
     @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
     @keyframes slideDown { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
 
+    /* ─── Spinner ─── */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Terms Modal ─── */
+    .terms-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .terms-modal.active {
+      display: flex;
+    }
+    .terms-modal-content {
+      background: rgba(255, 252, 248, 0.97);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 180, 0.30);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 640px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeUp 0.35s ease forwards;
+    }
+    .terms-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid rgba(200, 180, 160, 0.20);
+      flex-shrink: 0;
+    }
+    .terms-modal-header h3 {
+      color: #7a4f2b;
+      font-weight: 600;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .terms-modal-header h3 i {
+      color: #b8702a;
+    }
+    .terms-modal-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: #b8a898;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 4px;
+      line-height: 1;
+    }
+    .terms-modal-close:hover {
+      color: #b8702a;
+    }
+    .terms-modal-body {
+      padding: 20px 24px 24px;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 13px;
+      color: #5a4030;
+      line-height: 1.7;
+    }
+    .terms-modal-body::-webkit-scrollbar {
+      width: 4px;
+    }
+    .terms-modal-body::-webkit-scrollbar-track {
+      background: rgba(200, 180, 160, 0.10);
+      border-radius: 4px;
+    }
+    .terms-modal-body::-webkit-scrollbar-thumb {
+      background: #b8702a;
+      border-radius: 4px;
+    }
+    .terms-modal-body p {
+      margin-bottom: 8px;
+    }
+    .terms-modal-body .section-title {
+      font-weight: 600;
+      color: #7a4f2b;
+      margin-top: 12px;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .terms-modal-body .section-title:first-of-type {
+      margin-top: 0;
+    }
+    .terms-modal-body .important-notice {
+      background: rgba(181, 74, 58, 0.06);
+      border-left: 3px solid #b54a3a;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-top: 16px;
+      font-weight: 500;
+      color: #7a4f2b;
+    }
+    .terms-modal-body .important-notice strong {
+      color: #b54a3a;
+    }
+    .terms-modal-footer {
+      padding: 16px 24px 20px;
+      border-top: 1px solid rgba(200, 180, 160, 0.15);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .terms-modal-footer .btn-close-terms {
+      padding: 10px 24px;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    .terms-modal-footer .btn-close-terms:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.25);
+    }
+
     /* ─── Responsive ─── */
     @media (max-width: 520px) {
-      .card { padding: 24px 18px; }
-      #phone { padding-left: 40px; }
+      .card { padding: 28px 20px; }
+      h2 { font-size: 22px; }
+      .input-field input { padding: 12px 14px; padding-right: 40px; font-size: 14px; }
+      #phone { padding-left: 44px; }
+      .toggle-password { right: 12px; font-size: 16px; }
+      .terms-modal-content { max-height: 90vh; }
+      .terms-modal-body { font-size: 12px; padding: 16px 18px; }
+      .terms-modal-header { padding: 16px 18px 12px; }
+      .terms-modal-footer { padding: 12px 18px 16px; }
     }
   </style>
 </head>
@@ -285,13 +531,15 @@
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
         </svg>
       </div>
-      <h2>Create Account</h2>
+      <h2>Create <span>Account</span></h2>
 
       <form id="registerForm" autocomplete="on">
         <!-- Name -->
         <div class="form-group">
           <label for="name">Full Name</label>
-          <input type="text" id="name" placeholder="Enter your full name" required autocomplete="name" />
+          <div class="input-field">
+            <input type="text" id="name" placeholder="Enter your full name" required autocomplete="name" />
+          </div>
         </div>
 
         <!-- Phone -->
@@ -307,29 +555,204 @@
         <!-- Password -->
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Create a password" required autocomplete="new-password" />
+          <div class="input-field">
+            <input type="password" id="password" placeholder="Create a password" required autocomplete="new-password" />
+            <button type="button" class="toggle-password" data-target="password" aria-label="Toggle password visibility">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
         </div>
 
         <!-- Confirm Password -->
         <div class="form-group">
           <label for="confirm">Confirm Password</label>
-          <input type="password" id="confirm" placeholder="Re-enter your password" required autocomplete="new-password" />
+          <div class="input-field">
+            <input type="password" id="confirm" placeholder="Re-enter your password" required autocomplete="new-password" />
+            <button type="button" class="toggle-password" data-target="confirm" aria-label="Toggle password visibility">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
         </div>
 
-        <!-- Referral (hidden input + display) -->
+        <!-- Referral Code -->
         <div class="form-group">
           <label>Referral Code</label>
           <div class="referral-display" id="referralDisplay">
-            <i class="fas fa-gift"></i> <span id="referralCodeText">None</span>
+            <i class="fas fa-gift"></i>
+            <span id="referralCodeText">None (optional)</span>
           </div>
           <input type="hidden" id="referralCode" value="" />
         </div>
 
-        <button type="submit" class="btn-submit">Register</button>
+        <!-- Terms & Conditions -->
+        <div class="terms-section">
+          <div class="terms-check">
+            <input type="checkbox" id="termsCheck" />
+            <label for="termsCheck">
+              I have read and agree to the <a href="#" id="termsLink">Terms & Conditions</a>.
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn" disabled>Register</button>
       </form>
 
       <div class="login-link">
         Already have an account? <a href="login.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TERMS MODAL ─── -->
+  <div class="terms-modal" id="termsModal">
+    <div class="terms-modal-content">
+      <div class="terms-modal-header">
+        <h3><i class="fas fa-file-contract"></i> Terms & Conditions</h3>
+        <button class="terms-modal-close" id="termsModalClose">&times;</button>
+      </div>
+      <div class="terms-modal-body" id="termsModalBody">
+        <div class="section-title">1. Acceptance of Terms</div>
+        <p>By using our platform or services, you confirm that you understand and accept these Terms & Conditions, including all investment-related risks, limitations, responsibilities, and disclaimers described below.</p>
+        <p>If you do not agree with these terms, you should not use the platform or make any investment through it.</p>
+
+        <div class="section-title">2. Investment Risk</div>
+        <p>All investments involve financial risk. The value of an investment may increase, decrease, or potentially become worthless depending on market conditions, company performance, economic conditions, liquidity, regulatory changes, technological issues, or other circumstances.</p>
+        <p>There is no guarantee that any investment will generate a profit.</p>
+
+        <div class="section-title">3. Possibility of Complete Loss</div>
+        <p>You acknowledge that an investment may suffer a partial or complete loss.</p>
+        <p>In circumstances where an investment, project, company, asset, or business experiences substantial or complete financial failure, the Company shall not be automatically responsible for returning or compensating the investor for losses, except where such responsibility is required by applicable law or results directly from the Company's own proven misconduct, fraud, or breach of its legal obligations.</p>
+
+        <div class="section-title">4. No Guaranteed Returns</div>
+        <p>The Company does not guarantee:</p>
+        <p>Any minimum return on investment. Any specific percentage of profit. Preservation of invested capital. Future appreciation of an investment. A particular investment outcome. A guaranteed exit or withdrawal opportunity.</p>
+        <p>Any projections, estimates, examples, or historical performance figures should not be interpreted as guarantees of future results.</p>
+
+        <div class="section-title">5. Investor Responsibility</div>
+        <p>Every investor is responsible for independently considering whether an investment is appropriate for their financial circumstances, objectives, and risk tolerance.</p>
+        <p>You should invest only money that you can reasonably afford to lose.</p>
+
+        <div class="section-title">6. Intent Clarification Before Investment</div>
+        <p>Before completing an investment, investors should clearly understand the purpose and intended use of their investment.</p>
+        <p>The investor is responsible for ensuring that they understand what they are investing in, why they are investing, the expected purpose of the investment, and the risks associated with it.</p>
+
+        <div class="section-title">7. Research and Due Diligence</div>
+        <p>Investors are strongly advised to conduct careful and independent research before investing.</p>
+        <p>Such research may include reviewing: The business model. Financial information. Historical performance. Market conditions. Competitors. Management or operators. Regulatory circumstances. Project documentation. Investment risks. Liquidity conditions. Potential exit opportunities.</p>
+        <p>No investment should be made solely because of advertising, promotional material, social-media content, historical performance, or statements made by third parties.</p>
+
+        <div class="section-title">8. Independent Decision-Making</div>
+        <p>Every investment decision must ultimately be made by the investor.</p>
+        <p>Information provided by the Company is intended to assist investors in understanding an opportunity and should not automatically be interpreted as personalized financial advice.</p>
+
+        <div class="section-title">9. No Promise of Profit</div>
+        <p>Any statement regarding potential profits, projected returns, expected growth, estimated valuations, or future performance is inherently uncertain. Actual results may differ substantially from estimates.</p>
+
+        <div class="section-title">10. Market Volatility</div>
+        <p>Financial markets and investment assets may experience significant price fluctuations. Market prices may change rapidly because of economic developments, political events, company announcements, market sentiment, interest rates, technological developments, regulatory changes, or other factors.</p>
+
+        <div class="section-title">11. Business Failure</div>
+        <p>If a company, project, startup, fund, asset, or other investment opportunity becomes insolvent, bankrupt, inactive, suspended, or otherwise fails financially, investors may lose some or all of their investment. The Company does not guarantee recovery of invested funds in such circumstances unless required by applicable law or specifically agreed under a separate legally binding agreement.</p>
+
+        <div class="section-title">12. No Guaranteed Repayment After Loss</div>
+        <p>Where an investment has legitimately suffered a loss because of ordinary investment or business risks, the Company does not guarantee repayment of the lost amount. This provision does not exclude any liability that cannot legally be excluded under applicable law.</p>
+
+        <div class="section-title">13. Company Liability</div>
+        <p>The Company shall not be responsible for investment losses caused by ordinary market movements, economic conditions, business failure, third-party actions, market volatility, liquidity problems, regulatory changes, or other circumstances outside the Company's reasonable control.</p>
+        <p>Nothing in these Terms excludes liability for fraud, deliberate misconduct, or any other liability that applicable law does not permit the Company to exclude.</p>
+
+        <div class="section-title">14. Third-Party Investments</div>
+        <p>Where an investment opportunity involves an independent company, project, issuer, developer, financial institution, exchange, broker, fund, or other third party, the investor acknowledges that the Company may not control the actions, financial condition, policies, or performance of that third party.</p>
+
+        <div class="section-title">15. Third-Party Information</div>
+        <p>Information obtained from third parties may contain errors, omissions, outdated information, estimates, or inaccurate statements. The Company does not guarantee the accuracy or completeness of information originating from third parties, although the Company may conduct reasonable checks where appropriate.</p>
+
+        <div class="section-title">16. Research Does Not Eliminate Risk</div>
+        <p>Even careful research and due diligence cannot eliminate investment risk. Past performance, financial analysis, forecasts, market research, and other forms of analysis cannot guarantee future results.</p>
+
+        <div class="section-title">17. Investor Verification</div>
+        <p>Before investing, investors may be required to provide accurate identification, financial, tax, or other information where required by applicable laws and regulations. Providing false, misleading, incomplete, or fraudulent information may result in restrictions or termination of access.</p>
+
+        <div class="section-title">18. Accuracy of Investor Information</div>
+        <p>Investors are responsible for ensuring that all information submitted to the Company is accurate and current. The Company shall not be responsible for losses arising from incorrect information supplied by an investor.</p>
+
+        <div class="section-title">19. Fees and Charges</div>
+        <p>Any applicable investment fees, transaction charges, administrative fees, platform charges, taxes, commissions, or other costs will be disclosed where required. Investors are responsible for reviewing applicable charges before completing a transaction.</p>
+
+        <div class="section-title">20. Taxes</div>
+        <p>Investors are solely responsible for determining and complying with their applicable tax obligations arising from investments, profits, losses, transfers, withdrawals, or other transactions. The Company does not guarantee any particular tax treatment.</p>
+
+        <div class="section-title">21. Liquidity Risk</div>
+        <p>Certain investments may not be immediately sellable or withdrawable. Investors acknowledge that an investment may remain locked, suspended, illiquid, or difficult to sell for an extended period.</p>
+
+        <div class="section-title">22. Withdrawal Restrictions</div>
+        <p>Where applicable, withdrawals may be subject to contractual conditions, processing periods, verification requirements, minimum amounts, market conditions, or restrictions imposed by relevant third parties or applicable law.</p>
+
+        <div class="section-title">23. Technical Risks</div>
+        <p>The platform may occasionally experience technical problems, maintenance, interruptions, delays, outages, software errors, network failures, cybersecurity incidents, or other technical difficulties. The Company will take reasonable measures to maintain service availability but cannot guarantee uninterrupted operation.</p>
+
+        <div class="section-title">24. Cybersecurity and Fraud</div>
+        <p>Investors are responsible for maintaining the security of their passwords, authentication credentials, devices, and accounts. The Company will not be responsible for losses caused by an investor voluntarily sharing confidential credentials or failing to take reasonable security precautions, subject to applicable law.</p>
+
+        <div class="section-title">25. Force Majeure</div>
+        <p>The Company shall not be responsible for delays or failures caused by circumstances reasonably outside its control, including natural disasters, war, governmental actions, widespread infrastructure failures, major cyber incidents, telecommunications failures, financial-system disruptions, or similar events.</p>
+
+        <div class="section-title">26. Changes to Investments</div>
+        <p>Investment conditions, project circumstances, market conditions, fees, timelines, and other relevant factors may change after an investment has been made. The Company cannot guarantee that circumstances will remain identical to those presented at the time of investment.</p>
+
+        <div class="section-title">27. Regulatory Changes</div>
+        <p>Changes in applicable laws, regulations, government policies, taxation, financial regulations, or licensing requirements may affect an investment. Such changes may negatively affect investment value or availability.</p>
+
+        <div class="section-title">28. Suspension or Termination</div>
+        <p>The Company may suspend or terminate access to certain services where reasonably necessary for security, legal compliance, maintenance, regulatory requirements, suspected fraud, or other legitimate operational reasons. Any rights that cannot legally be terminated or restricted will remain unaffected.</p>
+
+        <div class="section-title">29. No Circumvention of Investment Risks</div>
+        <p>Investors should not attempt to bypass investment restrictions, verification procedures, transaction controls, withdrawal requirements, or applicable legal requirements. Any such activity may result in account restrictions or termination where legally permitted.</p>
+
+        <div class="section-title">30. No Reliance on Promotional Material</div>
+        <p>Advertisements, promotional content, examples, simulations, historical results, testimonials, charts, or marketing material should not be treated as guarantees of future performance. Investors should review the complete investment information before making a decision.</p>
+
+        <div class="section-title">31. Acknowledgment of Risk</div>
+        <p>Before investing, you acknowledge that you understand that: You may lose some or all of the money you invest. You also acknowledge that the Company cannot guarantee a profitable outcome.</p>
+
+        <div class="section-title">32. No Emotional or Impulsive Investment</div>
+        <p>Investors are strongly encouraged not to make investment decisions based solely on fear, excitement, social pressure, urgency, rumors, or speculative claims. Investment decisions should be based on careful consideration and appropriate research.</p>
+
+        <div class="section-title">33. Investment Suitability</div>
+        <p>Investors should consider their own financial circumstances, objectives, time horizon, and ability to withstand losses before investing. An investment that is suitable for one person may be unsuitable for another.</p>
+
+        <div class="section-title">34. No Representation of Certainty</div>
+        <p>Any statement regarding expected performance, potential returns, future valuations, market direction, or business growth represents an estimate or opinion rather than a certainty, unless expressly stated otherwise in a legally binding document.</p>
+
+        <div class="section-title">35. Responsibility for Investment Decisions</div>
+        <p>The final decision to invest, continue holding an investment, sell an investment, or withdraw funds belongs to the investor, subject to applicable contractual and legal restrictions. The Company shall not be responsible merely because an investor chose to proceed with an investment after being informed of its associated risks.</p>
+
+        <div class="section-title">36. Investor Confirmation</div>
+        <p>By proceeding with an investment, the investor confirms that they have had an opportunity to review the available information, understand the principal risks, and make their decision voluntarily.</p>
+
+        <div class="section-title">37. No Waiver of Legal Rights</div>
+        <p>Nothing in these Terms is intended to remove, restrict, or waive any legal right, consumer protection, statutory remedy, or regulatory protection that cannot legally be excluded or waived.</p>
+
+        <div class="section-title">38. Governing Law</div>
+        <p>These Terms shall be governed and interpreted according to the laws applicable to India, unless another jurisdiction is legally required. Any disputes shall be handled according to applicable laws and regulations.</p>
+
+        <div class="section-title">39. Amendments</div>
+        <p>The Company may update these Terms when reasonably necessary to reflect changes in its services, business practices, legal requirements, regulations, or operational circumstances. Where required by law, appropriate notice will be provided.</p>
+
+        <div class="section-title">40. Final Investor Declaration</div>
+        <p>By making an investment, you confirm that:</p>
+        <p>You have read these Terms & Conditions. You understand that investments involve risk. You understand that you may lose part or all of your investment. You have considered the purpose and intent of the investment. You have had an opportunity to conduct appropriate research. You are making the investment voluntarily. You are not relying on a guaranteed return. You understand that past performance does not guarantee future results. You understand that a business or project may experience financial failure. You understand that the Company does not guarantee recovery of investment losses except where legally required or otherwise expressly agreed. You understand that market and business conditions can change unexpectedly. You accept the risks associated with your investment decision.</p>
+
+        <div class="important-notice">
+          <strong>IMPORTANT NOTICE</strong><br>
+          INVESTMENT INVOLVES RISK. YOU MAY LOSE SOME OR ALL OF YOUR INVESTED CAPITAL.<br><br>
+          No investment should be made without first understanding the investment's purpose, researching the opportunity carefully, reviewing the applicable risks, and considering whether the investment is appropriate for you.<br><br>
+          Nothing in these Terms should be interpreted as a guarantee against loss or as an attempt to exclude liability that cannot legally be excluded.<br><br>
+          Eco Rikshaw recommends that investors obtain independent professional financial, legal, and tax advice where appropriate before making significant investment decisions.
+        </div>
+      </div>
+      <div class="terms-modal-footer">
+        <button class="btn-close-terms" id="termsModalCloseBtn">I Understand</button>
       </div>
     </div>
   </div>
@@ -354,22 +777,52 @@
     const db = getDatabase();
     const auth = getAuth();
 
-    // ─── Read referral code from URL ───
+    // ─── DOM Elements ───
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get('ref') || '';
     const referralCodeInput = document.getElementById('referralCode');
     const referralCodeText = document.getElementById('referralCodeText');
+    const phoneInput = document.getElementById('phone');
+    const phoneError = document.getElementById('phoneError');
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirm');
+    const termsCheck = document.getElementById('termsCheck');
+    const submitBtn = document.getElementById('submitBtn');
+    const registerForm = document.getElementById('registerForm');
+    const termsLink = document.getElementById('termsLink');
+    const termsModal = document.getElementById('termsModal');
+    const termsModalClose = document.getElementById('termsModalClose');
+    const termsModalCloseBtn = document.getElementById('termsModalCloseBtn');
 
+    // ─── Referral Code ───
     if (refCode) {
       referralCodeInput.value = refCode;
-      referralCodeText.textContent = refCode;
+      referralCodeText.innerHTML = `<span class="code">${refCode}</span>`;
     } else {
       referralCodeText.textContent = 'None (optional)';
     }
 
-    // ─── Form validation ───
-    const phoneInput = document.getElementById('phone');
-    const phoneError = document.getElementById('phoneError');
+    // ─── Terms Modal ───
+    function openTermsModal() {
+      termsModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeTermsModal() {
+      termsModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    termsLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openTermsModal();
+    });
+    termsModalClose.addEventListener('click', closeTermsModal);
+    termsModalCloseBtn.addEventListener('click', closeTermsModal);
+    termsModal.addEventListener('click', (e) => {
+      if (e.target === termsModal) closeTermsModal();
+    });
+
+    // ─── Phone Validation ───
     phoneInput.addEventListener('input', () => {
       const val = phoneInput.value;
       if (val.length > 0 && !/^[6-9]\d{0,9}$/.test(val)) {
@@ -381,9 +834,7 @@
       }
     });
 
-    // Password match
-    const passwordInput = document.getElementById('password');
-    const confirmInput = document.getElementById('confirm');
+    // ─── Password Match ───
     function validatePasswords() {
       if (passwordInput.value && confirmInput.value && passwordInput.value !== confirmInput.value) {
         confirmInput.setCustomValidity("Passwords don't match");
@@ -394,9 +845,38 @@
     passwordInput.addEventListener('input', validatePasswords);
     confirmInput.addEventListener('input', validatePasswords);
 
-    // ─── Registration handler ───
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    // ─── Password Toggle ───
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.target;
+        const input = document.getElementById(targetId);
+        if (!input) return;
+        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', type);
+        const icon = this.querySelector('i');
+        icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+      });
+    });
+
+    // ─── Terms Checkbox ───
+    termsCheck.addEventListener('change', function() {
+      if (this.checked) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('enabled');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('enabled');
+      }
+    });
+
+    // ─── Registration ───
+    registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      if (!termsCheck.checked) {
+        showToast('You must agree to the Terms & Conditions.', 'error');
+        return;
+      }
 
       const name = document.getElementById('name').value.trim();
       const phone = phoneInput.value.trim();
@@ -404,7 +884,6 @@
       const confirm = confirmInput.value;
       const referral = referralCodeInput.value.trim().toUpperCase();
 
-      // Validate
       if (!/^[6-9]\d{9}$/.test(phone)) {
         phoneError.textContent = 'Enter a valid 10-digit Indian number';
         phoneInput.focus();
@@ -424,21 +903,16 @@
         return;
       }
 
-      // Disable button
-      const submitBtn = document.querySelector('.btn-submit');
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="spinner"></span> Registering...';
 
       try {
-        // Create user with email (phone + @rikshaw.com)
         const email = phone + '@rikshaw.com';
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const uid = userCredential.user.uid;
 
-        // Generate own referral code
         const myReferral = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-        // Prepare user data
         const userData = {
           name,
           phone,
@@ -446,12 +920,12 @@
           invitedBy: referral || '',
           balance: 0,
           profileComplete: true,
-          registeredAt: Date.now()
+          registeredAt: Date.now(),
+          termsAccepted: true
         };
 
         const usersRef = ref(db, 'users');
 
-        // Check if phone already exists
         const snap = await get(usersRef);
         if (snap.exists()) {
           const users = snap.val();
@@ -470,10 +944,8 @@
           }
         }
 
-        // Save user data
         await set(ref(db, `users/${uid}`), userData);
 
-        // If referral code provided, add to referrer's team
         if (referral) {
           const allUsersSnap = await get(usersRef);
           const allUsers = allUsersSnap.exists() ? allUsersSnap.val() : {};
@@ -484,9 +956,7 @@
               break;
             }
           }
-
           if (referUid) {
-            // Add to referrer's team
             await set(ref(db, `team/${referUid}/${uid}`), {
               name,
               phone,
@@ -495,10 +965,6 @@
               totalDeposit: 0,
               todayIncome: 0
             });
-            // Optionally: update referrer's commission (will be calculated separately)
-          } else {
-            // Referral code not found – we still allow registration but without team link
-            console.warn('Referral code not found:', referral);
           }
         }
 
@@ -521,7 +987,7 @@
       }
     });
 
-    // ─── Toast notification ───
+    // ─── Toast ───
     function showToast(message, type = 'info') {
       const existing = document.querySelector('.toast');
       if (existing) existing.remove();
@@ -529,31 +995,13 @@
       toast.className = 'toast';
       const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
       const color = type === 'success' ? '#7a9f5a' : type === 'error' ? '#b54a3a' : '#b8702a';
-      toast.innerHTML = `<i class="fas ${icon}" style="color:${color};margin-right:10px;"></i>${message}`;
+      toast.innerHTML = `<i class="fas ${icon}" style="color:${color};"></i>${message}`;
       document.body.appendChild(toast);
       setTimeout(() => {
         toast.style.animation = 'slideDown 0.35s ease forwards';
         setTimeout(() => toast.remove(), 350);
       }, 4000);
     }
-
-    // ─── Spinner style ───
-    const style = document.createElement('style');
-    style.textContent = `
-      .spinner {
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-        border: 2px solid rgba(255,255,255,0.3);
-        border-top-color: #fff;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        vertical-align: middle;
-        margin-right: 8px;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
-    `;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>

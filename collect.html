@@ -5,205 +5,325 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Collect Earnings</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary-color: #2e7d32;
-      --primary-dark: #1b5e20;
-      --secondary-color: #d32f2f;
-      --text-color: #333;
-      --text-light: #555;
-      --bg-color: #f4f4f9;
-      --card-bg: #fff;
-      --disabled-bg: #e0e0e0;
-      --success-color: #388e3c;
-    }
-    
-    body {
+    /* ─── Reset & Base ─── */
+    * {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.6;
+      padding: 0;
+      box-sizing: border-box;
     }
-    
-    .header {
-      background: var(--primary-color);
-      color: white;
-      padding: 18px;
-      text-align: center;
-      font-size: 1.3rem;
-      font-weight: 600;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+
+    body {
+      background-color: #faf8f2;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      padding: 16px 16px 80px;
+      color: #2d241a;
     }
-    
-    .container {
+
+    /* ─── Aura Background ─── */
+    .aura-bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .aura-layer-1,
+    .aura-layer-2 {
+      position: absolute;
+      inset: 0;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .aura-layer-1 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(125px);
+    }
+    .aura-layer-2 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(100px);
+    }
+    @media (min-width: 768px) {
+      .aura-layer-1 { filter: blur(180px); }
+      .aura-layer-2 { filter: blur(144px); }
+    }
+
+    /* ─── Content Wrapper ─── */
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
       max-width: 600px;
       margin: 0 auto;
-      padding: 16px;
     }
-    
-    .plan-card {
-      background: var(--card-bg);
-      margin-bottom: 16px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    
-    .plan-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-    }
-    
-    .plan-card h3 {
-      margin: 0 0 10px;
-      color: var(--primary-color);
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .plan-card p {
-      margin: 6px 0;
-      color: var(--text-light);
-      display: flex;
-      justify-content: space-between;
-    }
-    
-    .plan-card p span {
-      font-weight: 500;
-      color: var(--text-color);
-    }
-    
-    .collect-btn {
-      display: block;
-      width: 100%;
-      margin-top: 16px;
-      padding: 12px;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 8px;
+
+    /* ─── Header ─── */
+    .header {
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 180, 0.30);
+      box-shadow: 0 4px 16px rgba(160, 120, 80, 0.06);
+      padding: 18px 20px;
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1.4rem;
       font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      color: #7a4f2b;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
-    
-    .collect-btn:hover:enabled {
-      background: var(--primary-dark);
+    .header:hover {
+      border-color: rgba(200, 150, 100, 0.45);
+      box-shadow: 0 6px 24px rgba(160, 120, 80, 0.10);
     }
-    
-    .collect-btn:disabled {
-      background: var(--disabled-bg);
-      color: var(--text-light);
-      cursor: not-allowed;
+    .header i {
+      color: #b8702a;
+      font-size: 1.6rem;
     }
-    
+
+    /* ─── Plan Card ─── */
+    .plan-card {
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 215, 180, 0.25);
+      box-shadow: 0 4px 12px rgba(160, 120, 80, 0.06);
+      padding: 20px 18px;
+      margin-bottom: 16px;
+      transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+    .plan-card:nth-child(2) { animation-delay: 0.08s; }
+    .plan-card:nth-child(3) { animation-delay: 0.16s; }
+    .plan-card:nth-child(4) { animation-delay: 0.24s; }
+    .plan-card:nth-child(5) { animation-delay: 0.32s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(200, 150, 100, 0.45);
+      box-shadow: 0 10px 30px rgba(160, 120, 80, 0.10), 0 0 0 1px rgba(200, 150, 100, 0.15) inset;
+    }
+
+    .plan-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #7a4f2b;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .plan-card h3 i {
+      color: #b8702a;
+      font-size: 1.3rem;
+    }
+
+    .plan-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(200, 180, 160, 0.15);
+      font-size: 0.95rem;
+    }
+    .plan-detail:last-of-type {
+      border-bottom: none;
+    }
+    .plan-detail .label {
+      color: #7a6555;
+    }
+    .plan-detail .value {
+      font-weight: 600;
+      color: #2d241a;
+    }
+    .plan-detail .value.highlight {
+      color: #b8702a;
+    }
+
+    /* ─── Progress Bar ─── */
+    .progress-wrap {
+      margin-top: 14px;
+      background: rgba(200, 180, 160, 0.15);
+      border-radius: 20px;
+      height: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #d48e45, #b8702a);
+      border-radius: 20px;
+      width: 0%;
+      transition: width 0.6s ease;
+    }
+
+    /* ─── Cooldown text ─── */
     .cooldown {
       margin-top: 10px;
-      font-size: 0.85rem;
-      color: var(--secondary-color);
+      font-size: 0.8rem;
+      color: #7a6555;
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    
-    .progress-container {
-      margin-top: 12px;
-      height: 6px;
-      background: #e0e0e0;
-      border-radius: 3px;
-      overflow: hidden;
+    .cooldown i {
+      color: #b8702a;
+      font-size: 0.9rem;
     }
-    
-    .progress-bar {
-      height: 100%;
-      background: var(--primary-color);
-      width: 0%;
-      transition: width 0.5s ease;
+
+    /* ─── Collect Button ─── */
+    .collect-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 16px;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.20);
     }
-    
+    .collect-btn:hover:enabled {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(184, 112, 42, 0.30);
+    }
+    .collect-btn:active {
+      transform: scale(0.97);
+    }
+    .collect-btn:disabled {
+      background: rgba(200, 180, 160, 0.25);
+      color: #7a6555;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .collect-btn i {
+      font-size: 1.1rem;
+    }
+
+    /* ─── Empty State ─── */
     .empty-state {
       text-align: center;
-      padding: 40px 20px;
-      color: var(--text-light);
+      padding: 60px 20px;
+      background: rgba(255, 252, 248, 0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 180, 0.2);
     }
-    
     .empty-state i {
-      font-size: 2.5rem;
-      color: var(--disabled-bg);
+      font-size: 3rem;
+      color: #d4c8b8;
       margin-bottom: 16px;
     }
-    
     .empty-state p {
-      margin: 8px 0;
+      color: #7a6555;
+      margin: 4px 0;
     }
-    
+    .empty-state p:first-of-type {
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: #5a4030;
+    }
+
+    /* ─── Loading ─── */
     .loading {
       display: flex;
       justify-content: center;
-      padding: 20px;
+      padding: 40px 0;
     }
-    
     .spinner {
-      width: 24px;
-      height: 24px;
-      border: 3px solid rgba(0,0,0,0.1);
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(200, 180, 160, 0.2);
       border-radius: 50%;
-      border-top-color: var(--primary-color);
-      animation: spin 1s ease-in-out infinite;
+      border-top-color: #b8702a;
+      animation: spin 0.8s linear infinite;
     }
-    
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    
-    .notification {
+
+    /* ─── Toast Notification ─── */
+    .toast {
       position: fixed;
-      bottom: 20px;
+      bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--success-color);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      background: rgba(255, 252, 248, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 14px 24px;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      color: #2d241a;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      z-index: 1002;
+      animation: slideUp 0.35s ease forwards;
+      max-width: 90%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    
-    .notification.show {
-      opacity: 1;
+    .toast.success i { color: #7a9f5a; }
+    .toast.error i { color: #b54a3a; }
+    @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+    @keyframes slideDown { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 520px) {
+      .header { font-size: 1.2rem; padding: 14px; }
+      .plan-card { padding: 16px; }
+      .collect-btn { font-size: 0.9rem; padding: 12px; }
     }
   </style>
-  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-  <div class="header">
-    <i class="fas fa-wallet"></i> Collect Earnings
+
+  <!-- ─── AURA LAYERS ─── -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
   </div>
-  
-  <div class="container">
+
+  <!-- ─── CONTENT ─── -->
+  <div class="content-wrapper">
+    <!-- Header -->
+    <div class="header">
+      <i class="fas fa-wallet"></i> Collect Earnings
+    </div>
+
+    <!-- Plans Container -->
     <div id="plansContainer">
-      <div class="loading">
-        <div class="spinner"></div>
-      </div>
+      <div class="loading"><div class="spinner"></div></div>
     </div>
   </div>
-  
-  <div class="notification" id="notification"></div>
 
+  <!-- ─── FIREBASE MODULE ─── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
@@ -222,16 +342,24 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase();
     const auth = getAuth();
-    
-    const showNotification = (message) => {
-      const notification = document.getElementById('notification');
-      notification.textContent = message;
-      notification.classList.add('show');
-      setTimeout(() => {
-        notification.classList.remove('show');
-      }, 3000);
-    };
 
+    // ─── Toast system ───
+    function showToast(message, type = 'success') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+      const color = type === 'success' ? '#7a9f5a' : '#b54a3a';
+      toast.innerHTML = `<i class="fas ${icon}" style="color:${color};"></i> ${message}`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'slideDown 0.35s ease forwards';
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
+    }
+
+    // ─── Auth ───
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loadPlans(user.uid);
@@ -240,11 +368,13 @@
       }
     });
 
-    function loadPlans(uid) {
-      const userRef = ref(db, "users/" + uid);
-      const container = document.getElementById("plansContainer");
+    // ─── Load Plans ───
+    async function loadPlans(uid) {
+      const userRef = ref(db, `users/${uid}`);
+      const container = document.getElementById('plansContainer');
 
-      get(userRef).then(snapshot => {
+      try {
+        const snapshot = await get(userRef);
         if (!snapshot.exists()) {
           container.innerHTML = `
             <div class="empty-state">
@@ -270,82 +400,91 @@
           return;
         }
 
-        container.innerHTML = "";
+        container.innerHTML = '';
 
-        Object.keys(investments).forEach(id => {
-          const plan = investments[id];
-          const lastCollected = new Date(plan.lastCollectionDate || 0).getTime();
+        for (const [id, plan] of Object.entries(investments)) {
+          const lastCollected = plan.lastCollectionDate ? new Date(plan.lastCollectionDate).getTime() : 0;
           const now = Date.now();
           const hoursPassed = (now - lastCollected) / (1000 * 60 * 60);
           const canCollect = hoursPassed >= 24;
           const progress = Math.min(100, (hoursPassed / 24) * 100);
 
-          const card = document.createElement("div");
-          card.className = "plan-card";
+          const card = document.createElement('div');
+          card.className = 'plan-card';
           card.innerHTML = `
-            <h3><i class="fas fa-piggy-bank"></i>${plan.planName}</h3>
-            <p>Daily Income: <span>₹${plan.dailyIncome.toLocaleString()}</span></p>
-            <p>Total Return: <span>₹${plan.totalIncome.toLocaleString()}</span></p>
-            
+            <h3><i class="fas fa-piggy-bank"></i> ${plan.planName}</h3>
+            <div class="plan-detail">
+              <span class="label">Daily Income</span>
+              <span class="value highlight">₹${plan.dailyIncome.toLocaleString()}</span>
+            </div>
+            <div class="plan-detail">
+              <span class="label">Total Return</span>
+              <span class="value">₹${plan.totalIncome.toLocaleString()}</span>
+            </div>
+
             ${!canCollect ? `
-              <div class="progress-container">
+              <div class="progress-wrap">
                 <div class="progress-bar" style="width: ${progress}%"></div>
               </div>
-            ` : ''}
-            
-            <button class="collect-btn" ${canCollect ? "" : "disabled"}>
-              <i class="fas ${canCollect ? 'fa-coins' : 'fa-clock'}"></i>
-              ${canCollect ? `Collect ₹${plan.dailyIncome.toLocaleString()}` : 
-                `Available in ${Math.ceil(24 - hoursPassed)}h`}
-            </button>
-            
-            ${!canCollect ? `
               <div class="cooldown">
-                <i class="fas fa-info-circle"></i>
-                Last collected: ${plan.lastCollectionDate ? 
-                  new Date(plan.lastCollectionDate).toLocaleString() : "Never"}
+                <i class="fas fa-clock"></i>
+                Next collection in ${Math.ceil(24 - hoursPassed)}h
               </div>
-            ` : ""}
+            ` : `
+              <div class="cooldown" style="color:#7a9f5a;">
+                <i class="fas fa-check-circle"></i> Ready to collect
+              </div>
+            `}
+
+            <button class="collect-btn" ${canCollect ? '' : 'disabled'}>
+              <i class="fas ${canCollect ? 'fa-coins' : 'fa-clock'}"></i>
+              ${canCollect ? `Collect ₹${plan.dailyIncome.toLocaleString()}` : 'Waiting...'}
+            </button>
           `;
 
-          const btn = card.querySelector(".collect-btn");
+          const btn = card.querySelector('.collect-btn');
+          if (canCollect) {
+            btn.addEventListener('click', async () => {
+              if (!confirm(`Collect ₹${plan.dailyIncome.toLocaleString()} from ${plan.planName}?`)) return;
 
-          btn.addEventListener("click", async () => {
-            if (!confirm(`Collect ₹${plan.dailyIncome.toLocaleString()} from ${plan.planName}?`)) return;
+              const originalText = btn.innerHTML;
+              btn.disabled = true;
+              btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
 
-            const newBal = (user.balance || 0) + plan.dailyIncome;
-            const updates = {
-              [`balance`]: newBal,
-              [`investments/${id}/lastCollectionDate`]: new Date().toISOString(),
-              [`earnings/${Date.now()}`]: {
-                amount: plan.dailyIncome,
-                date: new Date().toISOString(),
-                type: "daily",
-                investment: id,
-                planName: plan.planName
+              try {
+                const userSnap = await get(userRef);
+                if (!userSnap.exists()) throw new Error('User not found');
+                const currentBalance = userSnap.val().balance || 0;
+                const newBal = currentBalance + plan.dailyIncome;
+
+                const updates = {
+                  balance: newBal,
+                  [`investments/${id}/lastCollectionDate`]: new Date().toISOString(),
+                  [`earnings/${Date.now()}`]: {
+                    amount: plan.dailyIncome,
+                    date: new Date().toISOString(),
+                    type: 'daily',
+                    investment: id,
+                    planName: plan.planName
+                  }
+                };
+
+                await update(userRef, updates);
+                showToast(`₹${plan.dailyIncome.toLocaleString()} collected successfully!`, 'success');
+                loadPlans(uid); // refresh
+              } catch (err) {
+                console.error('Collection error:', err);
+                showToast('Failed to collect. Please try again.', 'error');
+                btn.disabled = false;
+                btn.innerHTML = originalText;
               }
-            };
-
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
-
-            try {
-              await update(userRef, updates);
-              showNotification(`₹${plan.dailyIncome.toLocaleString()} collected successfully!`);
-              loadPlans(uid); // reload to update UI
-            } catch (err) {
-              console.error("Collection error:", err);
-              btn.disabled = false;
-              btn.innerHTML = originalText;
-              showNotification("Failed to collect earnings. Please try again.");
-            }
-          });
+            });
+          }
 
           container.appendChild(card);
-        });
-      }).catch(error => {
-        console.error("Error loading plans:", error);
+        }
+      } catch (error) {
+        console.error('Error loading plans:', error);
         container.innerHTML = `
           <div class="empty-state">
             <i class="fas fa-exclamation-triangle"></i>
@@ -353,7 +492,7 @@
             <p>Please try again later</p>
           </div>
         `;
-      });
+      }
     }
   </script>
 </body>

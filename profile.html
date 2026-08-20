@@ -1,755 +1,694 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Profile</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary-color: #3ddc3d;
-      --secondary-color: #007f00;
-      --light-green: #dfffdf;
-      --lighter-green: #f5fff5;
-      --dark-green: #004d00;
-      --highlight-color: #ffa500;
-    }
-    
+    /* ─── Reset & Base ─── */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--light-green);
-      color: #333;
-      padding-bottom: 70px;
+      box-sizing: border-box;
     }
 
-    /* Top Banner Section */
-    .profile-banner {
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                  url('https://example.com/eco-rikshaw-banner.jpg') center/cover;
-      height: 180px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 20px;
-      color: white;
+    body {
+      background-color: #faf8f2;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      padding: 16px 16px 80px;
+      color: #2d241a;
     }
-    
-    .profile-image {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid white;
-      position: absolute;
-      top: 140px;
-      left: 20px;
-      background-color: #ddd;
+
+    /* ─── Aura Background ─── */
+    .aura-bg {
+      position: fixed;
+      inset: 0;
       overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
     }
-    
-    .profile-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .aura-layer-1,
+    .aura-layer-2 {
+      position: absolute;
+      inset: 0;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
     }
-    
+    .aura-layer-1 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(125px);
+    }
+    .aura-layer-2 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(100px);
+    }
+    @media (min-width: 768px) {
+      .aura-layer-1 { filter: blur(180px); }
+      .aura-layer-2 { filter: blur(144px); }
+    }
+
+    /* ─── Content Wrapper ─── */
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ─── Card Styles ─── */
+    .card {
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 180, 0.30);
+      box-shadow: 0 8px 32px rgba(160, 120, 80, 0.06), 0 0 0 1px rgba(255, 215, 180, 0.10) inset;
+      padding: 24px 20px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      margin-bottom: 16px;
+    }
+    .card:hover {
+      border-color: rgba(200, 150, 100, 0.45);
+      box-shadow: 0 12px 40px rgba(160, 120, 80, 0.10), 0 0 0 1px rgba(200, 150, 100, 0.20) inset;
+    }
+
+    /* ─── Header Profile ─── */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #fff;
+      font-weight: 600;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.20);
+    }
     .profile-info {
-      margin-top: 40px;
+      flex: 1;
     }
-    
     .profile-name {
       font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 5px;
+      font-weight: 600;
+      color: #7a4f2b;
     }
-    
     .profile-phone {
       font-size: 14px;
-      opacity: 0.9;
+      color: #7a6555;
+      margin-top: 2px;
     }
 
-    /* Balance Section */
-    .balance-section {
-      background: white;
-      margin: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    
+    /* ─── Balance Card ─── */
     .balance-title {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 5px;
+      font-size: 13px;
+      color: #7a6555;
+      font-weight: 500;
+      margin-bottom: 4px;
     }
-    
     .balance-amount {
-      font-size: 24px;
-      font-weight: bold;
-      color: var(--secondary-color);
-      margin-bottom: 15px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #b8702a;
+      margin-bottom: 14px;
     }
-    
     .balance-actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
-    
     .balance-btn {
       flex: 1;
       padding: 10px;
-      border-radius: 5px;
       border: none;
-      font-weight: bold;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
       cursor: pointer;
+      transition: all 0.25s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      transition: all 0.3s ease;
+      gap: 6px;
+      font-family: 'Poppins', sans-serif;
     }
-    
-    .recharge-btn {
-      background-color: var(--primary-color);
-      color: white;
+    .balance-btn.recharge {
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.20);
     }
-    
-    .withdraw-btn {
-      background-color: #1e90ff;
-      color: white;
-    }
-    
-    .balance-btn:hover {
+    .balance-btn.recharge:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.30);
     }
-    
-    .balance-btn:active {
-      transform: translateY(0);
+    .balance-btn.withdraw {
+      background: rgba(200, 180, 160, 0.20);
+      color: #5a4030;
+    }
+    .balance-btn.withdraw:hover {
+      background: rgba(200, 180, 160, 0.35);
+      transform: translateY(-2px);
     }
 
-    /* Action Buttons */
-    .action-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin: 20px;
-      gap: 10px;
+    /* ─── Quick Action Grid ─── */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
     }
-    
     .action-btn {
-      flex: 1;
-      background: white;
-      border-radius: 10px;
-      padding: 15px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(4px);
+      border-radius: 14px;
+      padding: 14px 6px;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 180, 0.25);
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
+      transition: transform 0.2s, box-shadow 0.25s, border-color 0.25s;
     }
-    
     .action-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      border-color: rgba(200, 150, 100, 0.5);
+      box-shadow: 0 6px 16px rgba(160, 120, 80, 0.08);
     }
-    
     .action-icon {
-      font-size: 24px;
-      margin-bottom: 8px;
-      color: var(--secondary-color);
+      font-size: 22px;
+      color: #b8702a;
+      margin-bottom: 4px;
     }
-    
     .action-label {
-      font-size: 12px;
-      font-weight: bold;
-      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: #5a4030;
     }
 
-    /* Options List */
-    .options-list {
-      margin: 20px;
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    
+    /* ─── Options List ─── */
     .option-item {
-      padding: 15px 20px;
-      border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(200, 180, 160, 0.15);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background 0.2s;
     }
-    
     .option-item:last-child {
       border-bottom: none;
     }
-    
     .option-item:hover {
-      background-color: #f9f9f9;
+      padding-left: 4px;
     }
-    
     .option-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
-    
     .option-icon {
-      color: var(--secondary-color);
+      color: #b8702a;
+      font-size: 18px;
+      width: 28px;
+      text-align: center;
     }
-    
     .option-label {
       font-weight: 500;
+      color: #2d241a;
     }
-    
     .option-arrow {
-      color: #999;
+      color: #b8a898;
+      font-size: 14px;
     }
 
-    /* Logout Button */
+    /* ─── Logout Button ─── */
     .logout-btn {
-      margin: 20px;
-      padding: 15px;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-weight: bold;
-      text-align: center;
+      width: 100%;
+      padding: 14px;
+      background: rgba(200, 180, 160, 0.15);
+      color: #b54a3a;
+      border: 1.5px solid rgba(181, 74, 58, 0.20);
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.25s ease;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
     }
-    
     .logout-btn:hover {
-      background-color: var(--secondary-color);
+      background: rgba(181, 74, 58, 0.10);
+      border-color: #b54a3a;
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-    
-    .logout-btn:active {
-      transform: translateY(0);
     }
 
-    /* Bottom Navigation */
+    /* ─── Bottom Navigation ─── */
     .bottom-nav {
       position: fixed;
       bottom: 0;
-      width: 100%;
-      background-color: white;
+      left: 0;
+      right: 0;
+      background: rgba(255, 252, 248, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+      padding: 10px 0 6px;
+      border-top: 1px solid rgba(255, 215, 180, 0.3);
       z-index: 1000;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 -4px 20px rgba(160, 120, 80, 0.06);
     }
-    
     .nav-item {
-      flex: 1;
       text-align: center;
-      color: #666;
-      font-size: 12px;
+      color: #b8a898;
+      font-weight: 500;
+      font-size: 11px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      padding: 5px 0;
+      transition: color 0.2s, transform 0.2s;
+      flex: 1;
+      padding: 4px 0;
+      text-decoration: none;
     }
-    
-    .nav-item.active {
-      color: var(--highlight-color);
-    }
-    
     .nav-item:hover {
-      color: var(--secondary-color);
+      transform: translateY(-2px);
     }
-    
+    .nav-item.active {
+      color: #b8702a;
+    }
     .nav-icon {
       font-size: 20px;
-      margin-bottom: 3px;
+      display: block;
+      margin-bottom: 2px;
     }
-    
     .nav-label {
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 500;
     }
 
-    /* Modal Styles */
+    /* ─── Modal Override ─── */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      z-index: 1000;
-      overflow-y: auto;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 1001;
+      align-items: center;
+      justify-content: center;
     }
-    
+    .modal.active {
+      display: flex;
+    }
     .modal-content {
-      background-color: white;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 10px;
+      background: rgba(255, 252, 248, 0.96);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 180, 0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      padding: 24px 20px;
       width: 90%;
       max-width: 400px;
-      animation: modalOpen 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: fadeUp 0.35s ease forwards;
     }
-    
-    @keyframes modalOpen {
-      from { opacity: 0; transform: translateY(-50px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
       padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid rgba(200, 180, 160, 0.20);
     }
-    
     .modal-header h3 {
-      color: var(--secondary-color);
-      margin: 0;
+      color: #7a4f2b;
+      font-weight: 600;
     }
-    
     .close-btn {
       background: none;
       border: none;
       font-size: 24px;
+      color: #b8a898;
       cursor: pointer;
-      color: #888;
+      transition: color 0.2s;
     }
-    
+    .close-btn:hover {
+      color: #b8702a;
+    }
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
-    
     .form-group label {
       display: block;
-      margin-bottom: 5px;
+      font-size: 13px;
       font-weight: 500;
+      color: #5a4030;
+      margin-bottom: 4px;
     }
-    
     .form-control {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
+      padding: 12px 14px;
+      border: 1.5px solid #e2d6c8;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      background: rgba(255, 252, 248, 0.6);
+      transition: border-color 0.25s, box-shadow 0.25s;
+      outline: none;
     }
-    
+    .form-control:focus {
+      border-color: #b8702a;
+      box-shadow: 0 0 0 4px rgba(184, 112, 42, 0.08);
+      background: #fffdfa;
+    }
     .submit-btn {
       width: 100%;
       padding: 12px;
-      background-color: var(--primary-color);
-      color: white;
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
       border: none;
-      border-radius: 5px;
-      font-weight: bold;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.20);
     }
-    
     .submit-btn:hover {
-      background-color: var(--secondary-color);
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.30);
+      transform: translateY(-2px);
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 480px) {
-      .profile-banner {
-        height: 160px;
+    /* ─── Responsive ─── */
+    @media (max-width: 520px) {
+      .action-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
       }
-      
-      .profile-image {
-        width: 70px;
-        height: 70px;
-        top: 120px;
-      }
-      
-      .action-buttons {
-        flex-wrap: wrap;
-      }
-      
       .action-btn {
-        min-width: calc(50% - 5px);
-        margin-bottom: 10px;
+        padding: 10px 4px;
+      }
+      .action-icon {
+        font-size: 18px;
+      }
+      .action-label {
+        font-size: 10px;
+      }
+      .profile-avatar {
+        width: 54px;
+        height: 54px;
+        font-size: 22px;
+      }
+      .profile-name {
+        font-size: 17px;
+      }
+      .balance-amount {
+        font-size: 24px;
       }
     }
   </style>
-  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-  <!-- Top Banner Section -->
-  <div class="profile-banner">
-    <div class="profile-image">
-      <img id="userProfileImage" src="https://via.placeholder.com/80" alt="Profile">
-    </div>
-    <div class="profile-info">
-      <div class="profile-name" id="userName"></div>
-      <div class="profile-phone" id="userPhone"></div>
-    </div>
+
+  <!-- ─── AURA LAYERS ─── -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
   </div>
 
-  <!-- Balance Section -->
-  <div class="balance-section">
-    <div class="balance-title">Current Balance</div>
-    <div class="balance-amount" id="currentBalance">₹0.00</div>
-    <div class="balance-actions">
-      <button class="balance-btn recharge-btn" onclick="navigateTo('recharge-confirm.html')">
-        <i class="fas fa-rupee-sign"></i> Recharge
-      </button>
-      <button class="balance-btn withdraw-btn" onclick="navigateTo('withdraw.html')">
-        <i class="fas fa-wallet"></i> Withdraw
-      </button>
+  <!-- ─── CONTENT ─── -->
+  <div class="content-wrapper">
+
+    <!-- Profile Header Card -->
+    <div class="card">
+      <div class="profile-header">
+        <div class="profile-avatar" id="userAvatar">U</div>
+        <div class="profile-info">
+          <div class="profile-name" id="userName">User</div>
+          <div class="profile-phone" id="userPhone">+91 98******12</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Balance Card -->
+    <div class="card">
+      <div class="balance-title">Available Balance</div>
+      <div class="balance-amount" id="currentBalance">₹0.00</div>
+      <div class="balance-actions">
+        <button class="balance-btn recharge" onclick="navigateTo('recharge-confirm.html')">
+          <i class="fas fa-plus"></i> Recharge
+        </button>
+        <button class="balance-btn withdraw" onclick="navigateTo('withdraw.html')">
+          <i class="fas fa-arrow-up"></i> Withdraw
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="action-grid">
+      <div class="action-btn" onclick="navigateTo('collect.html')">
+        <div class="action-icon"><i class="fas fa-gift"></i></div>
+        <div class="action-label">Collect</div>
+      </div>
+      <div class="action-btn" onclick="navigateTo('mission.html')">
+        <div class="action-icon"><i class="fas fa-tasks"></i></div>
+        <div class="action-label">Mission</div>
+      </div>
+      <div class="action-btn" onclick="navigateTo('recharge-confirm.html')">
+        <div class="action-icon"><i class="fas fa-rupee-sign"></i></div>
+        <div class="action-label">Recharge</div>
+      </div>
+      <div class="action-btn" onclick="navigateTo('withdraw.html')">
+        <div class="action-icon"><i class="fas fa-wallet"></i></div>
+        <div class="action-label">Withdraw</div>
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div class="card">
+      <div class="option-item" onclick="navigateTo('income.html')">
+        <div class="option-left">
+          <span class="option-icon"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="option-label">Profit Income</span>
+        </div>
+        <span class="option-arrow"><i class="fas fa-chevron-right"></i></span>
+      </div>
+      <div class="option-item" onclick="navigateTo('withdraw-record.html')">
+        <div class="option-left">
+          <span class="option-icon"><i class="fas fa-history"></i></span>
+          <span class="option-label">Withdraw Record</span>
+        </div>
+        <span class="option-arrow"><i class="fas fa-chevron-right"></i></span>
+      </div>
+      <div class="option-item" onclick="showChangePasswordModal()">
+        <div class="option-left">
+          <span class="option-icon"><i class="fas fa-lock"></i></span>
+          <span class="option-label">Change Password</span>
+        </div>
+        <span class="option-arrow"><i class="fas fa-chevron-right"></i></span>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <button class="logout-btn" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+
   </div>
 
-  <!-- Action Buttons -->
-  <div class="action-buttons">
-     <div class="action-btn" onclick="navigateTo('collect.html')">
-      <div class="action-icon"><i class="fas fa-gift"></i></div>
-      <div class="action-label">Collect Income</div>
-    </div>
-    <div class="action-btn" onclick="navigateTo('mission.html')">
-      <div class="action-icon"><i class="fas fa-tasks"></i></div>
-      <div class="action-label">Mission</div>
-    </div>
-    <div class="action-btn" onclick="navigateTo('recharge-confirm.html')">
-      <div class="action-icon"><i class="fas fa-rupee-sign"></i></div>
-      <div class="action-label">Recharge</div>
-    </div>
-    <div class="action-btn" onclick="navigateTo('withdraw.html')">
-      <div class="action-icon"><i class="fas fa-wallet"></i></div>
-      <div class="action-label">Withdraw</div>
-    </div>
-  </div>
-
-  <!-- Options List -->
-  <!-- Options List -->
-<div class="options-list">
-  <div class="option-item" onclick="navigateTo('profit-income.html')">
-    <div class="option-left">
-      <div class="option-icon"><i class="fas fa-money-bill-wave"></i></div>
-      <div class="option-label">Profit Income</div>
-    </div>
-    <div class="option-arrow"><i class="fas fa-chevron-right"></i></div>
-  </div>
-  <div class="option-item" onclick="navigateTo('withdraw-record.html')">
-    <div class="option-left">
-      <div class="option-icon"><i class="fas fa-history"></i></div>
-      <div class="option-label">Withdraw Record</div>
-    </div>
-    <div class="option-arrow"><i class="fas fa-chevron-right"></i></div>
-  </div>
-  <div class="option-item" onclick="navigateTo('change-password.html')">
-    <div class="option-left">
-      <div class="option-icon"><i class="fas fa-lock"></i></div>
-      <div class="option-label">Change Password</div>
-    </div>
-    <div class="option-arrow"><i class="fas fa-chevron-right"></i></div>
-  </div>
-</div>
-
-  
-
-  <!-- Bottom Navigation -->
+  <!-- ─── BOTTOM NAV ─── -->
   <div class="bottom-nav">
     <div class="nav-item" onclick="navigateTo('rikshawhome.html')">
-      <div class="nav-icon"><i class="fas fa-home"></i></div>
-      <div class="nav-label">Home</div>
+      <span class="nav-icon"><i class="fas fa-home"></i></span>
+      <span class="nav-label">Home</span>
     </div>
     <div class="nav-item" onclick="navigateTo('plans.html')">
-      <div class="nav-icon"><i class="fas fa-tractor"></i></div>
-      <div class="nav-label">Plans</div>
+      <span class="nav-icon"><i class="fas fa-tractor"></i></span>
+      <span class="nav-label">Plans</span>
     </div>
     <div class="nav-item" onclick="navigateTo('team.html')">
-      <div class="nav-icon"><i class="fas fa-users"></i></div>
-      <div class="nav-label">Team</div>
+      <span class="nav-icon"><i class="fas fa-users"></i></span>
+      <span class="nav-label">Team</span>
     </div>
     <div class="nav-item active" onclick="navigateTo('profile.html')">
-      <div class="nav-icon"><i class="fas fa-user"></i></div>
-      <div class="nav-label">Profile</div>
+      <span class="nav-icon"><i class="fas fa-user"></i></span>
+      <span class="nav-label">Profile</span>
     </div>
   </div>
 
-  <!-- Add UPI Modal -->
-  <div id="upiModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Add/Edit UPI ID</h3>
-        <button class="close-btn" onclick="closeModal('upiModal')">&times;</button>
-      </div>
-      <form id="upiForm">
-        <div class="form-group">
-          <label for="upiId">UPI ID</label>
-          <input type="text" id="upiId" class="form-control" placeholder="e.g. yourname@upi" required>
-        </div>
-        <button type="submit" class="submit-btn">Save UPI ID</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Change Password Modal -->
+  <!-- ─── CHANGE PASSWORD MODAL ─── -->
   <div id="passwordModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Change Password</h3>
+        <h3><i class="fas fa-lock" style="color:#b8702a;margin-right:8px;"></i> Change Password</h3>
         <button class="close-btn" onclick="closeModal('passwordModal')">&times;</button>
       </div>
       <form id="passwordForm">
         <div class="form-group">
           <label for="currentPassword">Current Password</label>
-          <input type="password" id="currentPassword" class="form-control" required>
+          <input type="password" id="currentPassword" class="form-control" required />
         </div>
         <div class="form-group">
           <label for="newPassword">New Password</label>
-          <input type="password" id="newPassword" class="form-control" required>
+          <input type="password" id="newPassword" class="form-control" required />
         </div>
         <div class="form-group">
           <label for="confirmPassword">Confirm New Password</label>
-          <input type="password" id="confirmPassword" class="form-control" required>
+          <input type="password" id="confirmPassword" class="form-control" required />
         </div>
         <button type="submit" class="submit-btn">Change Password</button>
       </form>
     </div>
   </div>
 
-  <!-- Profit Income Modal -->
-  <div id="profitModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Profit Income</h3>
-        <button class="close-btn" onclick="closeModal('profitModal')">&times;</button>
-      </div>
-      <div style="margin-bottom: 20px;">
-        <h4 style="color: var(--secondary-color); margin-bottom: 10px;">Earnings Summary</h4>
-        <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <span>Total Earned:</span>
-            <span style="font-weight: bold;" id="totalEarned">₹0.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <span>Available Balance:</span>
-            <span style="font-weight: bold;" id="availableBalance">₹0.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span>Pending Withdrawal:</span>
-            <span style="font-weight: bold;" id="pendingWithdrawal">₹0.00</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h4 style="color: var(--secondary-color); margin-bottom: 10px;">Income Sources</h4>
-        <div style="margin-bottom: 15px;">
-          <div style="font-weight: 500; margin-bottom: 5px;">Daily Check-ins</div>
-          <div style="display: flex; justify-content: space-between;">
-            <span>Earned:</span>
-            <span style="font-weight: bold;">₹50.00</span>
-          </div>
-        </div>
-        <div style="margin-bottom: 15px;">
-          <div style="font-weight: 500; margin-bottom: 5px;">Plan Investments</div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
-            <span>Basic Plan:</span>
-            <span style="font-weight: bold;">₹120.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
-            <span>Premium Plan:</span>
-            <span style="font-weight: bold;">₹300.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span>VIP Plan:</span>
-            <span style="font-weight: bold;">₹0.00</span>
-          </div>
-        </div>
-        <div>
-          <div style="font-weight: 500; margin-bottom: 5px;">Referral Earnings</div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
-            <span>Level 1:</span>
-            <span style="font-weight: bold;">₹75.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
-            <span>Level 2:</span>
-            <span style="font-weight: bold;">₹30.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span>Level 3:</span>
-            <span style="font-weight: bold;">₹12.00</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- ─── FIREBASE MODULE ─── -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut,
+      updatePassword,
+      EmailAuthProvider,
+      reauthenticateWithCredential
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      onValue,
+      get,
+      update
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
-  <!-- In profile.html, update the script section to properly load and display balance -->
-<script type="module">
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut,
-    updatePassword,
-    EmailAuthProvider,
-    reauthenticateWithCredential
-  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-  import {
-    getDatabase,
-    ref,
-    onValue,
-    get,
-    update
-  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
-    authDomain: "rikshaw-67877.firebaseapp.com",
-    databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
-    projectId: "rikshaw-67877",
-    storageBucket: "rikshaw-67877.appspot.com",
-    messagingSenderId: "953540778276",
-    appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
-  };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
+    let uid = null;
 
-  let uid = null;
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "login.html";
-    } else {
+    // ─── Auth State ───
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
       uid = user.uid;
+      loadUserData(uid);
+    });
 
-      const userRef = ref(db, "users/" + uid);
+    // ─── Load User Data ───
+    function loadUserData(uid) {
+      const userRef = ref(db, `users/${uid}`);
       onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
-          const userData = snapshot.val();
+          const data = snapshot.val();
+          const name = data.name || "User";
+          const phone = data.phone || "";
+          const balance = data.balance || 0;
 
-          document.getElementById("userName").textContent = userData.name || "User";
-          document.getElementById("userPhone").textContent =
-            userData.phone ? userData.phone.replace(/(\d{3})\d{4}(\d{3})/, "$1****$2") : "No phone";
-          const balance = parseFloat(userData.balance) || 0;
-          document.getElementById("currentBalance").textContent = "₹" + balance.toFixed(2);
+          document.getElementById("userName").textContent = name;
+          // Mask phone: show first 2 and last 2 digits
+          let maskedPhone = phone;
+          if (phone.length >= 10) {
+            const first = phone.slice(0, 2);
+            const last = phone.slice(-2);
+            const stars = "*".repeat(phone.length - 4);
+            maskedPhone = `${first}${stars}${last}`;
+          } else if (phone.length > 4) {
+            const first = phone.slice(0, 2);
+            const last = phone.slice(-2);
+            const stars = "*".repeat(phone.length - 4);
+            maskedPhone = `${first}${stars}${last}`;
+          }
+          document.getElementById("userPhone").textContent = phone ? `+91 ${maskedPhone}` : "";
+          document.getElementById("currentBalance").textContent = `₹${balance.toFixed(2)}`;
 
-          if (userData.profileImage) {
-            document.getElementById("userProfileImage").src = userData.profileImage;
-          }
-          if (userData.upiId) {
-            document.getElementById("upiId").value = userData.upiId;
-          }
+          // Avatar initial
+          document.getElementById("userAvatar").textContent = name.charAt(0).toUpperCase();
         }
       });
     }
-  });
 
-  window.navigateTo = (page) => window.location.href = page;
+    // ─── Navigation helper ───
+    window.navigateTo = (page) => window.location.href = page;
 
-  window.showUPIModal = () => {
-    document.getElementById("upiModal").style.display = "block";
-  };
+    // ─── Modal Controls ───
+    window.showChangePasswordModal = () => document.getElementById("passwordModal").classList.add("active");
+    window.closeModal = (id) => document.getElementById(id).classList.remove("active");
 
-  window.showChangePasswordModal = () => {
-    document.getElementById("passwordModal").style.display = "block";
-  };
-
-  window.showProfitIncome = () => {
-    if (!uid) return;
-    get(ref(db, `users/${uid}/earnings`)).then((snapshot) => {
-      const earnings = snapshot.val() || {};
-      document.getElementById("totalEarned").textContent = `₹${(earnings.total || 0).toFixed(2)}`;
-      document.getElementById("availableBalance").textContent = `₹${(earnings.available || 0).toFixed(2)}`;
-      document.getElementById("pendingWithdrawal").textContent = `₹${(earnings.pending || 0).toFixed(2)}`;
+    // ─── Click outside modal to close ───
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("active");
+      });
     });
-    document.getElementById("profitModal").style.display = "block";
-  };
 
-  window.closeModal = (modalId) => {
-    document.getElementById(modalId).style.display = "none";
-  };
+    // ─── Password Form ───
+    document.getElementById("passwordForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const current = document.getElementById("currentPassword").value;
+      const newPass = document.getElementById("newPassword").value;
+      const confirm = document.getElementById("confirmPassword").value;
 
-  window.onclick = (event) => {
-    if (event.target.className === "modal") {
-      document.querySelectorAll(".modal").forEach(modal => {
-        modal.style.display = "none";
-      });
-    }
-  };
+      if (newPass !== confirm) {
+        alert("New passwords don't match!");
+        return;
+      }
+      if (newPass.length < 6) {
+        alert("Password must be at least 6 characters.");
+        return;
+      }
 
-  document.getElementById("upiForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const upiId = document.getElementById("upiId").value;
-    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+$/.test(upiId)) {
-      alert("Please enter a valid UPI ID (e.g., yourname@upi)");
-      return;
-    }
-    if (!uid) return;
-    update(ref(db, "users/" + uid), { upiId: upiId })
-      .then(() => {
-        alert("UPI ID saved successfully!");
-        closeModal("upiModal");
-      })
-      .catch((error) => {
-        alert("Error saving UPI ID: " + error.message);
-      });
-  });
+      const user = auth.currentUser;
+      if (!user) return;
 
-  document.getElementById("passwordForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const currentPassword = document.getElementById("currentPassword").value;
-    const newPassword = document.getElementById("newPassword").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
-
-    if (newPassword !== confirmPassword) {
-      alert("New passwords don't match!");
-      return;
-    }
-    if (newPassword.length < 6) {
-      alert("Password must be at least 6 characters long");
-      return;
-    }
-
-    const user = auth.currentUser;
-    const credential = EmailAuthProvider.credential(user.email, currentPassword);
-
-    reauthenticateWithCredential(user, credential)
-      .then(() => {
-        updatePassword(user, newPassword)
-          .then(() => {
-            alert("Password changed successfully!");
-            closeModal("passwordModal");
-            document.getElementById("passwordForm").reset();
-          })
-          .catch((error) => {
-            alert("Error changing password: " + error.message);
-          });
-      })
-      .catch((error) => {
-        alert("Current password is incorrect: " + error.message);
-      });
-  });
-
-  window.logout = () => {
-    signOut(auth).then(() => {
-      window.location.href = "login.html";
-    }).catch((error) => {
-      alert("Logout failed: " + error.message);
+      try {
+        const cred = EmailAuthProvider.credential(user.email, current);
+        await reauthenticateWithCredential(user, cred);
+        await updatePassword(user, newPass);
+        alert("Password changed successfully!");
+        closeModal("passwordModal");
+        document.getElementById("passwordForm").reset();
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
     });
-  };
-</script>
+
+    // ─── Logout ───
+    window.logout = () => {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      }).catch((err) => alert("Logout failed: " + err.message));
+    };
+  </script>
 </body>
 </html>

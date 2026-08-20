@@ -2,245 +2,375 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Team</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary: #2e7d32;
-      --primary-dark: #1b5e20;
-      --primary-light: #e8f5e9;
-      --error: #d32f2f;
-      --text: #333;
-      --border: #e0e0e0;
-      --shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-    
+    /* ─── Reset & Base ─── */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-    
+
+    /* Golden Hour – body base for aura blend */
     body {
+      background-color: #faf8f2;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e0f7e9 100%);
       min-height: 100vh;
-      padding: 30px;
+      padding: 20px;
       display: flex;
       justify-content: center;
-      align-items: start;
-      color: var(--text);
+      align-items: center;
+      color: #2d241a;
     }
-    
-    .team-container {
+
+    /* ─── Aura Background (fixed) ─── */
+    .aura-bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .aura-layer-1,
+    .aura-layer-2 {
+      position: absolute;
+      inset: 0;
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .aura-layer-1 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(125px);
+    }
+    .aura-layer-2 {
+      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%);
+      mix-blend-mode: multiply;
+      filter: blur(100px);
+    }
+    @media (min-width: 768px) {
+      .aura-layer-1 { filter: blur(180px); }
+      .aura-layer-2 { filter: blur(144px); }
+    }
+
+    /* ─── Content wrapper ─── */
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
       width: 100%;
       max-width: 600px;
+      margin: 0 auto;
     }
-    
+
+    /* ─── Cards ─── */
     .card {
-      background: #fff;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: rgba(255, 252, 248, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 180, 0.35);
+      box-shadow: 0 8px 32px rgba(160, 120, 80, 0.08), 0 0 0 1px rgba(255, 215, 180, 0.15) inset;
+      padding: 28px 24px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      animation: fadeUp 0.6s ease forwards;
       margin-bottom: 20px;
     }
-    
     .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+      border-color: rgba(200, 150, 100, 0.45);
+      box-shadow: 0 12px 40px rgba(160, 120, 80, 0.12), 0 0 0 1px rgba(200, 150, 100, 0.25) inset;
     }
-    
-    h2 {
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card h2 {
       text-align: center;
+      color: #7a4f2b;
+      font-weight: 600;
+      font-size: 22px;
       margin-bottom: 16px;
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 24px;
     }
-    
+
+    /* ─── Referral Box ─── */
     .referral-box {
-      background: var(--primary-light);
-      border: 1px dashed var(--primary);
-      padding: 15px;
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px dashed #b8702a;
+      border-radius: 12px;
+      padding: 16px;
       text-align: center;
-      margin-bottom: 20px;
     }
-    
     .referral-box p {
-      font-size: 16px;
-      margin-bottom: 8px;
-      color: var(--primary-dark);
+      font-size: 14px;
+      color: #5a4030;
+      margin-bottom: 6px;
     }
-    
     .referral-code {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 600;
-      color: var(--primary);
-      letter-spacing: 1px;
+      color: #b8702a;
+      letter-spacing: 2px;
     }
-    
+    .referral-code i {
+      margin-right: 8px;
+      color: #b8702a;
+    }
+
+    /* ─── Team List ─── */
     .team-list {
-      margin-top: 10px;
+      margin-top: 8px;
     }
-    
+
     .member {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
       padding: 12px 16px;
       margin-bottom: 10px;
-      background: #fafafa;
-      transition: background 0.2s ease;
+      border: 1px solid rgba(255, 215, 180, 0.25);
+      transition: background 0.2s, transform 0.15s;
+      animation: slideIn 0.4s ease forwards;
+      opacity: 0;
     }
-    
     .member:hover {
-      background: #f1f8f4;
+      background: rgba(255, 255, 255, 0.7);
+      transform: translateX(4px);
     }
-    
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
     .member-info {
       display: flex;
       flex-direction: column;
+      gap: 2px;
     }
-    
     .member-name {
-      font-weight: 500;
-      font-size: 16px;
-      color: var(--text);
-    }
-    
-    .member-phone {
-      font-size: 14px;
-      color: #777;
-    }
-    
-    .member-recharge {
-      font-weight: 500;
+      font-weight: 600;
       font-size: 15px;
-      color: var(--primary-dark);
+      color: #2d241a;
     }
-    
+    .member-phone {
+      font-size: 13px;
+      color: #7a6555;
+      font-weight: 500;
+    }
+    .member-stats {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .member-income {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7a9f5a;
+    }
+    .member-deposit {
+      font-size: 13px;
+      font-weight: 500;
+      color: #b8702a;
+    }
+
     .empty-state {
       text-align: center;
-      color: #999;
+      color: #b8a898;
       font-size: 15px;
-      margin-top: 20px;
+      padding: 20px 0;
     }
-    
-    @media (max-width: 480px) {
-      body {
-        padding: 16px;
-      }
-      
-      .card {
-        padding: 20px;
-      }
+    .empty-state i {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 12px;
+      color: #d4c8b8;
+    }
+
+    /* ─── Loading spinner ─── */
+    .loading {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 4px solid rgba(200, 180, 160, 0.2);
+      border-radius: 50%;
+      border-top-color: #b8702a;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 520px) {
+      .card { padding: 20px 16px; }
+      .member { flex-direction: column; align-items: stretch; gap: 6px; }
+      .member-stats { text-align: left; flex-direction: row; gap: 12px; }
+      .referral-code { font-size: 18px; }
     }
   </style>
-  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-  <div class="team-container">
-    <div class="card">
-      <h2>Your Referral Code</h2>
-      <div class="referral-box">
-        <p>Share this code with your friends:</p>
-        <div class="referral-code" id="referralCode">LOADING...</div>
-      </div>
-    </div>
-    
-    <div class="card">
-      <h2>Your Team</h2>
-      <div class="team-list" id="teamList">
-        <p class="empty-state">Loading team members...</p>
-      </div>
-    </div>
+
+  <!-- ─── AURA LAYERS ─── -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
   </div>
 
+  <!-- ─── CONTENT ─── -->
+  <div class="content-wrapper">
+
+    <!-- Referral Card -->
+    <div class="card">
+      <h2><i class="fas fa-link" style="color:#b8702a;margin-right:8px;"></i> Your Referral Code</h2>
+      <div class="referral-box">
+        <p>Share this code with your friends:</p>
+        <div class="referral-code" id="referralCode">
+          <i class="fas fa-gift"></i> <span>Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Card -->
+    <div class="card">
+      <h2><i class="fas fa-users" style="color:#b8702a;margin-right:8px;"></i> Your Team</h2>
+      <div class="team-list" id="teamList">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── FIREBASE ─── -->
   <script type="module">
-    const firebaseScript = document.createElement('script');
-    firebaseScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
-    firebaseScript.async = true;
-    document.head.appendChild(firebaseScript);
-    
-    const firebaseDBScript = document.createElement('script');
-    firebaseDBScript.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js';
-    firebaseDBScript.async = true;
-    document.head.appendChild(firebaseDBScript);
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-    Promise.all([
-      new Promise(resolve => firebaseScript.onload = resolve),
-      new Promise(resolve => firebaseDBScript.onload = resolve)
-    ]).then(() => {
-      const firebaseConfig = {
-        apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
-        authDomain: "rikshaw-67877.firebaseapp.com",
-        databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
-        projectId: "rikshaw-67877",
-        storageBucket: "rikshaw-67877.appspot.com",
-        messagingSenderId: "953540778276",
-        appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
-      };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
 
-      const app = firebase.initializeApp(firebaseConfig);
-      const db = firebase.database(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase();
+    const auth = getAuth();
 
-      // For demo: Assume uid is stored in localStorage after login
-      const uid = localStorage.getItem("uid");
-      if (!uid) {
-        alert("You are not logged in!");
+    let currentUid = null;
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUid = user.uid;
+        loadReferralCode(currentUid);
+        loadTeamMembers(currentUid);
+      } else {
+        // Not logged in – redirect
         window.location.href = "login.html";
-        return;
       }
+    });
 
-      const userRef = db.ref(`users/${uid}`);
-      const teamRef = db.ref(`team/${uid}`);
+    // ─── Load Referral Code ───
+    async function loadReferralCode(uid) {
+      const userRef = ref(db, `users/${uid}`);
+      const snap = await get(userRef);
+      if (snap.exists()) {
+        const data = snap.val();
+        const code = data.referral || 'N/A';
+        document.getElementById('referralCode').innerHTML = `<i class="fas fa-gift"></i> ${code}`;
+      } else {
+        document.getElementById('referralCode').innerHTML = `<i class="fas fa-gift"></i> N/A`;
+      }
+    }
 
-      // Load user referral code
-      userRef.once("value").then(snapshot => {
-        if (snapshot.exists()) {
-          const userData = snapshot.val();
-          document.getElementById("referralCode").textContent = userData.referral || "N/A";
-        } else {
-          document.getElementById("referralCode").textContent = "N/A";
-        }
-      });
+    // ─── Load Team Members ───
+    function loadTeamMembers(uid) {
+      const teamRef = ref(db, `team/${uid}`);
+      const teamList = document.getElementById('teamList');
 
-      // Load team members
-      teamRef.once("value").then(snapshot => {
-        const teamList = document.getElementById("teamList");
-        teamList.innerHTML = "";
+      // Listen for real-time updates
+      onValue(teamRef, (snapshot) => {
+        teamList.innerHTML = '';
 
         if (snapshot.exists()) {
           const members = snapshot.val();
-          Object.keys(members).forEach(uid => {
-            const member = members[uid];
+          const memberKeys = Object.keys(members);
+          if (memberKeys.length === 0) {
+            showEmptyState();
+            return;
+          }
 
-            const memberEl = document.createElement("div");
-            memberEl.className = "member";
+          memberKeys.forEach((key, index) => {
+            const member = members[key];
+            const name = member.name || 'Unknown';
+            const phone = member.phone || '';
+            const todayIncome = member.todayIncome || 0;
+            const totalDeposit = member.totalDeposit || 0;
+
+            // Mask phone: show first 2 and last 2 digits, rest *
+            let maskedPhone = phone;
+            if (phone.length >= 10) {
+              const firstTwo = phone.slice(0, 2);
+              const lastTwo = phone.slice(-2);
+              const stars = '*'.repeat(phone.length - 4);
+              maskedPhone = `${firstTwo}${stars}${lastTwo}`;
+            } else {
+              // fallback: just show first two and last two if short
+              if (phone.length > 4) {
+                const firstTwo = phone.slice(0, 2);
+                const lastTwo = phone.slice(-2);
+                const stars = '*'.repeat(phone.length - 4);
+                maskedPhone = `${firstTwo}${stars}${lastTwo}`;
+              } else {
+                maskedPhone = phone;
+              }
+            }
+
+            const memberEl = document.createElement('div');
+            memberEl.className = 'member';
+            memberEl.style.animationDelay = `${index * 0.07}s`;
             memberEl.innerHTML = `
               <div class="member-info">
-                <span class="member-name">${member.name}</span>
-                <span class="member-phone">+91 ${member.phone}</span>
+                <span class="member-name">${name}</span>
+                <span class="member-phone">+91 ${maskedPhone}</span>
               </div>
-              <div class="member-recharge">₹${member.invested ? member.recharge || 0 : 0}</div>
+              <div class="member-stats">
+                <span class="member-income"><i class="fas fa-arrow-up" style="font-size:12px;"></i> ₹${todayIncome.toFixed(2)}</span>
+                <span class="member-deposit"><i class="fas fa-coins"></i> ₹${totalDeposit.toFixed(2)}</span>
+              </div>
             `;
             teamList.appendChild(memberEl);
           });
         } else {
-          teamList.innerHTML = `<p class="empty-state">You don’t have any team members yet 😅</p>`;
+          showEmptyState();
         }
       });
-    }).catch(error => {
-      console.error("Firebase load error:", error);
-      alert("Could not load team data. Try again later.");
-    });
+    }
+
+    function showEmptyState() {
+      const teamList = document.getElementById('teamList');
+      teamList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-user-friends"></i>
+          <p>You don’t have any team members yet 😅</p>
+          <p style="font-size:13px;margin-top:4px;">Share your referral code to start building your team!</p>
+        </div>
+      `;
+    }
   </script>
 </body>
 </html>

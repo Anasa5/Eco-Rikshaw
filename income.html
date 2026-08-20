@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Income History</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Same styles as before ─── */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background-color:#faf8f2; font-family:'Poppins',sans-serif; min-height:100vh; padding:16px 16px 80px; color:#2d241a; }
+    .aura-bg { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .aura-layer-1,.aura-layer-2 { position:absolute; inset:0; transform:translateZ(0); will-change:transform; pointer-events:none; }
+    .aura-layer-1 { background:linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%); mix-blend-mode:multiply; filter:blur(125px); }
+    .aura-layer-2 { background:linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%); mix-blend-mode:multiply; filter:blur(100px); }
+    @media (min-width:768px){ .aura-layer-1{filter:blur(180px);} .aura-layer-2{filter:blur(144px);} }
+    .content-wrapper { position:relative; z-index:1; max-width:560px; margin:0 auto; }
+    .header { background:rgba(255,252,248,0.88); backdrop-filter:blur(10px); border-radius:20px; border:1px solid rgba(255,215,180,0.30); padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; transition:border-color .3s,box-shadow .3s; }
+    .header:hover { border-color:rgba(200,150,100,0.45); box-shadow:0 6px 24px rgba(160,120,80,0.10); }
+    .header h1 { font-size:1.4rem; font-weight:600; color:#7a4f2b; display:flex; align-items:center; gap:10px; }
+    .header h1 i { color:#b8702a; }
+    .header .back-btn { color:#7a6555; text-decoration:none; font-size:.9rem; display:flex; align-items:center; gap:6px; transition:color .2s; }
+    .header .back-btn:hover { color:#b8702a; }
+    .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+    .stat-card { background:rgba(255,252,248,0.88); backdrop-filter:blur(8px); border-radius:16px; border:1px solid rgba(255,215,180,0.25); padding:14px 12px; text-align:center; transition:transform .25s,box-shadow .3s,border-color .3s; animation:fadeUp .5s forwards; opacity:0; }
+    .stat-card:nth-child(1){animation-delay:.05s;}
+    .stat-card:nth-child(2){animation-delay:.10s;}
+    .stat-card:nth-child(3){animation-delay:.15s;}
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+    .stat-card:hover { transform:translateY(-3px); border-color:rgba(200,150,100,0.45); box-shadow:0 6px 16px rgba(160,120,80,0.08); }
+    .stat-card .stat-icon { font-size:1.5rem; margin-bottom:4px; }
+    .stat-card .stat-icon.green { color:#7a9f5a; }
+    .stat-card .stat-icon.gold { color:#b8702a; }
+    .stat-card .stat-icon.blue { color:#4a90d9; }
+    .stat-card .stat-value { font-size:1.2rem; font-weight:700; color:#2d241a; }
+    .stat-card .stat-label { font-size:.7rem; color:#7a6555; font-weight:500; text-transform:uppercase; letter-spacing:.3px; }
+    .section { margin-bottom:20px; }
+    .section-title { font-size:1rem; font-weight:600; color:#7a4f2b; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .section-title i { color:#b8702a; }
+    .section-title .badge { background:rgba(184,112,42,0.10); color:#b8702a; font-size:.7rem; padding:2px 10px; border-radius:12px; font-weight:500; }
+    .income-card { background:rgba(255,252,248,0.88); backdrop-filter:blur(8px); border-radius:14px; border:1px solid rgba(255,215,180,0.20); padding:14px 16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; transition:transform .2s,box-shadow .25s,border-color .25s; animation:slideIn .4s forwards; opacity:0; }
+    .income-card:nth-child(2){animation-delay:.06s;}
+    .income-card:nth-child(3){animation-delay:.12s;}
+    .income-card:nth-child(4){animation-delay:.18s;}
+    .income-card:nth-child(5){animation-delay:.24s;}
+    .income-card:nth-child(6){animation-delay:.30s;}
+    @keyframes slideIn { from{opacity:0;transform:translateX(-10px);} to{opacity:1;transform:translateX(0);} }
+    .income-card:hover { transform:translateX(4px); border-color:rgba(200,150,100,0.35); }
+    .income-left { display:flex; align-items:center; gap:12px; flex:1; }
+    .income-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+    .income-icon.recharge { background:rgba(46,125,50,0.12); color:#5f8a3a; }
+    .income-icon.checkin { background:rgba(255,193,7,0.15); color:#f57f17; }
+    .income-icon.plan { background:rgba(184,112,42,0.12); color:#b8702a; }
+    .income-icon.referral { background:rgba(33,150,243,0.12); color:#1a73e8; }
+    .income-icon.withdraw { background:rgba(181,74,58,0.10); color:#b54a3a; }
+    .income-icon.other { background:rgba(200,180,160,0.15); color:#7a6555; }
+    .income-info { flex:1; }
+    .income-info .title { font-weight:500; font-size:.9rem; color:#2d241a; }
+    .income-info .sub { font-size:.75rem; color:#7a6555; display:flex; align-items:center; gap:6px; }
+    .income-info .sub i { font-size:.6rem; }
+    .income-amount { font-weight:700; font-size:1rem; text-align:right; flex-shrink:0; }
+    .income-amount.positive { color:#7a9f5a; }
+    .income-amount.negative { color:#b54a3a; }
+    .no-records { text-align:center; padding:30px 20px; background:rgba(255,252,248,0.5); backdrop-filter:blur(4px); border-radius:14px; border:1px solid rgba(255,215,180,0.15); color:#7a6555; }
+    .no-records i { font-size:2rem; color:#d4c8b8; margin-bottom:8px; }
+    .no-records p { font-size:.9rem; }
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(255,252,248,0.92); backdrop-filter:blur(12px); display:flex; justify-content:space-around; padding:10px 0 6px; border-top:1px solid rgba(255,215,180,0.3); z-index:1000; box-shadow:0 -4px 20px rgba(160,120,80,0.06); }
+    .nav-item { text-align:center; color:#b8a898; font-weight:500; font-size:11px; cursor:pointer; transition:color .2s,transform .2s; flex:1; padding:4px 0; text-decoration:none; }
+    .nav-item:hover { transform:translateY(-2px); }
+    .nav-item.active { color:#b8702a; }
+    .nav-icon { font-size:20px; display:block; margin-bottom:2px; }
+    .nav-label { font-size:11px; font-weight:500; }
+    .skeleton { background:rgba(255,252,248,0.5); border-radius:14px; height:70px; margin-bottom:10px; border:1px solid rgba(255,215,180,0.10); animation:pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:.6;} 50%{opacity:1;} }
+    @media (max-width:520px){ .stats-grid{grid-template-columns:repeat(3,1fr);gap:8px;} .stat-card{padding:10px 8px;} .stat-card .stat-value{font-size:1rem;} .income-card{padding:12px 14px;} .income-icon{width:32px;height:32px;font-size:.85rem;} }
+  </style>
+</head>
+<body>
+
+  <!-- Aura layers -->
+  <div class="aura-bg" aria-hidden="true">
+    <div class="aura-layer-1"></div>
+    <div class="aura-layer-2"></div>
+  </div>
+
+  <div class="content-wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <h1><i class="fas fa-chart-line"></i> Income</h1>
+      <a href="profile.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-coins"></i></div>
+        <div class="stat-value" id="totalIncome">₹0</div>
+        <div class="stat-label">Total Earned</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon gold"><i class="fas fa-wallet"></i></div>
+        <div class="stat-value" id="currentBalance">₹0</div>
+        <div class="stat-label">Balance</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div>
+        <div class="stat-value" id="totalTransactions">0</div>
+        <div class="stat-label">Transactions</div>
+      </div>
+    </div>
+
+    <!-- Income List -->
+    <div class="section">
+      <div class="section-title">
+        <i class="fas fa-list-ul"></i> All Income
+        <span class="badge" id="incomeCount">0</span>
+      </div>
+      <div id="incomeList">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <a href="rikshawhome.html" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-home"></i></span>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="plans.html" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-tractor"></i></span>
+      <span class="nav-label">Plans</span>
+    </a>
+    <a href="missions.html" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-tasks"></i></span>
+      <span class="nav-label">Missions</span>
+    </a>
+    <a href="team.html" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-users"></i></span>
+      <span class="nav-label">Team</span>
+    </a>
+    <a href="profile.html" class="nav-item active">
+      <span class="nav-icon"><i class="fas fa-user"></i></span>
+      <span class="nav-label">Profile</span>
+    </a>
+  </div>
+
+  <!-- ─── FIREBASE ─── -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYOEdPP3cj6RvJQtSEREtiYe42UIh1Aj8",
+      authDomain: "rikshaw-67877.firebaseapp.com",
+      databaseURL: "https://rikshaw-67877-default-rtdb.firebaseio.com",
+      projectId: "rikshaw-67877",
+      storageBucket: "rikshaw-67877.appspot.com",
+      messagingSenderId: "953540778276",
+      appId: "1:953540778276:web:829ca93f8f973190e0fbb1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    let currentUid = null;
+
+    const incomeList = document.getElementById('incomeList');
+    const totalIncomeEl = document.getElementById('totalIncome');
+    const currentBalanceEl = document.getElementById('currentBalance');
+    const totalTransactionsEl = document.getElementById('totalTransactions');
+    const incomeCountEl = document.getElementById('incomeCount');
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUid = user.uid;
+      // Real‑time balance
+      onValue(ref(db, `users/${currentUid}/balance`), (snap) => {
+        const balance = snap.val() || 0;
+        currentBalanceEl.textContent = `₹${balance.toFixed(2)}`;
+      });
+      loadAllIncome();
+    });
+
+    async function loadAllIncome() {
+      if (!currentUid) return;
+
+      try {
+        // 1. Get user data
+        const userSnap = await get(ref(db, `users/${currentUid}`));
+        const user = userSnap.exists() ? userSnap.val() : {};
+
+        const allEntries = [];
+
+        // ─── Balance Recharges ───
+        const rechargeSnap = await get(ref(db, 'balanceRequests'));
+        if (rechargeSnap.exists()) {
+          rechargeSnap.forEach(child => {
+            const req = child.val();
+            if (req.userId === currentUid && req.status === 'approved') {
+              allEntries.push({
+                type: 'recharge',
+                title: 'Recharge',
+                sub: `UTR: ${req.utr || 'N/A'}`,
+                amount: req.amount,
+                date: req.timestamp || req.processedAt || Date.now(),
+                icon: 'fa-coins',
+                iconClass: 'recharge'
+              });
+            }
+          });
+        }
+
+        // ─── Earnings (check‑ins, referrals, plan returns) ───
+        const earnings = user.earnings || {};
+        Object.keys(earnings).forEach(key => {
+          const e = earnings[key];
+          let type = 'other';
+          let icon = 'fa-money-bill-wave';
+          let iconClass = 'other';
+          let title = 'Earning';
+          let sub = '';
+
+          if (e.type === 'daily' || e.type === 'checkin') {
+            type = 'checkin';
+            icon = 'fa-calendar-check';
+            iconClass = 'checkin';
+            title = 'Daily Check-in';
+            sub = e.planName ? `Plan: ${e.planName}` : 'Daily reward';
+          } else if (e.type && e.type.startsWith('referral')) {
+            type = 'referral';
+            icon = 'fa-user-plus';
+            iconClass = 'referral';
+            const level = e.type === 'referral' ? '' : e.type.replace('referral', 'Level ');
+            title = `Referral ${level || 'Commission'}`;
+            sub = e.from ? `From: ${e.from}` : 'Referral bonus';
+          } else if (e.type === 'plan') {
+            type = 'plan';
+            icon = 'fa-chart-simple';
+            iconClass = 'plan';
+            title = e.planName || 'Plan Return';
+            sub = `From ${e.planName || 'investment'}`;
+          }
+
+          allEntries.push({
+            type,
+            title,
+            sub,
+            amount: e.amount,
+            date: e.date || Date.now(),
+            icon,
+            iconClass
+          });
+        });
+
+        // ─── Investments (money spent) ───
+        const investments = user.investments || {};
+        Object.keys(investments).forEach(key => {
+          const inv = investments[key];
+          if (inv.amount && inv.amount > 0) {
+            allEntries.push({
+              type: 'plan',
+              title: `Invested: ${inv.planName || 'Plan'}`,
+              sub: `₹${inv.amount} invested`,
+              amount: -inv.amount,
+              date: inv.purchased || inv.date || Date.now(),
+              icon: 'fa-chart-simple',
+              iconClass: 'plan'
+            });
+          }
+        });
+
+        // ─── Withdrawals ───
+        const withdrawSnap = await get(ref(db, 'withdrawRequests'));
+        if (withdrawSnap.exists()) {
+          withdrawSnap.forEach(child => {
+            const req = child.val();
+            if (req.uid === currentUid && req.status === 'approved') {
+              allEntries.push({
+                type: 'withdraw',
+                title: 'Withdrawal',
+                sub: req.method === 'bank' ? 'Bank Transfer' : 'UPI Transfer',
+                amount: -req.amount,
+                date: req.processedAt || req.time || Date.now(),
+                icon: 'fa-arrow-up',
+                iconClass: 'withdraw'
+              });
+            }
+          });
+        }
+
+        // Sort by date (newest first)
+        allEntries.sort((a, b) => b.date - a.date);
+
+        // Calculate total earned (sum of positive amounts)
+        const totalEarned = allEntries.reduce((sum, item) => item.amount > 0 ? sum + item.amount : sum, 0);
+
+        // Update stats
+        totalIncomeEl.textContent = `₹${totalEarned.toFixed(2)}`;
+        totalTransactionsEl.textContent = allEntries.length;
+        incomeCountEl.textContent = allEntries.length;
+
+        renderIncome(allEntries);
+
+      } catch (error) {
+        console.error('Error loading income:', error);
+        incomeList.innerHTML = `
+          <div class="no-records">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Error loading data. Please refresh.</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderIncome(entries) {
+      if (entries.length === 0) {
+        incomeList.innerHTML = `
+          <div class="no-records">
+            <i class="fas fa-inbox"></i>
+            <p>No income recorded yet.<br>Start investing to see your earnings!</p>
+          </div>
+        `;
+        return;
+      }
+
+      incomeList.innerHTML = '';
+      entries.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'income-card';
+        card.style.animationDelay = `${index * 0.06}s`;
+
+        const isPositive = item.amount >= 0;
+        const sign = isPositive ? '+' : '';
+
+        let dateStr = 'Just now';
+        try {
+          const d = new Date(item.date);
+          dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        } catch {}
+
+        card.innerHTML = `
+          <div class="income-left">
+            <div class="income-icon ${item.iconClass || 'other'}">
+              <i class="fas ${item.icon || 'fa-money-bill-wave'}"></i>
+            </div>
+            <div class="income-info">
+              <div class="title">${item.title}</div>
+              <div class="sub">
+                <i class="fas fa-clock"></i> ${dateStr}
+                ${item.sub ? `· ${item.sub}` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="income-amount ${isPositive ? 'positive' : 'negative'}">
+            ${sign}₹${item.amount.toFixed(2)}
+          </div>
+        `;
+
+        incomeList.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
