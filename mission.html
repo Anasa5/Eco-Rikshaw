@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Reset & Base ─── */
     * {
       margin: 0;
       padding: 0;
@@ -22,7 +21,6 @@
       color: #2d241a;
     }
 
-    /* ─── Aura Background ─── */
     .aura-bg {
       position: fixed;
       inset: 0;
@@ -53,7 +51,6 @@
       .aura-layer-2 { filter: blur(144px); }
     }
 
-    /* ─── Content Wrapper ─── */
     .content-wrapper {
       position: relative;
       z-index: 1;
@@ -61,7 +58,6 @@
       margin: 0 auto;
     }
 
-    /* ─── Header ─── */
     .header {
       background: rgba(255, 252, 248, 0.88);
       backdrop-filter: blur(10px);
@@ -107,7 +103,6 @@
       transform: scale(1.1);
     }
 
-    /* ─── Balance Card ─── */
     .balance-card {
       background: linear-gradient(145deg, #d48e45, #b8702a);
       border-radius: 16px;
@@ -142,7 +137,6 @@
       font-size: 1.4rem;
     }
 
-    /* ─── Missions Header ─── */
     .missions-header {
       display: flex;
       justify-content: space-between;
@@ -161,7 +155,6 @@
       font-weight: 500;
     }
 
-    /* ─── Task Card ─── */
     .task {
       background: rgba(255, 252, 248, 0.88);
       backdrop-filter: blur(8px);
@@ -179,7 +172,6 @@
     }
     .task:nth-child(2) { animation-delay: 0.08s; }
     .task:nth-child(3) { animation-delay: 0.16s; }
-    .task:nth-child(4) { animation-delay: 0.24s; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -271,9 +263,13 @@
       background: rgba(122, 159, 90, 0.15);
       color: #5f8a3a;
     }
-    .task-status.pending {
-      background: rgba(184, 112, 42, 0.10);
+    .task-status.ready {
+      background: rgba(184, 112, 42, 0.15);
       color: #b8702a;
+    }
+    .task-status.pending {
+      background: rgba(200, 180, 160, 0.15);
+      color: #7a6555;
     }
 
     .claim-btn {
@@ -306,7 +302,6 @@
       transform: scale(0.97);
     }
 
-    /* ─── Empty state ─── */
     .empty-state {
       text-align: center;
       padding: 40px 20px;
@@ -328,7 +323,6 @@
       color: #7a6555;
     }
 
-    /* ─── Reward Animation ─── */
     .reward-overlay {
       position: fixed;
       inset: 0;
@@ -376,7 +370,6 @@
       margin-top: 4px;
     }
 
-    /* ─── Bottom Navigation ─── */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -419,7 +412,6 @@
       font-weight: 500;
     }
 
-    /* ─── Toast ─── */
     .toast {
       position: fixed;
       bottom: 100px;
@@ -447,7 +439,6 @@
     @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
     @keyframes slideDown { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
 
-    /* ─── Responsive ─── */
     @media (max-width: 520px) {
       .header { padding: 14px 16px; }
       .header h1 { font-size: 1.2rem; }
@@ -458,16 +449,13 @@
 </head>
 <body>
 
-  <!-- ─── AURA LAYERS ─── -->
   <div class="aura-bg" aria-hidden="true">
     <div class="aura-layer-1"></div>
     <div class="aura-layer-2"></div>
   </div>
 
-  <!-- ─── CONTENT ─── -->
   <div class="content-wrapper">
 
-    <!-- Header -->
     <div class="header">
       <h1><i class="fas fa-tasks"></i> Missions</h1>
       <div class="header-icons">
@@ -476,7 +464,6 @@
       </div>
     </div>
 
-    <!-- Balance Card -->
     <div class="balance-card">
       <div class="balance-info">
         <h2>Your Balance</h2>
@@ -485,18 +472,15 @@
       <div class="balance-icon"><i class="fas fa-wallet"></i></div>
     </div>
 
-    <!-- Missions Header -->
     <div class="missions-header">
       <h2 class="section-title">Available Missions</h2>
       <span class="progress-text"><span id="completedCount">0</span>/<span id="totalCount">0</span> done</span>
     </div>
 
-    <!-- Missions List -->
     <div id="missionsList"></div>
 
   </div>
 
-  <!-- ─── REWARD OVERLAY ─── -->
   <div class="reward-overlay" id="rewardOverlay">
     <div class="reward-box">
       <i class="fas fa-gift"></i>
@@ -505,7 +489,6 @@
     </div>
   </div>
 
-  <!-- ─── BOTTOM NAV ─── -->
   <div class="bottom-nav">
     <a href="rikshawhome.html" class="nav-item">
       <span class="nav-icon"><i class="fas fa-home"></i></span>
@@ -529,7 +512,6 @@
     </a>
   </div>
 
-  <!-- ─── FIREBASE MODULE ─── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getDatabase, ref, get, set, update, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
@@ -549,11 +531,9 @@
     const db = getDatabase(app);
     const auth = getAuth(app);
 
-    let currentUser = null;
-    let userData = {};
+    let currentUid = null;
     let userRef = null;
 
-    // ─── DOM refs ───
     const missionsList = document.getElementById('missionsList');
     const userBalanceEl = document.getElementById('userBalance');
     const completedCountEl = document.getElementById('completedCount');
@@ -561,124 +541,122 @@
     const rewardOverlay = document.getElementById('rewardOverlay');
     const rewardAmountEl = document.getElementById('rewardAmount');
 
-    // ─── Auth ───
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = 'login.html';
         return;
       }
-      currentUser = user;
+      currentUid = user.uid;
       userRef = ref(db, `users/${user.uid}`);
-      loadMissions();
-      // Listen for real‑time balance updates
+      
       onValue(userRef, (snap) => {
         if (snap.exists()) {
-          userData = snap.val();
-          userBalanceEl.textContent = `₹${(userData.balance || 0).toFixed(2)}`;
+          const data = snap.val();
+          userBalanceEl.textContent = `₹${(data.balance || 0).toFixed(2)}`;
         }
       });
-      // Listen for withdrawal updates to refresh missions
-      const withdrawRef = ref(db, `withdrawals/${user.uid}`);
-      onValue(withdrawRef, () => loadMissions());
-      // Listen for investment updates
+
       const investRef = ref(db, `users/${user.uid}/investments`);
       onValue(investRef, () => loadMissions());
+      
+      const withdrawRef = ref(db, `withdrawRequests`);
+      onValue(withdrawRef, () => loadMissions());
+      
+      const teamRef = ref(db, `team/${user.uid}`);
+      onValue(teamRef, () => loadMissions());
+
+      loadMissions();
     });
 
-    // ─── Load Missions ───
     async function loadMissions() {
       if (!userRef) return;
-      const snap = await get(userRef);
-      if (!snap.exists()) {
-        // Initialize user
-        await set(userRef, { balance: 0, missions: {} });
-        userData = { balance: 0, missions: {} };
-      } else {
-        userData = snap.val();
-        if (!userData.missions) userData.missions = {};
-        if (!userData.balance) userData.balance = 0;
-      }
-
-      // Build mission data (without daily check-in)
-      const missions = await buildMissions(userData);
-      renderMissions(missions);
-    }
-
-    // ─── Build Missions (no daily check-in) ───
-    async function buildMissions(user) {
-      // First Investment – check if user has any investments
-      const investments = user.investments || {};
-      const hasInvestment = Object.keys(investments).length > 0;
-      const firstInvestmentClaimed = user.missions.firstInvestment || false;
-
-      // First Withdrawal – check if user has any withdrawal record
-      const withdrawalSnap = await get(ref(db, `withdrawals/${currentUser.uid}`));
-      const hasWithdrawal = withdrawalSnap.exists() && Object.keys(withdrawalSnap.val()).length > 0;
-      const firstWithdrawalClaimed = user.missions.firstWithdrawal || false;
-
-      // Refer a Friend – check if user has referrals (from team node)
-      const teamSnap = await get(ref(db, `team/${currentUser.uid}`));
-      const hasReferrals = teamSnap.exists() && Object.keys(teamSnap.val()).length > 0;
-      const referFriendClaimed = user.missions.referFriend || false;
-
-      // Build mission objects
-      const missions = [
-        {
-          id: 'firstInvestment',
-          title: 'First Investment',
-          description: 'Make your first investment to start earning daily income.',
-          reward: 20,
-          claimed: firstInvestmentClaimed,
-          progress: hasInvestment ? 100 : 0,
-          icon: 'rupee-sign'
-        },
-        {
-          id: 'firstWithdrawal',
-          title: 'First Withdrawal',
-          description: 'Withdraw your earnings for the first time.',
-          reward: 30,
-          claimed: firstWithdrawalClaimed,
-          progress: hasWithdrawal ? 100 : 0,
-          icon: 'money-bill-wave'
-        },
-        {
-          id: 'referFriend',
-          title: 'Refer a Friend',
-          description: 'Invite a friend to join using your referral link.',
-          reward: 50,
-          claimed: referFriendClaimed,
-          progress: hasReferrals ? 100 : 0,
-          icon: 'user-plus'
+      
+      try {
+        const snap = await get(userRef);
+        if (!snap.exists()) {
+          await set(userRef, { balance: 0, missions: {} });
         }
-      ];
+        const user = snap.exists() ? snap.val() : { balance: 0, missions: {} };
+        if (!user.missions) user.missions = {};
+        if (!user.balance) user.balance = 0;
 
-      return missions;
+        const investSnap = await get(ref(db, `users/${currentUid}/investments`));
+        const hasInvestment = investSnap.exists() && Object.keys(investSnap.val()).length > 0;
+
+        const withdrawSnap = await get(ref(db, 'withdrawRequests'));
+        let hasWithdrawal = false;
+        if (withdrawSnap.exists()) {
+          withdrawSnap.forEach(child => {
+            const req = child.val();
+            if (req.uid === currentUid && req.status === 'approved') {
+              hasWithdrawal = true;
+            }
+          });
+        }
+
+        const teamSnap = await get(ref(db, `team/${currentUid}`));
+        const hasReferrals = teamSnap.exists() && Object.keys(teamSnap.val()).length > 0;
+
+        const missions = [
+          {
+            id: 'firstInvestment',
+            title: 'First Investment',
+            description: 'Make your first investment to start earning daily income.',
+            reward: 20,
+            claimed: user.missions.firstInvestment || false,
+            progress: hasInvestment ? 100 : 0,
+            icon: 'rupee-sign'
+          },
+          {
+            id: 'firstWithdrawal',
+            title: 'First Withdrawal',
+            description: 'Withdraw your earnings for the first time.',
+            reward: 30,
+            claimed: user.missions.firstWithdrawal || false,
+            progress: hasWithdrawal ? 100 : 0,
+            icon: 'money-bill-wave'
+          },
+          {
+            id: 'referFriend',
+            title: 'Refer a Friend',
+            description: 'Invite a friend to join using your referral link.',
+            reward: 50,
+            claimed: user.missions.referFriend || false,
+            progress: hasReferrals ? 100 : 0,
+            icon: 'user-plus'
+          }
+        ];
+
+        renderMissions(missions);
+
+      } catch (err) {
+        console.error('Error loading missions:', err);
+        showToast('Error loading missions. Please refresh.', 'error');
+      }
     }
 
-    // ─── Render Missions ───
     function renderMissions(missions) {
       missionsList.innerHTML = '';
-      if (missions.length === 0) {
-        missionsList.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-tasks"></i>
-            <h3>No Missions Available</h3>
-            <p>Check back later for new missions.</p>
-          </div>
-        `;
-        return;
-      }
-
       let completed = 0;
-      missions.forEach((m, index) => {
-        const isClaimed = m.claimed;
-        if (isClaimed) completed++;
 
+      missions.forEach((m, idx) => {
+        if (m.claimed) completed++;
+        
         const task = document.createElement('div');
-        task.className = `task ${isClaimed ? 'claimed' : 'pending'}`;
-        task.style.animationDelay = `${index * 0.07}s`;
+        task.className = `task ${m.claimed ? 'claimed' : 'pending'}`;
+        task.style.animationDelay = `${idx * 0.07}s`;
 
-        const progress = m.progress || 0;
+        const isClaimable = !m.claimed && m.progress === 100;
+        
+        let statusText = 'In Progress';
+        let statusClass = 'pending';
+        if (m.claimed) {
+          statusText = 'Completed';
+          statusClass = 'completed';
+        } else if (m.progress === 100) {
+          statusText = 'Ready to Claim';
+          statusClass = 'ready';
+        }
 
         task.innerHTML = `
           <div class="task-header">
@@ -689,22 +667,19 @@
             <span class="task-reward">₹${m.reward}</span>
           </div>
           <div class="task-description">${m.description}</div>
-          ${progress > 0 && progress < 100 ? `
-            <div class="task-progress">
-              <div class="progress-bar" style="width: ${progress}%"></div>
-            </div>
+          ${m.progress > 0 && m.progress < 100 ? `
+            <div class="task-progress"><div class="progress-bar" style="width:${m.progress}%"></div></div>
           ` : ''}
           <div class="task-footer">
-            <span class="task-status ${isClaimed ? 'completed' : 'pending'}">${isClaimed ? 'Completed' : 'In Progress'}</span>
-            <button class="claim-btn" ${isClaimed ? 'disabled' : progress < 100 ? 'disabled' : ''}>
-              ${isClaimed ? '<i class="fas fa-check-circle"></i> Claimed' : progress < 100 ? '<i class="fas fa-lock"></i> Locked' : '<i class="fas fa-gift"></i> Claim ₹' + m.reward}
+            <span class="task-status ${statusClass}">${statusText}</span>
+            <button class="claim-btn" ${!isClaimable ? 'disabled' : ''}>
+              ${m.claimed ? '<i class="fas fa-check-circle"></i> Claimed' : isClaimable ? '<i class="fas fa-gift"></i> Claim ₹' + m.reward : '<i class="fas fa-lock"></i> Locked'}
             </button>
           </div>
         `;
 
-        // Add event listener for claim button if progress is 100 and not claimed
-        const btn = task.querySelector('.claim-btn');
-        if (!isClaimed && progress === 100) {
+        if (isClaimable) {
+          const btn = task.querySelector('.claim-btn');
           btn.addEventListener('click', () => claimMission(m.id, m.reward, task));
         }
 
@@ -713,29 +688,47 @@
 
       completedCountEl.textContent = completed;
       totalCountEl.textContent = missions.length;
+
+      if (missions.length === 0) {
+        missionsList.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-tasks"></i>
+            <h3>No Missions Available</h3>
+            <p>Check back later for new missions.</p>
+          </div>
+        `;
+      }
     }
 
-    // ─── Claim Mission ───
     async function claimMission(missionId, reward, taskElement) {
-      if (!userRef) return;
       try {
-        // Update balance and mission status
-        const newBalance = (userData.balance || 0) + reward;
-        const updates = {
-          balance: newBalance,
-          [`missions.${missionId}`]: true
-        };
+        if (!userRef) {
+          showToast('User reference not found.', 'error');
+          return;
+        }
+
+        // Get fresh user data
+        const snap = await get(userRef);
+        if (!snap.exists()) {
+          showToast('User not found.', 'error');
+          return;
+        }
+        
+        const userData = snap.val();
+        const currentBalance = userData.balance || 0;
+        const newBalance = currentBalance + reward;
+
+        // Update the user data properly
+        const updates = {};
+        updates.balance = newBalance;
+        updates['missions/' + missionId] = true;
 
         await update(userRef, updates);
 
-        // Show reward animation
         rewardAmountEl.textContent = reward;
         rewardOverlay.classList.add('active');
-        setTimeout(() => {
-          rewardOverlay.classList.remove('active');
-        }, 2000);
+        setTimeout(() => rewardOverlay.classList.remove('active'), 2000);
 
-        // Update UI: mark as claimed
         const status = taskElement.querySelector('.task-status');
         status.textContent = 'Completed';
         status.className = 'task-status completed';
@@ -743,26 +736,21 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-check-circle"></i> Claimed';
 
-        // Update balance display
         userBalanceEl.textContent = `₹${newBalance.toFixed(2)}`;
 
-        // Update completed count
         const completed = parseInt(completedCountEl.textContent) + 1;
         completedCountEl.textContent = completed;
 
-        // Show toast
         showToast(`₹${reward} claimed successfully!`, 'success');
 
-        // Reload missions to sync state
         setTimeout(loadMissions, 1000);
 
       } catch (err) {
         console.error('Claim error:', err);
-        showToast('Failed to claim. Please try again.', 'error');
+        showToast('Failed to claim. Please try again. Error: ' + err.message, 'error');
       }
     }
 
-    // ─── Toast ───
     function showToast(message, type = 'success') {
       const existing = document.querySelector('.toast');
       if (existing) existing.remove();
@@ -778,12 +766,11 @@
       }, 3500);
     }
 
-    // ─── Helpers ───
     document.getElementById('notifications').addEventListener('click', () => {
       showToast('No new notifications', 'info');
     });
     document.getElementById('help').addEventListener('click', () => {
-      showToast('Complete missions to earn rewards. Check back daily!', 'info');
+      showToast('Complete missions to earn rewards!', 'info');
     });
   </script>
 </body>
