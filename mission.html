@@ -180,7 +180,6 @@
     .task:nth-child(2) { animation-delay: 0.08s; }
     .task:nth-child(3) { animation-delay: 0.16s; }
     .task:nth-child(4) { animation-delay: 0.24s; }
-    .task:nth-child(5) { animation-delay: 0.32s; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -600,21 +599,13 @@
         if (!userData.balance) userData.balance = 0;
       }
 
-      // Build mission data
+      // Build mission data (without daily check-in)
       const missions = await buildMissions(userData);
       renderMissions(missions);
     }
 
-    // ─── Build Missions ───
+    // ─── Build Missions (no daily check-in) ───
     async function buildMissions(user) {
-      const now = new Date();
-      const today = now.toISOString().split('T')[0];
-
-      // Daily check-in
-      const lastCheckin = user.missions.dailyCheckinDate || null;
-      const claimedToday = lastCheckin === today;
-      const dailyReward = 5;
-
       // First Investment – check if user has any investments
       const investments = user.investments || {};
       const hasInvestment = Object.keys(investments).length > 0;
@@ -633,20 +624,11 @@
       // Build mission objects
       const missions = [
         {
-          id: 'dailyCheckin',
-          title: 'Daily Check‑in',
-          description: 'Check in daily to earn rewards.',
-          reward: dailyReward,
-          claimed: claimedToday,
-          progress: claimedToday ? 100 : 0,
-          icon: 'calendar-check'
-        },
-        {
           id: 'firstInvestment',
           title: 'First Investment',
           description: 'Make your first investment to start earning daily income.',
           reward: 20,
-          claimed: firstInvestmentClaimed || hasInvestment,
+          claimed: firstInvestmentClaimed,
           progress: hasInvestment ? 100 : 0,
           icon: 'rupee-sign'
         },
@@ -655,7 +637,7 @@
           title: 'First Withdrawal',
           description: 'Withdraw your earnings for the first time.',
           reward: 30,
-          claimed: firstWithdrawalClaimed || hasWithdrawal,
+          claimed: firstWithdrawalClaimed,
           progress: hasWithdrawal ? 100 : 0,
           icon: 'money-bill-wave'
         },
@@ -664,25 +646,11 @@
           title: 'Refer a Friend',
           description: 'Invite a friend to join using your referral link.',
           reward: 50,
-          claimed: referFriendClaimed || hasReferrals,
+          claimed: referFriendClaimed,
           progress: hasReferrals ? 100 : 0,
           icon: 'user-plus'
         }
       ];
-
-      // Auto‑claim logic: if progress is 100 and not claimed, mark as claimed and add reward
-      for (const m of missions) {
-        if (m.progress === 100 && !m.claimed) {
-          // Check if we should auto‑claim (only for investment, withdrawal, referral)
-          if (m.id !== 'dailyCheckin') {
-            // Auto‑claim and add reward
-            m.claimed = true;
-            // We'll handle the reward addition in render, but we need to update DB
-            // We'll do it when the user clicks claim, so we'll keep it as unclaimed but progress 100
-            // So the user can manually claim it
-          }
-        }
-      }
 
       return missions;
     }
@@ -757,9 +725,6 @@
           balance: newBalance,
           [`missions.${missionId}`]: true
         };
-        if (missionId === 'dailyCheckin') {
-          updates['missions.dailyCheckinDate'] = new Date().toISOString().split('T')[0];
-        }
 
         await update(userRef, updates);
 
