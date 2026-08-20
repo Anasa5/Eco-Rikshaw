@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Team</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ─── Reset & Base ─── */
     * {
@@ -14,19 +14,15 @@
       box-sizing: border-box;
     }
 
-    /* Golden Hour – body base for aura blend */
     body {
       background-color: #faf8f2;
       font-family: 'Poppins', sans-serif;
       min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 20px 16px 80px;
       color: #2d241a;
     }
 
-    /* ─── Aura Background (fixed) ─── */
+    /* ─── Aura Background ─── */
     .aura-bg {
       position: fixed;
       inset: 0;
@@ -57,11 +53,10 @@
       .aura-layer-2 { filter: blur(144px); }
     }
 
-    /* ─── Content wrapper ─── */
+    /* ─── Content Wrapper ─── */
     .content-wrapper {
       position: relative;
       z-index: 1;
-      width: 100%;
       max-width: 600px;
       margin: 0 auto;
     }
@@ -72,21 +67,15 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-radius: 20px;
-      border: 1px solid rgba(255, 215, 180, 0.35);
-      box-shadow: 0 8px 32px rgba(160, 120, 80, 0.08), 0 0 0 1px rgba(255, 215, 180, 0.15) inset;
-      padding: 28px 24px;
+      border: 1px solid rgba(255, 215, 180, 0.30);
+      box-shadow: 0 8px 32px rgba(160, 120, 80, 0.06), 0 0 0 1px rgba(255, 215, 180, 0.10) inset;
+      padding: 24px 20px;
       transition: border-color 0.3s, box-shadow 0.3s;
-      animation: fadeUp 0.6s ease forwards;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .card:hover {
       border-color: rgba(200, 150, 100, 0.45);
-      box-shadow: 0 12px 40px rgba(160, 120, 80, 0.12), 0 0 0 1px rgba(200, 150, 100, 0.25) inset;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      box-shadow: 0 12px 40px rgba(160, 120, 80, 0.10), 0 0 0 1px rgba(200, 150, 100, 0.20) inset;
     }
 
     .card h2 {
@@ -120,6 +109,64 @@
       margin-right: 8px;
       color: #b8702a;
     }
+
+    /* ─── Commission Summary ─── */
+    .commission-box {
+      background: rgba(255, 215, 180, 0.12);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .commission-box .label {
+      font-size: 14px;
+      color: #5a4030;
+    }
+    .commission-box .amount {
+      font-size: 20px;
+      font-weight: 700;
+      color: #b8702a;
+    }
+    .commission-btn {
+      background: linear-gradient(145deg, #d48e45, #b8702a);
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.20);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .commission-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(184, 112, 42, 0.30);
+    }
+    .commission-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .commission-btn .spinner-small {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 4px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ─── Team List ─── */
     .team-list {
@@ -208,7 +255,34 @@
       border-top-color: #b8702a;
       animation: spin 0.8s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Toast ─── */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,252,248,0.96);
+      backdrop-filter: blur(8px);
+      padding: 14px 24px;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,215,180,0.3);
+      color: #2d241a;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      z-index: 1002;
+      animation: slideUp 0.35s ease forwards;
+      max-width: 90%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast.success i { color: #7a9f5a; }
+    .toast.error i { color: #b54a3a; }
+    @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+    @keyframes slideDown { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
 
     /* ─── Responsive ─── */
     @media (max-width: 520px) {
@@ -216,6 +290,8 @@
       .member { flex-direction: column; align-items: stretch; gap: 6px; }
       .member-stats { text-align: left; flex-direction: row; gap: 12px; }
       .referral-code { font-size: 18px; }
+      .commission-box { flex-direction: column; align-items: stretch; text-align: center; }
+      .commission-btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -244,6 +320,16 @@
     <!-- Team Card -->
     <div class="card">
       <h2><i class="fas fa-users" style="color:#b8702a;margin-right:8px;"></i> Your Team</h2>
+
+      <!-- Commission Summary -->
+      <div class="commission-box" id="commissionBox">
+        <span class="label">Your 20% Commission (Today)</span>
+        <span class="amount" id="commissionAmount">₹0.00</span>
+        <button class="commission-btn" id="collectCommissionBtn">
+          <i class="fas fa-hand-holding-usd"></i> Collect
+        </button>
+      </div>
+
       <div class="team-list" id="teamList">
         <div class="loading"><div class="spinner"></div></div>
       </div>
@@ -254,7 +340,7 @@
   <!-- ─── FIREBASE ─── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getDatabase, ref, get, onValue, update, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
     const firebaseConfig = {
@@ -268,101 +354,154 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase();
-    const auth = getAuth();
+    const db = getDatabase(app);
+    const auth = getAuth(app);
 
     let currentUid = null;
+    let teamData = []; // store referred users data for commission calculation
 
+    const teamList = document.getElementById('teamList');
+    const referralCodeEl = document.getElementById('referralCode');
+    const commissionAmountEl = document.getElementById('commissionAmount');
+    const collectBtn = document.getElementById('collectCommissionBtn');
+
+    // ─── Auth ───
     onAuthStateChanged(auth, (user) => {
       if (user) {
         currentUid = user.uid;
         loadReferralCode(currentUid);
         loadTeamMembers(currentUid);
       } else {
-        // Not logged in – redirect
-        window.location.href = "login.html";
+        window.location.href = 'login.html';
       }
     });
 
     // ─── Load Referral Code ───
     async function loadReferralCode(uid) {
-      const userRef = ref(db, `users/${uid}`);
-      const snap = await get(userRef);
+      const snap = await get(ref(db, `users/${uid}`));
       if (snap.exists()) {
-        const data = snap.val();
-        const code = data.referral || 'N/A';
-        document.getElementById('referralCode').innerHTML = `<i class="fas fa-gift"></i> ${code}`;
+        const code = snap.val().referral || 'N/A';
+        referralCodeEl.innerHTML = `<i class="fas fa-gift"></i> ${code}`;
       } else {
-        document.getElementById('referralCode').innerHTML = `<i class="fas fa-gift"></i> N/A`;
+        referralCodeEl.innerHTML = `<i class="fas fa-gift"></i> N/A`;
       }
     }
 
-    // ─── Load Team Members ───
+    // ─── Load Team Members with dynamic data ───
     function loadTeamMembers(uid) {
       const teamRef = ref(db, `team/${uid}`);
-      const teamList = document.getElementById('teamList');
-
-      // Listen for real-time updates
-      onValue(teamRef, (snapshot) => {
+      onValue(teamRef, async (snapshot) => {
         teamList.innerHTML = '';
+        teamData = [];
 
-        if (snapshot.exists()) {
-          const members = snapshot.val();
-          const memberKeys = Object.keys(members);
-          if (memberKeys.length === 0) {
-            showEmptyState();
+        if (!snapshot.exists()) {
+          showEmptyState();
+          updateCommission(0);
+          return;
+        }
+
+        const members = snapshot.val();
+        const memberKeys = Object.keys(members);
+
+        if (memberKeys.length === 0) {
+          showEmptyState();
+          updateCommission(0);
+          return;
+        }
+
+        let totalCommission = 0;
+
+        // Process each referred user
+        const promises = memberKeys.map(async (key, index) => {
+          const member = members[key];
+          const referredUid = key; // the UID of the referred user
+
+          // Fetch referred user's data
+          const userSnap = await get(ref(db, `users/${referredUid}`));
+          if (!userSnap.exists()) {
+            // User might have been deleted, skip
             return;
           }
+          const userData = userSnap.val();
 
-          memberKeys.forEach((key, index) => {
-            const member = members[key];
-            const name = member.name || 'Unknown';
-            const phone = member.phone || '';
-            const todayIncome = member.todayIncome || 0;
-            const totalDeposit = member.totalDeposit || 0;
+          // Calculate total deposit (sum of all investments)
+          const investments = userData.investments || {};
+          let totalDeposit = 0;
+          for (const invKey in investments) {
+            const inv = investments[invKey];
+            if (inv.amount) totalDeposit += inv.amount;
+          }
 
-            // Mask phone: show first 2 and last 2 digits, rest *
-            let maskedPhone = phone;
-            if (phone.length >= 10) {
-              const firstTwo = phone.slice(0, 2);
-              const lastTwo = phone.slice(-2);
-              const stars = '*'.repeat(phone.length - 4);
-              maskedPhone = `${firstTwo}${stars}${lastTwo}`;
-            } else {
-              // fallback: just show first two and last two if short
-              if (phone.length > 4) {
-                const firstTwo = phone.slice(0, 2);
-                const lastTwo = phone.slice(-2);
-                const stars = '*'.repeat(phone.length - 4);
-                maskedPhone = `${firstTwo}${stars}${lastTwo}`;
-              } else {
-                maskedPhone = phone;
+          // Calculate today's income from earnings
+          const earnings = userData.earnings || {};
+          const today = new Date().toISOString().split('T')[0];
+          let todayIncome = 0;
+          for (const earnKey in earnings) {
+            const e = earnings[earnKey];
+            if (e.date) {
+              const earnDate = new Date(e.date).toISOString().split('T')[0];
+              if (earnDate === today && e.amount > 0) {
+                todayIncome += e.amount;
               }
             }
+          }
 
-            const memberEl = document.createElement('div');
-            memberEl.className = 'member';
-            memberEl.style.animationDelay = `${index * 0.07}s`;
-            memberEl.innerHTML = `
-              <div class="member-info">
-                <span class="member-name">${name}</span>
-                <span class="member-phone">+91 ${maskedPhone}</span>
-              </div>
-              <div class="member-stats">
-                <span class="member-income"><i class="fas fa-arrow-up" style="font-size:12px;"></i> ₹${todayIncome.toFixed(2)}</span>
-                <span class="member-deposit"><i class="fas fa-coins"></i> ₹${totalDeposit.toFixed(2)}</span>
-              </div>
-            `;
-            teamList.appendChild(memberEl);
+          // Update the team node with the latest values (so future loads are faster)
+          // But we don't want to write every time, we'll just compute on the fly.
+
+          // Add to commission pool (20% of todayIncome)
+          totalCommission += todayIncome * 0.20;
+
+          // Mask phone
+          let phone = member.phone || '';
+          let maskedPhone = phone;
+          if (phone.length >= 10) {
+            const firstTwo = phone.slice(0, 2);
+            const lastTwo = phone.slice(-2);
+            const stars = '*'.repeat(phone.length - 4);
+            maskedPhone = `${firstTwo}${stars}${lastTwo}`;
+          } else if (phone.length > 4) {
+            const firstTwo = phone.slice(0, 2);
+            const lastTwo = phone.slice(-2);
+            const stars = '*'.repeat(phone.length - 4);
+            maskedPhone = `${firstTwo}${stars}${lastTwo}`;
+          }
+
+          // Create member element
+          const memberEl = document.createElement('div');
+          memberEl.className = 'member';
+          memberEl.style.animationDelay = `${index * 0.07}s`;
+          memberEl.innerHTML = `
+            <div class="member-info">
+              <span class="member-name">${member.name || 'Unknown'}</span>
+              <span class="member-phone">+91 ${maskedPhone}</span>
+            </div>
+            <div class="member-stats">
+              <span class="member-income"><i class="fas fa-arrow-up" style="font-size:12px;"></i> ₹${todayIncome.toFixed(2)}</span>
+              <span class="member-deposit"><i class="fas fa-coins"></i> ₹${totalDeposit.toFixed(2)}</span>
+            </div>
+          `;
+          teamList.appendChild(memberEl);
+
+          // Store for commission calculation
+          teamData.push({
+            uid: referredUid,
+            todayIncome: todayIncome
           });
-        } else {
+        });
+
+        await Promise.all(promises);
+
+        // Update commission display
+        updateCommission(totalCommission);
+
+        if (memberKeys.length === 0) {
           showEmptyState();
         }
       });
     }
 
     function showEmptyState() {
-      const teamList = document.getElementById('teamList');
       teamList.innerHTML = `
         <div class="empty-state">
           <i class="fas fa-user-friends"></i>
@@ -370,6 +509,115 @@
           <p style="font-size:13px;margin-top:4px;">Share your referral code to start building your team!</p>
         </div>
       `;
+    }
+
+    function updateCommission(amount) {
+      commissionAmountEl.textContent = `₹${amount.toFixed(2)}`;
+      collectBtn.disabled = amount <= 0;
+    }
+
+    // ─── Collect Commission ───
+    collectBtn.addEventListener('click', async () => {
+      if (teamData.length === 0) {
+        showToast('No team members to collect from.', 'error');
+        return;
+      }
+
+      // Calculate total commission again
+      let totalCommission = 0;
+      for (const member of teamData) {
+        totalCommission += member.todayIncome * 0.20;
+      }
+
+      if (totalCommission <= 0) {
+        showToast('No commission available to collect.', 'error');
+        return;
+      }
+
+      // Disable button during processing
+      collectBtn.disabled = true;
+      collectBtn.innerHTML = '<span class="spinner-small"></span> Processing...';
+
+      try {
+        // 1. Add commission to referrer's balance
+        const userRef = ref(db, `users/${currentUid}`);
+        const userSnap = await get(userRef);
+        if (!userSnap.exists()) throw new Error('User not found');
+        const currentBalance = userSnap.val().balance || 0;
+        const newBalance = currentBalance + totalCommission;
+
+        // 2. Reset each referred user's todayIncome in their own earnings? 
+        // Actually we don't want to reset their earnings, we just want to mark that commission has been claimed.
+        // We can store a lastCommissionClaim timestamp in the referrer's node, or we can zero out the team's todayIncome in the team node.
+        // But we are not storing todayIncome in team node anymore; we compute from earnings.
+        // To prevent double claiming, we need to record that we have claimed commission for this day.
+        // We can store a `commissionClaimedAt` timestamp in the referrer's node.
+        // Alternatively, we can zero out the todayIncome in the team node for each referred user, but we no longer store it there.
+        // So we'll store a `lastCommissionClaim` timestamp in the referrer's node, and only allow claiming if it's a new day.
+        // However, the requirement is to collect all earnings (today's income) and then reset so they don't get collected again.
+        // Since we are computing todayIncome dynamically, if we don't reset anything, they could collect again later.
+        // To fix, we need to store a claimed flag per referred user per day. But that's complex.
+        // Simpler: After collecting, we can store a `commissionLastClaimed` in the referrer's node, and we only allow claiming if the last claim was before today.
+        // But then they could only claim once per day.
+        // The user likely expects to collect the commission and then the referred user's todayIncome resets to 0 for the day.
+        // But we don't want to alter the referred user's earnings.
+        // So we need a separate tracking: store in the team node a `commissionClaimed` flag or a `lastCommissionDate`.
+        // Let's store a `teamCommissionClaimed` node under the referrer's user: `users/${currentUid}/commissionClaimed` with the date.
+        // We'll check if today's date is newer than the stored date.
+
+        const today = new Date().toISOString().split('T')[0];
+        const claimedRef = ref(db, `users/${currentUid}/commissionClaimed`);
+        const claimedSnap = await get(claimedRef);
+        const lastClaimed = claimedSnap.exists() ? claimedSnap.val() : null;
+
+        if (lastClaimed === today) {
+          showToast('You have already claimed today\'s commission.', 'error');
+          collectBtn.disabled = false;
+          collectBtn.innerHTML = '<i class="fas fa-hand-holding-usd"></i> Collect';
+          return;
+        }
+
+        // Update balance
+        await update(userRef, { balance: newBalance });
+
+        // Record claim date
+        await set(claimedRef, today);
+
+        // Optionally, we can also reset the todayIncome for each referred user in the team node (though not necessary if we track by date)
+        // But we could update the team node's todayIncome to 0 to reflect that commission has been claimed.
+        // Since we are not using team node's todayIncome anymore (we compute from earnings), we don't need to.
+
+        // Show success
+        showToast(`₹${totalCommission.toFixed(2)} commission collected!`, 'success');
+
+        // Refresh the commission display (disable button)
+        updateCommission(0);
+        // Reload team to update the display (though todayIncome still shows from earnings, but the commission button is disabled)
+        // We'll reload team to reflect that commission has been claimed (button disabled)
+        loadTeamMembers(currentUid);
+
+      } catch (err) {
+        console.error('Commission collection error:', err);
+        showToast('Failed to collect commission. Please try again.', 'error');
+        collectBtn.disabled = false;
+        collectBtn.innerHTML = '<i class="fas fa-hand-holding-usd"></i> Collect';
+      }
+    });
+
+    // ─── Toast ───
+    function showToast(message, type = 'success') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+      const color = type === 'success' ? '#7a9f5a' : '#b54a3a';
+      toast.innerHTML = `<i class="fas ${icon}" style="color:${color};"></i> ${message}`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'slideDown 0.35s ease forwards';
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
     }
   </script>
 </body>

@@ -231,6 +231,70 @@
       font-size: 14px;
     }
 
+    /* ─── Support Popup Item ─── */
+    .support-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(200, 180, 160, 0.15);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      border-radius: 8px;
+      margin: 0 -4px;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+    .support-item:last-child {
+      border-bottom: none;
+    }
+    .support-item:hover {
+      background: rgba(255, 215, 180, 0.15);
+      transform: translateX(4px);
+    }
+    .support-item .support-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .support-item .support-icon {
+      width: 28px;
+      text-align: center;
+      font-size: 18px;
+      color: #b8702a;
+      position: relative;
+    }
+    .support-item .support-icon .popup-badge {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: #b8702a;
+      color: #fff;
+      font-size: 8px;
+      padding: 1px 5px;
+      border-radius: 10px;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .support-item .support-label {
+      font-weight: 500;
+      color: #2d241a;
+    }
+    .support-item .support-arrow {
+      color: #b8a898;
+      font-size: 14px;
+    }
+    .support-item .support-arrow i {
+      transition: transform 0.2s;
+    }
+    .support-item:hover .support-arrow i {
+      transform: translateX(3px);
+    }
+
     /* ─── Logout Button ─── */
     .logout-btn {
       width: 100%;
@@ -506,6 +570,18 @@
         </div>
         <span class="option-arrow"><i class="fas fa-chevron-right"></i></span>
       </div>
+
+      <!-- ─── SUPPORT POPUP ─── -->
+      <div class="support-item" onclick="openSupport()">
+        <div class="support-left">
+          <span class="support-icon">
+            <i class="fas fa-headset"></i>
+            <span class="popup-badge">●</span>
+          </span>
+          <span class="support-label">24/7 Support</span>
+        </div>
+        <span class="support-arrow"><i class="fas fa-chevron-right"></i></span>
+      </div>
     </div>
 
     <!-- Logout -->
@@ -640,6 +716,11 @@
 
     // ─── Navigation helper ───
     window.navigateTo = (page) => window.location.href = page;
+
+    // ─── Open Support (Telegram) ───
+    window.openSupport = () => {
+      window.open('https://t.me/Eco_rickshaw', '_blank');
+    };
 
     // ─── Modal Controls ───
     window.showChangePasswordModal = () => document.getElementById("passwordModal").classList.add("active");
