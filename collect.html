@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Collect Earnings</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ─── Reset & Base ─── */
     * {
@@ -14,12 +14,23 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --color-cream: #faf8f2;
+      --color-amber: #b8702a;
+      --color-amber-dark: #9a5f22;
+      --color-wood: #5a4030;
+      --color-moss: #7a9f5a;
+      --color-terracotta: #b54a3a;
+      --shadow-soft: 0 4px 12px rgba(160, 120, 80, 0.06);
+      --shadow-medium: 0 8px 24px rgba(160, 120, 80, 0.12);
+    }
+
     body {
-      background-color: #faf8f2;
+      background-color: var(--color-cream);
       font-family: 'Poppins', sans-serif;
       min-height: 100vh;
       padding: 16px 16px 80px;
-      color: #2d241a;
+      color: var(--color-wood);
     }
 
     /* ─── Aura Background ─── */
@@ -34,23 +45,20 @@
     .aura-layer-2 {
       position: absolute;
       inset: 0;
-      transform: translateZ(0);
-      will-change: transform;
       pointer-events: none;
     }
     .aura-layer-1 {
-      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%);
+      background: 
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(255,183,77,0.20) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(255,138,61,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 50%);
       mix-blend-mode: multiply;
-      filter: blur(125px);
     }
     .aura-layer-2 {
-      background: linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%);
+      background: 
+        radial-gradient(ellipse 70% 50% at 60% 70%, rgba(255,183,77,0.15) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 30% 30%, rgba(183,77,0,0.08) 0%, transparent 55%);
       mix-blend-mode: multiply;
-      filter: blur(100px);
-    }
-    @media (min-width: 768px) {
-      .aura-layer-1 { filter: blur(180px); }
-      .aura-layer-2 { filter: blur(144px); }
     }
 
     /* ─── Content Wrapper ─── */
@@ -63,12 +71,12 @@
 
     /* ─── Header ─── */
     .header {
-      background: rgba(255, 252, 248, 0.88);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255,252,248,0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-radius: 20px;
-      border: 1px solid rgba(255, 215, 180, 0.30);
-      box-shadow: 0 4px 16px rgba(160, 120, 80, 0.06);
+      border: 1px solid rgba(255,215,180,0.30);
+      box-shadow: 0 4px 16px rgba(160,120,80,0.06);
       padding: 18px 20px;
       text-align: center;
       margin-bottom: 24px;
@@ -82,22 +90,22 @@
       transition: border-color 0.3s, box-shadow 0.3s;
     }
     .header:hover {
-      border-color: rgba(200, 150, 100, 0.45);
-      box-shadow: 0 6px 24px rgba(160, 120, 80, 0.10);
+      border-color: rgba(200,150,100,0.45);
+      box-shadow: 0 6px 24px rgba(160,120,80,0.10);
     }
     .header i {
-      color: #b8702a;
+      color: var(--color-amber);
       font-size: 1.6rem;
     }
 
     /* ─── Plan Card ─── */
     .plan-card {
-      background: rgba(255, 252, 248, 0.88);
+      background: rgba(255,252,248,0.88);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border-radius: 18px;
-      border: 1px solid rgba(255, 215, 180, 0.25);
-      box-shadow: 0 4px 12px rgba(160, 120, 80, 0.06);
+      border: 1px solid rgba(255,215,180,0.25);
+      box-shadow: var(--shadow-soft);
       padding: 20px 18px;
       margin-bottom: 16px;
       transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -116,21 +124,22 @@
 
     .plan-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(200, 150, 100, 0.45);
-      box-shadow: 0 10px 30px rgba(160, 120, 80, 0.10), 0 0 0 1px rgba(200, 150, 100, 0.15) inset;
+      border-color: rgba(200,150,100,0.45);
+      box-shadow: var(--shadow-medium), 0 0 0 1px rgba(200,150,100,0.15) inset;
     }
 
     .plan-card h3 {
+      font-family: 'Playfair Display', serif;
       margin: 0 0 12px;
-      font-size: 1.15rem;
-      font-weight: 600;
+      font-size: 1.2rem;
+      font-weight: 700;
       color: #7a4f2b;
       display: flex;
       align-items: center;
       gap: 10px;
     }
     .plan-card h3 i {
-      color: #b8702a;
+      color: var(--color-amber);
       font-size: 1.3rem;
     }
 
@@ -138,7 +147,7 @@
       display: flex;
       justify-content: space-between;
       padding: 6px 0;
-      border-bottom: 1px dashed rgba(200, 180, 160, 0.15);
+      border-bottom: 1px dashed rgba(200,180,160,0.15);
       font-size: 0.95rem;
     }
     .plan-detail:last-of-type {
@@ -149,16 +158,16 @@
     }
     .plan-detail .value {
       font-weight: 600;
-      color: #2d241a;
+      color: var(--color-wood);
     }
     .plan-detail .value.highlight {
-      color: #b8702a;
+      color: var(--color-amber);
     }
 
     /* ─── Progress Bar ─── */
     .progress-wrap {
       margin-top: 14px;
-      background: rgba(200, 180, 160, 0.15);
+      background: rgba(200,180,160,0.15);
       border-radius: 20px;
       height: 8px;
       overflow: hidden;
@@ -166,7 +175,7 @@
     }
     .progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, #d48e45, #b8702a);
+      background: linear-gradient(90deg, #d48e45, var(--color-amber));
       border-radius: 20px;
       width: 0%;
       transition: width 0.6s ease;
@@ -189,20 +198,20 @@
       gap: 6px;
     }
     .status-row .left i {
-      color: #b8702a;
+      color: var(--color-amber);
       font-size: 0.9rem;
     }
     .status-row .ready {
-      color: #7a9f5a;
+      color: var(--color-moss);
     }
     .status-row .ready i {
-      color: #7a9f5a;
+      color: var(--color-moss);
     }
     .status-row .expired {
-      color: #b54a3a;
+      color: var(--color-terracotta);
     }
     .status-row .expired i {
-      color: #b54a3a;
+      color: var(--color-terracotta);
     }
 
     /* ─── Collect Button ─── */
@@ -221,19 +230,19 @@
       font-family: 'Poppins', sans-serif;
       cursor: pointer;
       transition: all 0.25s ease;
-      background: linear-gradient(145deg, #d48e45, #b8702a);
+      background: linear-gradient(145deg, #d48e45, var(--color-amber));
       color: #fff;
-      box-shadow: 0 4px 12px rgba(184, 112, 42, 0.20);
+      box-shadow: 0 4px 12px rgba(184,112,42,0.20);
     }
     .collect-btn:hover:enabled {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(184, 112, 42, 0.30);
+      box-shadow: 0 8px 24px rgba(184,112,42,0.30);
     }
     .collect-btn:active {
       transform: scale(0.97);
     }
     .collect-btn:disabled {
-      background: rgba(200, 180, 160, 0.25);
+      background: rgba(200,180,160,0.25);
       color: #7a6555;
       box-shadow: none;
       cursor: not-allowed;
@@ -242,15 +251,19 @@
     .collect-btn i {
       font-size: 1.1rem;
     }
+    .collect-btn:focus-visible {
+      outline: 2px solid var(--color-amber);
+      outline-offset: 2px;
+    }
 
     /* ─── Empty State ─── */
     .empty-state {
       text-align: center;
       padding: 60px 20px;
-      background: rgba(255, 252, 248, 0.7);
+      background: rgba(255,252,248,0.7);
       backdrop-filter: blur(4px);
       border-radius: 20px;
-      border: 1px solid rgba(255, 215, 180, 0.2);
+      border: 1px solid rgba(255,215,180,0.2);
     }
     .empty-state i {
       font-size: 3rem;
@@ -276,9 +289,9 @@
     .spinner {
       width: 40px;
       height: 40px;
-      border: 4px solid rgba(200, 180, 160, 0.2);
+      border: 4px solid rgba(200,180,160,0.2);
       border-radius: 50%;
-      border-top-color: #b8702a;
+      border-top-color: var(--color-amber);
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin {
@@ -291,13 +304,13 @@
       bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(255, 252, 248, 0.96);
+      background: rgba(255,252,248,0.96);
       backdrop-filter: blur(8px);
       padding: 14px 24px;
       border-radius: 14px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      border: 1px solid rgba(255, 215, 180, 0.3);
-      color: #2d241a;
+      border: 1px solid rgba(255,215,180,0.3);
+      color: var(--color-wood);
       font-family: 'Poppins', sans-serif;
       font-weight: 500;
       font-size: 14px;
@@ -308,10 +321,206 @@
       align-items: center;
       gap: 10px;
     }
-    .toast.success i { color: #7a9f5a; }
-    .toast.error i { color: #b54a3a; }
+    .toast.success i { color: var(--color-moss); }
+    .toast.error i { color: var(--color-terracotta); }
     @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
     @keyframes slideDown { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
+
+    /* ─── Confirmation Modal ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: rgba(255,252,248,0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      width: 90%;
+      max-width: 420px;
+      border-radius: 20px;
+      overflow: hidden;
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255,215,180,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      background: linear-gradient(145deg, #d48e45, var(--color-amber));
+      color: #fff;
+      padding: 16px 20px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Playfair Display', serif;
+    }
+    .modal-header .close-modal {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      line-height: 1;
+      font-family: 'Poppins', sans-serif;
+    }
+    .modal-header .close-modal:hover {
+      transform: rotate(90deg);
+    }
+    .modal-header .close-modal:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .modal-body {
+      padding: 24px 20px;
+      overflow-y: auto;
+      flex: 1;
+      text-align: center;
+    }
+    .modal-body .confirm-icon {
+      font-size: 48px;
+      color: var(--color-amber);
+      margin-bottom: 12px;
+    }
+    .modal-body .confirm-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #7a4f2b;
+      margin-bottom: 6px;
+    }
+    .modal-body .confirm-subtitle {
+      font-size: 14px;
+      color: #7a6555;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .modal-body .confirm-details {
+      background: rgba(255,255,255,0.4);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .modal-body .confirm-details .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px dashed rgba(200,180,160,0.15);
+      font-size: 14px;
+    }
+    .modal-body .confirm-details .detail-row:last-child {
+      border-bottom: none;
+    }
+    .modal-body .confirm-details .label {
+      color: #7a6555;
+    }
+    .modal-body .confirm-details .value {
+      font-weight: 600;
+      color: var(--color-wood);
+    }
+    .modal-body .confirm-details .value.highlight {
+      color: var(--color-amber);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 20px 24px;
+      flex-shrink: 0;
+    }
+    .modal-footer .modal-btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      flex: 1;
+      max-width: 160px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .modal-footer .modal-btn.cancel {
+      background: rgba(200,180,160,0.2);
+      color: var(--color-wood);
+    }
+    .modal-footer .modal-btn.cancel:hover {
+      background: rgba(200,180,160,0.35);
+    }
+    .modal-footer .modal-btn.cancel:focus-visible {
+      outline: 2px solid var(--color-amber);
+      outline-offset: 2px;
+    }
+    .modal-footer .modal-btn.confirm {
+      background: linear-gradient(145deg, #d48e45, var(--color-amber));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(184,112,42,0.20);
+    }
+    .modal-footer .modal-btn.confirm:hover {
+      box-shadow: 0 6px 20px rgba(184,112,42,0.30);
+      transform: translateY(-2px);
+    }
+    .modal-footer .modal-btn.confirm:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+    .modal-footer .modal-btn:active {
+      transform: scale(0.96);
+    }
+    .modal-footer .modal-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ─── Prefers Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .plan-card,
+      .collect-btn,
+      .modal-overlay,
+      .modal-content,
+      .toast,
+      .header {
+        transition: none !important;
+      }
+      .plan-card:hover,
+      .collect-btn:hover:enabled {
+        transform: none !important;
+      }
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
 
     /* ─── Responsive ─── */
     @media (max-width: 520px) {
@@ -319,6 +528,7 @@
       .plan-card { padding: 16px; }
       .collect-btn { font-size: 0.9rem; padding: 12px; }
       .status-row { font-size: 0.75rem; }
+      .modal-content { max-width: 95%; }
     }
   </style>
 </head>
@@ -340,6 +550,34 @@
     <!-- Plans Container -->
     <div id="plansContainer">
       <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- ─── CONFIRMATION MODAL ─── -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Confirm Collection</span>
+        <button class="close-modal" id="confirmCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-icon"><i class="fas fa-coins"></i></div>
+        <div class="confirm-title" id="confirmTitle">Collect Daily Income</div>
+        <div class="confirm-subtitle" id="confirmMessage">Are you sure you want to collect your daily earnings from this plan?</div>
+        <div class="confirm-details" id="confirmDetails">
+          <div class="detail-row"><span class="label">Plan</span><span class="value" id="confirmPlanName">Eco Rikshaw (A)</span></div>
+          <div class="detail-row"><span class="label">Daily Income</span><span class="value highlight" id="confirmAmount">₹109.8</span></div>
+          <div class="detail-row"><span class="label">Collected So Far</span><span class="value" id="confirmCollected">₹0</span></div>
+          <div class="detail-row"><span class="label">Days Collected</span><span class="value" id="confirmDaysCount">0/10</span></div>
+        </div>
+        <div style="font-size:13px; color:#7a6555; margin-top:8px;">
+          <i class="fas fa-info-circle"></i> This amount will be added to your balance immediately.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn cancel" id="confirmCancelBtn">Cancel</button>
+        <button class="modal-btn confirm" id="confirmConfirmBtn">Confirm Collect</button>
+      </div>
     </div>
   </div>
 
@@ -377,6 +615,60 @@
         toast.style.animation = 'slideDown 0.35s ease forwards';
         setTimeout(() => toast.remove(), 350);
       }, 3500);
+    }
+
+    // ─── Confirmation Modal ───
+    function showConfirmation(options) {
+      return new Promise((resolve) => {
+        const modal = document.getElementById('confirmModal');
+        const title = document.getElementById('confirmTitle');
+        const message = document.getElementById('confirmMessage');
+        const planName = document.getElementById('confirmPlanName');
+        const amount = document.getElementById('confirmAmount');
+        const collected = document.getElementById('confirmCollected');
+        const daysCount = document.getElementById('confirmDaysCount');
+        const confirmBtn = document.getElementById('confirmConfirmBtn');
+        const cancelBtn = document.getElementById('confirmCancelBtn');
+        const closeBtn = document.getElementById('confirmCloseBtn');
+
+        title.textContent = options.title || 'Collect Daily Income';
+        message.textContent = options.message || 'Are you sure you want to collect your daily earnings?';
+        planName.textContent = options.planName || 'Plan';
+        amount.textContent = `₹${options.amount || 0}`;
+        collected.textContent = `₹${options.collected || 0}`;
+        daysCount.textContent = `${options.collectionCount || 0}/${options.duration || 0} days`;
+
+        modal.classList.add('active');
+
+        function cleanup() {
+          modal.classList.remove('active');
+          confirmBtn.removeEventListener('click', onConfirm);
+          cancelBtn.removeEventListener('click', onCancel);
+          closeBtn.removeEventListener('click', onCancel);
+        }
+
+        function onConfirm() {
+          cleanup();
+          resolve(true);
+        }
+
+        function onCancel() {
+          cleanup();
+          resolve(false);
+        }
+
+        confirmBtn.addEventListener('click', onConfirm);
+        cancelBtn.addEventListener('click', onCancel);
+        closeBtn.addEventListener('click', onCancel);
+
+        modal.addEventListener('click', function handler(e) {
+          if (e.target === modal) {
+            cleanup();
+            resolve(false);
+            modal.removeEventListener('click', handler);
+          }
+        });
+      });
     }
 
     // ─── Auth ───
@@ -426,21 +718,16 @@
         const now = Date.now();
 
         for (const [id, plan] of Object.entries(investments)) {
-          // ─── Calculate plan status ───
           const purchased = plan.purchased ? new Date(plan.purchased).getTime() : now;
           const durationDays = plan.days || 0;
           const totalIncome = plan.totalIncome || 0;
           const dailyIncome = plan.dailyIncome || 0;
 
-          // Days since purchase
           const msPerDay = 86400000;
           const daysSincePurchase = (now - purchased) / msPerDay;
           const isExpired = daysSincePurchase >= durationDays && durationDays > 0;
-
-          // Days remaining (if not expired)
           const daysRemaining = Math.max(0, durationDays - daysSincePurchase);
 
-          // Total collected from this investment
           let totalCollected = 0;
           let collectionCount = 0;
           for (const earnKey in earnings) {
@@ -451,12 +738,10 @@
             }
           }
 
-          // Last collection date
           const lastCollected = plan.lastCollectionDate ? new Date(plan.lastCollectionDate).getTime() : 0;
           const hoursSinceLast = (now - lastCollected) / (1000 * 60 * 60);
           const canCollect = !isExpired && hoursSinceLast >= 24;
 
-          // Progress percentage (days elapsed)
           const progress = durationDays > 0 ? Math.min(100, (daysSincePurchase / durationDays) * 100) : 0;
 
           const card = document.createElement('div');
@@ -503,7 +788,18 @@
           const btn = card.querySelector('.collect-btn');
           if (canCollect) {
             btn.addEventListener('click', async () => {
-              if (!confirm(`Collect ₹${dailyIncome.toLocaleString()} from ${plan.planName}?`)) return;
+              // Show confirmation modal
+              const confirmed = await showConfirmation({
+                title: `Collect from ${plan.planName}`,
+                message: 'Are you sure you want to collect your daily earnings from this plan?',
+                planName: plan.planName,
+                amount: dailyIncome,
+                collected: totalCollected,
+                collectionCount: collectionCount,
+                duration: durationDays
+              });
+
+              if (!confirmed) return;
 
               const originalText = btn.innerHTML;
               btn.disabled = true;
@@ -529,7 +825,7 @@
 
                 await update(userRef, updates);
                 showToast(`₹${dailyIncome.toLocaleString()} collected successfully!`, 'success');
-                loadPlans(uid); // refresh
+                loadPlans(uid);
               } catch (err) {
                 console.error('Collection error:', err);
                 showToast('Failed to collect. Please try again.', 'error');
