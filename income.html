@@ -22,23 +22,44 @@
     .header h1 i { color:#b8702a; }
     .header .back-btn { color:#7a6555; text-decoration:none; font-size:.9rem; display:flex; align-items:center; gap:6px; transition:color .2s; }
     .header .back-btn:hover { color:#b8702a; }
-    .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
-    .stat-card { background:rgba(255,252,248,0.88); backdrop-filter:blur(8px); border-radius:16px; border:1px solid rgba(255,215,180,0.25); padding:14px 12px; text-align:center; transition:transform .25s,box-shadow .3s,border-color .3s; animation:fadeUp .5s forwards; opacity:0; }
+    
+    /* ─── Stats Grid (4 columns) ─── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background:rgba(255,252,248,0.88);
+      backdrop-filter:blur(8px);
+      border-radius:16px;
+      border:1px solid rgba(255,215,180,0.25);
+      padding:12px 8px;
+      text-align:center;
+      transition:transform .25s,box-shadow .3s,border-color .3s;
+      animation:fadeUp .5s forwards;
+      opacity:0;
+    }
     .stat-card:nth-child(1){animation-delay:.05s;}
     .stat-card:nth-child(2){animation-delay:.10s;}
     .stat-card:nth-child(3){animation-delay:.15s;}
+    .stat-card:nth-child(4){animation-delay:.20s;}
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
     .stat-card:hover { transform:translateY(-3px); border-color:rgba(200,150,100,0.45); box-shadow:0 6px 16px rgba(160,120,80,0.08); }
-    .stat-card .stat-icon { font-size:1.5rem; margin-bottom:4px; }
+    .stat-card .stat-icon { font-size:1.3rem; margin-bottom:2px; }
     .stat-card .stat-icon.green { color:#7a9f5a; }
     .stat-card .stat-icon.gold { color:#b8702a; }
     .stat-card .stat-icon.blue { color:#4a90d9; }
-    .stat-card .stat-value { font-size:1.2rem; font-weight:700; color:#2d241a; }
-    .stat-card .stat-label { font-size:.7rem; color:#7a6555; font-weight:500; text-transform:uppercase; letter-spacing:.3px; }
+    .stat-card .stat-icon.purple { color:#8b5cf6; }
+    .stat-card .stat-value { font-size:1.1rem; font-weight:700; color:#2d241a; }
+    .stat-card .stat-label { font-size:.65rem; color:#7a6555; font-weight:500; text-transform:uppercase; letter-spacing:.3px; }
+    
     .section { margin-bottom:20px; }
     .section-title { font-size:1rem; font-weight:600; color:#7a4f2b; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
     .section-title i { color:#b8702a; }
     .section-title .badge { background:rgba(184,112,42,0.10); color:#b8702a; font-size:.7rem; padding:2px 10px; border-radius:12px; font-weight:500; }
+    
     .income-card { background:rgba(255,252,248,0.88); backdrop-filter:blur(8px); border-radius:14px; border:1px solid rgba(255,215,180,0.20); padding:14px 16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; transition:transform .2s,box-shadow .25s,border-color .25s; animation:slideIn .4s forwards; opacity:0; }
     .income-card:nth-child(2){animation-delay:.06s;}
     .income-card:nth-child(3){animation-delay:.12s;}
@@ -47,6 +68,7 @@
     .income-card:nth-child(6){animation-delay:.30s;}
     @keyframes slideIn { from{opacity:0;transform:translateX(-10px);} to{opacity:1;transform:translateX(0);} }
     .income-card:hover { transform:translateX(4px); border-color:rgba(200,150,100,0.35); }
+    
     .income-left { display:flex; align-items:center; gap:12px; flex:1; }
     .income-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
     .income-icon.recharge { background:rgba(46,125,50,0.12); color:#5f8a3a; }
@@ -54,7 +76,9 @@
     .income-icon.plan { background:rgba(184,112,42,0.12); color:#b8702a; }
     .income-icon.referral { background:rgba(33,150,243,0.12); color:#1a73e8; }
     .income-icon.withdraw { background:rgba(181,74,58,0.10); color:#b54a3a; }
+    .income-icon.mission { background:rgba(139,92,246,0.12); color:#7c3aed; }
     .income-icon.other { background:rgba(200,180,160,0.15); color:#7a6555; }
+    
     .income-info { flex:1; }
     .income-info .title { font-weight:500; font-size:.9rem; color:#2d241a; }
     .income-info .sub { font-size:.75rem; color:#7a6555; display:flex; align-items:center; gap:6px; }
@@ -62,18 +86,23 @@
     .income-amount { font-weight:700; font-size:1rem; text-align:right; flex-shrink:0; }
     .income-amount.positive { color:#7a9f5a; }
     .income-amount.negative { color:#b54a3a; }
+    
     .no-records { text-align:center; padding:30px 20px; background:rgba(255,252,248,0.5); backdrop-filter:blur(4px); border-radius:14px; border:1px solid rgba(255,215,180,0.15); color:#7a6555; }
     .no-records i { font-size:2rem; color:#d4c8b8; margin-bottom:8px; }
     .no-records p { font-size:.9rem; }
+    
     .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(255,252,248,0.92); backdrop-filter:blur(12px); display:flex; justify-content:space-around; padding:10px 0 6px; border-top:1px solid rgba(255,215,180,0.3); z-index:1000; box-shadow:0 -4px 20px rgba(160,120,80,0.06); }
     .nav-item { text-align:center; color:#b8a898; font-weight:500; font-size:11px; cursor:pointer; transition:color .2s,transform .2s; flex:1; padding:4px 0; text-decoration:none; }
     .nav-item:hover { transform:translateY(-2px); }
     .nav-item.active { color:#b8702a; }
     .nav-icon { font-size:20px; display:block; margin-bottom:2px; }
     .nav-label { font-size:11px; font-weight:500; }
+    
     .skeleton { background:rgba(255,252,248,0.5); border-radius:14px; height:70px; margin-bottom:10px; border:1px solid rgba(255,215,180,0.10); animation:pulse 1.5s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:.6;} 50%{opacity:1;} }
-    @media (max-width:520px){ .stats-grid{grid-template-columns:repeat(3,1fr);gap:8px;} .stat-card{padding:10px 8px;} .stat-card .stat-value{font-size:1rem;} .income-card{padding:12px 14px;} .income-icon{width:32px;height:32px;font-size:.85rem;} }
+    
+    @media (max-width:600px){ .stats-grid{grid-template-columns:repeat(2,1fr);gap:8px;} .stat-card{padding:10px 8px;} .stat-card .stat-value{font-size:1rem;} }
+    @media (max-width:520px){ .income-card{padding:12px 14px;} .income-icon{width:32px;height:32px;font-size:.85rem;} }
   </style>
 </head>
 <body>
@@ -96,16 +125,21 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon green"><i class="fas fa-coins"></i></div>
-        <div class="stat-value" id="totalIncome">₹0</div>
+        <div class="stat-value" id="totalEarned">₹0</div>
         <div class="stat-label">Total Earned</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon gold"><i class="fas fa-wallet"></i></div>
+        <div class="stat-value" id="totalRecharge">₹0</div>
+        <div class="stat-label">Total Recharge</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-coins"></i></div>
         <div class="stat-value" id="currentBalance">₹0</div>
         <div class="stat-label">Balance</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div>
+        <div class="stat-icon purple"><i class="fas fa-calendar-check"></i></div>
         <div class="stat-value" id="totalTransactions">0</div>
         <div class="stat-label">Transactions</div>
       </div>
@@ -173,7 +207,8 @@
     let currentUid = null;
 
     const incomeList = document.getElementById('incomeList');
-    const totalIncomeEl = document.getElementById('totalIncome');
+    const totalEarnedEl = document.getElementById('totalEarned');
+    const totalRechargeEl = document.getElementById('totalRecharge');
     const currentBalanceEl = document.getElementById('currentBalance');
     const totalTransactionsEl = document.getElementById('totalTransactions');
     const incomeCountEl = document.getElementById('incomeCount');
@@ -184,7 +219,6 @@
         return;
       }
       currentUid = user.uid;
-      // Real‑time balance
       onValue(ref(db, `users/${currentUid}/balance`), (snap) => {
         const balance = snap.val() || 0;
         currentBalanceEl.textContent = `₹${balance.toFixed(2)}`;
@@ -196,23 +230,25 @@
       if (!currentUid) return;
 
       try {
-        // 1. Get user data
         const userSnap = await get(ref(db, `users/${currentUid}`));
         const user = userSnap.exists() ? userSnap.val() : {};
 
         const allEntries = [];
 
-        // ─── Balance Recharges ───
+        // ─── Total Recharge ───
+        let totalRecharge = 0;
         const rechargeSnap = await get(ref(db, 'balanceRequests'));
         if (rechargeSnap.exists()) {
           rechargeSnap.forEach(child => {
             const req = child.val();
             if (req.userId === currentUid && req.status === 'approved') {
+              const amount = req.amount || 0;
+              totalRecharge += amount;
               allEntries.push({
                 type: 'recharge',
                 title: 'Recharge',
                 sub: `UTR: ${req.utr || 'N/A'}`,
-                amount: req.amount,
+                amount: amount,
                 date: req.timestamp || req.processedAt || Date.now(),
                 icon: 'fa-coins',
                 iconClass: 'recharge'
@@ -220,9 +256,12 @@
             }
           });
         }
+        totalRechargeEl.textContent = `₹${totalRecharge.toFixed(2)}`;
 
-        // ─── Earnings (check‑ins, referrals, plan returns) ───
+        // ─── Earnings ───
         const earnings = user.earnings || {};
+        let totalEarned = 0;
+
         Object.keys(earnings).forEach(key => {
           const e = earnings[key];
           let type = 'other';
@@ -230,13 +269,23 @@
           let iconClass = 'other';
           let title = 'Earning';
           let sub = '';
+          let includeInEarned = false;
 
-          if (e.type === 'daily' || e.type === 'checkin') {
+          // Check if it's a mission reward
+          if (e.type === 'mission' || e.type === 'missionReward') {
+            type = 'mission';
+            icon = 'fa-trophy';
+            iconClass = 'mission';
+            title = e.missionName || 'Mission Reward';
+            sub = 'Mission completed';
+            includeInEarned = true;
+          } else if (e.type === 'daily' || e.type === 'checkin') {
             type = 'checkin';
             icon = 'fa-calendar-check';
             iconClass = 'checkin';
             title = 'Daily Check-in';
             sub = e.planName ? `Plan: ${e.planName}` : 'Daily reward';
+            includeInEarned = true;
           } else if (e.type && e.type.startsWith('referral')) {
             type = 'referral';
             icon = 'fa-user-plus';
@@ -244,12 +293,26 @@
             const level = e.type === 'referral' ? '' : e.type.replace('referral', 'Level ');
             title = `Referral ${level || 'Commission'}`;
             sub = e.from ? `From: ${e.from}` : 'Referral bonus';
+            includeInEarned = true;
           } else if (e.type === 'plan') {
             type = 'plan';
             icon = 'fa-chart-simple';
             iconClass = 'plan';
             title = e.planName || 'Plan Return';
             sub = `From ${e.planName || 'investment'}`;
+            includeInEarned = true;
+          } else if (e.type === 'commission') {
+            type = 'plan';
+            icon = 'fa-hand-holding-usd';
+            iconClass = 'plan';
+            title = 'Team Commission';
+            sub = '20% from team earnings';
+            includeInEarned = true;
+          }
+
+          // Only add to total earned if it's a positive earning type
+          if (includeInEarned && e.amount > 0) {
+            totalEarned += e.amount;
           }
 
           allEntries.push({
@@ -302,11 +365,8 @@
         // Sort by date (newest first)
         allEntries.sort((a, b) => b.date - a.date);
 
-        // Calculate total earned (sum of positive amounts)
-        const totalEarned = allEntries.reduce((sum, item) => item.amount > 0 ? sum + item.amount : sum, 0);
-
         // Update stats
-        totalIncomeEl.textContent = `₹${totalEarned.toFixed(2)}`;
+        totalEarnedEl.textContent = `₹${totalEarned.toFixed(2)}`;
         totalTransactionsEl.textContent = allEntries.length;
         incomeCountEl.textContent = allEntries.length;
 
