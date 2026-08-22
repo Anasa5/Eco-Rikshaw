@@ -5,25 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Income History</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Same styles as before ─── */
+    /* ─── Custom Properties ─── */
+    :root {
+      --color-cream: #faf8f2;
+      --color-amber: #b8702a;
+      --color-amber-dark: #9a5f22;
+      --color-wood: #5a4030;
+      --color-moss: #7a9f5a;
+      --color-terracotta: #b54a3a;
+      --shadow-soft: 0 4px 12px rgba(160, 120, 80, 0.06);
+      --shadow-medium: 0 8px 24px rgba(160, 120, 80, 0.12);
+    }
+
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { background-color:#faf8f2; font-family:'Poppins',sans-serif; min-height:100vh; padding:16px 16px 80px; color:#2d241a; }
+    body { background-color:var(--color-cream); font-family:'Poppins',sans-serif; min-height:100vh; padding:16px 16px 80px; color:var(--color-wood); }
+
+    /* ─── Aura Background ─── */
     .aura-bg { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
-    .aura-layer-1,.aura-layer-2 { position:absolute; inset:0; transform:translateZ(0); will-change:transform; pointer-events:none; }
-    .aura-layer-1 { background:linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.12) 28%, rgb(255,255,255) 18%, rgb(255,138,61) 68%, rgb(183,77,0) 100%); mix-blend-mode:multiply; filter:blur(125px); }
-    .aura-layer-2 { background:linear-gradient(rgba(0,0,0,0) 0%, rgba(255,183,77,0.22) 34%, rgb(255,255,255) 66%, rgb(255,138,61) 82%, rgb(183,77,0) 100%); mix-blend-mode:multiply; filter:blur(100px); }
-    @media (min-width:768px){ .aura-layer-1{filter:blur(180px);} .aura-layer-2{filter:blur(144px);} }
+    .aura-layer-1,.aura-layer-2 { position:absolute; inset:0; pointer-events:none; }
+    .aura-layer-1 {
+      background: 
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(255,183,77,0.20) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(255,138,61,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 50%);
+      mix-blend-mode: multiply;
+    }
+    .aura-layer-2 {
+      background: 
+        radial-gradient(ellipse 70% 50% at 60% 70%, rgba(255,183,77,0.15) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 30% 30%, rgba(183,77,0,0.08) 0%, transparent 55%);
+      mix-blend-mode: multiply;
+    }
+
     .content-wrapper { position:relative; z-index:1; max-width:560px; margin:0 auto; }
-    .header { background:rgba(255,252,248,0.88); backdrop-filter:blur(10px); border-radius:20px; border:1px solid rgba(255,215,180,0.30); padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; transition:border-color .3s,box-shadow .3s; }
-    .header:hover { border-color:rgba(200,150,100,0.45); box-shadow:0 6px 24px rgba(160,120,80,0.10); }
-    .header h1 { font-size:1.4rem; font-weight:600; color:#7a4f2b; display:flex; align-items:center; gap:10px; }
-    .header h1 i { color:#b8702a; }
+
+    /* ─── Header ─── */
+    .header {
+      background:rgba(255,252,248,0.88);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border-radius:20px;
+      border:1px solid rgba(255,215,180,0.30);
+      box-shadow:var(--shadow-soft);
+      padding:16px 20px;
+      margin-bottom:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .header:hover { border-color:rgba(200,150,100,0.45); box-shadow:var(--shadow-medium); }
+    .header h1 { font-size:1.4rem; font-weight:700; color:#7a4f2b; display:flex; align-items:center; gap:10px; font-family:'Playfair Display',serif; }
+    .header h1 i { color:var(--color-amber); }
     .header .back-btn { color:#7a6555; text-decoration:none; font-size:.9rem; display:flex; align-items:center; gap:6px; transition:color .2s; }
-    .header .back-btn:hover { color:#b8702a; }
-    
-    /* ─── Stats Grid (4 columns) ─── */
+    .header .back-btn:hover { color:var(--color-amber); }
+    .header .back-btn:focus-visible { outline:2px solid var(--color-amber); outline-offset:2px; border-radius:4px; }
+
+    /* ─── Stats Grid ─── */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -33,6 +73,7 @@
     .stat-card {
       background:rgba(255,252,248,0.88);
       backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
       border-radius:16px;
       border:1px solid rgba(255,215,180,0.25);
       padding:12px 8px;
@@ -46,21 +87,45 @@
     .stat-card:nth-child(3){animation-delay:.15s;}
     .stat-card:nth-child(4){animation-delay:.20s;}
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
-    .stat-card:hover { transform:translateY(-3px); border-color:rgba(200,150,100,0.45); box-shadow:0 6px 16px rgba(160,120,80,0.08); }
+    .stat-card:hover { transform:translateY(-3px); border-color:rgba(200,150,100,0.45); box-shadow:var(--shadow-medium); }
     .stat-card .stat-icon { font-size:1.3rem; margin-bottom:2px; }
-    .stat-card .stat-icon.green { color:#7a9f5a; }
-    .stat-card .stat-icon.gold { color:#b8702a; }
+    .stat-card .stat-icon.green { color:var(--color-moss); }
+    .stat-card .stat-icon.gold { color:var(--color-amber); }
     .stat-card .stat-icon.blue { color:#4a90d9; }
     .stat-card .stat-icon.purple { color:#8b5cf6; }
-    .stat-card .stat-value { font-size:1.1rem; font-weight:700; color:#2d241a; }
+    .stat-card .stat-value { font-size:1.1rem; font-weight:700; color:var(--color-wood); }
     .stat-card .stat-label { font-size:.65rem; color:#7a6555; font-weight:500; text-transform:uppercase; letter-spacing:.3px; }
-    
+
+    /* ─── Income List ─── */
     .section { margin-bottom:20px; }
-    .section-title { font-size:1rem; font-weight:600; color:#7a4f2b; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
-    .section-title i { color:#b8702a; }
-    .section-title .badge { background:rgba(184,112,42,0.10); color:#b8702a; font-size:.7rem; padding:2px 10px; border-radius:12px; font-weight:500; }
-    
-    .income-card { background:rgba(255,252,248,0.88); backdrop-filter:blur(8px); border-radius:14px; border:1px solid rgba(255,215,180,0.20); padding:14px 16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; transition:transform .2s,box-shadow .25s,border-color .25s; animation:slideIn .4s forwards; opacity:0; }
+    .section-title {
+      font-size:1rem;
+      font-weight:600;
+      color:#7a4f2b;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-family:'Playfair Display',serif;
+    }
+    .section-title i { color:var(--color-amber); }
+    .section-title .badge { background:rgba(184,112,42,0.10); color:var(--color-amber); font-size:.7rem; padding:2px 10px; border-radius:12px; font-weight:500; font-family:'Poppins',sans-serif; }
+
+    .income-card {
+      background:rgba(255,252,248,0.88);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border-radius:14px;
+      border:1px solid rgba(255,215,180,0.20);
+      padding:14px 16px;
+      margin-bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:transform .2s,box-shadow .25s,border-color .25s;
+      animation:slideIn .4s forwards;
+      opacity:0;
+    }
     .income-card:nth-child(2){animation-delay:.06s;}
     .income-card:nth-child(3){animation-delay:.12s;}
     .income-card:nth-child(4){animation-delay:.18s;}
@@ -68,41 +133,65 @@
     .income-card:nth-child(6){animation-delay:.30s;}
     @keyframes slideIn { from{opacity:0;transform:translateX(-10px);} to{opacity:1;transform:translateX(0);} }
     .income-card:hover { transform:translateX(4px); border-color:rgba(200,150,100,0.35); }
-    
+
     .income-left { display:flex; align-items:center; gap:12px; flex:1; }
     .income-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
     .income-icon.recharge { background:rgba(46,125,50,0.12); color:#5f8a3a; }
     .income-icon.checkin { background:rgba(255,193,7,0.15); color:#f57f17; }
-    .income-icon.plan { background:rgba(184,112,42,0.12); color:#b8702a; }
+    .income-icon.plan { background:rgba(184,112,42,0.12); color:var(--color-amber); }
     .income-icon.referral { background:rgba(33,150,243,0.12); color:#1a73e8; }
-    .income-icon.withdraw { background:rgba(181,74,58,0.10); color:#b54a3a; }
+    .income-icon.withdraw { background:rgba(181,74,58,0.10); color:var(--color-terracotta); }
     .income-icon.mission { background:rgba(139,92,246,0.12); color:#7c3aed; }
     .income-icon.other { background:rgba(200,180,160,0.15); color:#7a6555; }
-    
+
     .income-info { flex:1; }
-    .income-info .title { font-weight:500; font-size:.9rem; color:#2d241a; }
+    .income-info .title { font-weight:500; font-size:.9rem; color:var(--color-wood); }
     .income-info .sub { font-size:.75rem; color:#7a6555; display:flex; align-items:center; gap:6px; }
     .income-info .sub i { font-size:.6rem; }
     .income-amount { font-weight:700; font-size:1rem; text-align:right; flex-shrink:0; }
-    .income-amount.positive { color:#7a9f5a; }
-    .income-amount.negative { color:#b54a3a; }
-    
+    .income-amount.positive { color:var(--color-moss); }
+    .income-amount.negative { color:var(--color-terracotta); }
+
     .no-records { text-align:center; padding:30px 20px; background:rgba(255,252,248,0.5); backdrop-filter:blur(4px); border-radius:14px; border:1px solid rgba(255,215,180,0.15); color:#7a6555; }
     .no-records i { font-size:2rem; color:#d4c8b8; margin-bottom:8px; }
     .no-records p { font-size:.9rem; }
-    
-    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(255,252,248,0.92); backdrop-filter:blur(12px); display:flex; justify-content:space-around; padding:10px 0 6px; border-top:1px solid rgba(255,215,180,0.3); z-index:1000; box-shadow:0 -4px 20px rgba(160,120,80,0.06); }
+
+    /* ─── Bottom Nav ─── */
+    .bottom-nav {
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:rgba(255,252,248,0.92);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      display:flex;
+      justify-content:space-around;
+      padding:10px 0 6px;
+      border-top:1px solid rgba(255,215,180,0.3);
+      z-index:1000;
+      box-shadow:0 -4px 20px rgba(160,120,80,0.06);
+    }
     .nav-item { text-align:center; color:#b8a898; font-weight:500; font-size:11px; cursor:pointer; transition:color .2s,transform .2s; flex:1; padding:4px 0; text-decoration:none; }
     .nav-item:hover { transform:translateY(-2px); }
-    .nav-item.active { color:#b8702a; }
+    .nav-item.active { color:var(--color-amber); }
+    .nav-item:focus-visible { outline:2px solid var(--color-amber); outline-offset:2px; border-radius:4px; }
     .nav-icon { font-size:20px; display:block; margin-bottom:2px; }
     .nav-label { font-size:11px; font-weight:500; }
-    
+
     .skeleton { background:rgba(255,252,248,0.5); border-radius:14px; height:70px; margin-bottom:10px; border:1px solid rgba(255,215,180,0.10); animation:pulse 1.5s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:.6;} 50%{opacity:1;} }
-    
+
+    /* ─── Prefers Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .stat-card, .income-card, .header, .bottom-nav { transition:none !important; }
+      .stat-card:hover, .income-card:hover { transform:none !important; }
+      * { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+    }
+
+    /* ─── Responsive ─── */
     @media (max-width:600px){ .stats-grid{grid-template-columns:repeat(2,1fr);gap:8px;} .stat-card{padding:10px 8px;} .stat-card .stat-value{font-size:1rem;} }
-    @media (max-width:520px){ .income-card{padding:12px 14px;} .income-icon{width:32px;height:32px;font-size:.85rem;} }
+    @media (max-width:520px){ .income-card{padding:12px 14px;} .income-icon{width:32px;height:32px;font-size:.85rem;} .header h1{font-size:1.2rem;} }
   </style>
 </head>
 <body>
@@ -213,6 +302,18 @@
     const totalTransactionsEl = document.getElementById('totalTransactions');
     const incomeCountEl = document.getElementById('incomeCount');
 
+    // ─── Helper: Convert any date to numeric timestamp ───
+    function toTimestamp(date) {
+      if (!date) return Date.now();
+      if (typeof date === 'number') return date;
+      if (typeof date === 'string') {
+        const parsed = new Date(date).getTime();
+        return isNaN(parsed) ? Date.now() : parsed;
+      }
+      if (date instanceof Date) return date.getTime();
+      return Date.now();
+    }
+
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = 'login.html';
@@ -235,7 +336,7 @@
 
         const allEntries = [];
 
-        // ─── Total Recharge ───
+        // ─── Balance Recharges ───
         let totalRecharge = 0;
         const rechargeSnap = await get(ref(db, 'balanceRequests'));
         if (rechargeSnap.exists()) {
@@ -249,7 +350,7 @@
                 title: 'Recharge',
                 sub: `UTR: ${req.utr || 'N/A'}`,
                 amount: amount,
-                date: req.timestamp || req.processedAt || Date.now(),
+                date: toTimestamp(req.timestamp || req.processedAt),
                 icon: 'fa-coins',
                 iconClass: 'recharge'
               });
@@ -258,7 +359,7 @@
         }
         totalRechargeEl.textContent = `₹${totalRecharge.toFixed(2)}`;
 
-        // ─── Earnings ───
+        // ─── Earnings (daily check-in, plan returns, referrals, missions, commission) ───
         const earnings = user.earnings || {};
         let totalEarned = 0;
 
@@ -271,7 +372,7 @@
           let sub = '';
           let includeInEarned = false;
 
-          // Check if it's a mission reward
+          // Mission reward
           if (e.type === 'mission' || e.type === 'missionReward') {
             type = 'mission';
             icon = 'fa-trophy';
@@ -279,14 +380,18 @@
             title = e.missionName || 'Mission Reward';
             sub = 'Mission completed';
             includeInEarned = true;
-          } else if (e.type === 'daily' || e.type === 'checkin') {
+          }
+          // Daily check-in
+          else if (e.type === 'daily' || e.type === 'checkin') {
             type = 'checkin';
             icon = 'fa-calendar-check';
             iconClass = 'checkin';
             title = 'Daily Check-in';
             sub = e.planName ? `Plan: ${e.planName}` : 'Daily reward';
             includeInEarned = true;
-          } else if (e.type && e.type.startsWith('referral')) {
+          }
+          // Referral earnings
+          else if (e.type && e.type.startsWith('referral')) {
             type = 'referral';
             icon = 'fa-user-plus';
             iconClass = 'referral';
@@ -294,14 +399,18 @@
             title = `Referral ${level || 'Commission'}`;
             sub = e.from ? `From: ${e.from}` : 'Referral bonus';
             includeInEarned = true;
-          } else if (e.type === 'plan') {
+          }
+          // Plan return
+          else if (e.type === 'plan') {
             type = 'plan';
             icon = 'fa-chart-simple';
             iconClass = 'plan';
             title = e.planName || 'Plan Return';
             sub = `From ${e.planName || 'investment'}`;
             includeInEarned = true;
-          } else if (e.type === 'commission') {
+          }
+          // Team commission
+          else if (e.type === 'commission') {
             type = 'plan';
             icon = 'fa-hand-holding-usd';
             iconClass = 'plan';
@@ -310,7 +419,6 @@
             includeInEarned = true;
           }
 
-          // Only add to total earned if it's a positive earning type
           if (includeInEarned && e.amount > 0) {
             totalEarned += e.amount;
           }
@@ -320,7 +428,7 @@
             title,
             sub,
             amount: e.amount,
-            date: e.date || Date.now(),
+            date: toTimestamp(e.date),
             icon,
             iconClass
           });
@@ -336,7 +444,7 @@
               title: `Invested: ${inv.planName || 'Plan'}`,
               sub: `₹${inv.amount} invested`,
               amount: -inv.amount,
-              date: inv.purchased || inv.date || Date.now(),
+              date: toTimestamp(inv.purchased || inv.date),
               icon: 'fa-chart-simple',
               iconClass: 'plan'
             });
@@ -354,7 +462,7 @@
                 title: 'Withdrawal',
                 sub: req.method === 'bank' ? 'Bank Transfer' : 'UPI Transfer',
                 amount: -req.amount,
-                date: req.processedAt || req.time || Date.now(),
+                date: toTimestamp(req.processedAt || req.time),
                 icon: 'fa-arrow-up',
                 iconClass: 'withdraw'
               });
@@ -362,7 +470,7 @@
           });
         }
 
-        // Sort by date (newest first)
+        // ─── SORT: Newest first (descending by date) ───
         allEntries.sort((a, b) => b.date - a.date);
 
         // Update stats
